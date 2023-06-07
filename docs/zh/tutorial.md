@@ -1,3 +1,10 @@
+## 文档
+* [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
+* [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
+* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+
+[进入英文版](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+
 # Nunu框架使用教程
 
 Nunu是一个基于Go语言的Web框架，它提供了一套优雅的项目结构和命令操作，使得开发者可以更加高效地开发Web应用程序。

@@ -1,3 +1,11 @@
+## 文档
+* [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
+* [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
+* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+
+
+[进入英文版](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
+
 # Nunu架构详解
 
 Nunu采用了经典的分层架构。同时，为了更好地实现模块化和解耦，采用了依赖注入框架`Wire`。

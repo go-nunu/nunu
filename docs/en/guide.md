@@ -1,3 +1,10 @@
+## Documentation
+* [Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+* [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
+* [Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+
+[进入简体中文版](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
+
 # Nunu User Guide
 
 Nunu is a Golang-based application scaffold that helps you quickly build efficient and reliable applications. This guide will show you how to use Nunu to create and develop your applications.
@@ -50,12 +57,13 @@ If you want to create the corresponding components in a custom directory, you ca
 nunu create handler internale/handler/user/center
 nunu create service internale/service/user/center
 nunu create dao internale/dao/user/center
+nunu create model internale/model/user/center
 ```
 
-You can also use the following command to create handler, service, and dao components at once:
+You can also use the following command to create handler, service, dao and model components at once:
 
 ```bash
-nunu create hsd user
+nunu create all user
 ```
 
 ## Starting the Project

@@ -1,3 +1,10 @@
+## Documentation
+* [Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+* [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
+* [Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+
+[进入简体中文版](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+
 # Nunu Framework Tutorial
 
 Nunu is a web framework based on the Go language. It provides an elegant project structure and command operations, making it easier for developers to develop web applications more efficiently.

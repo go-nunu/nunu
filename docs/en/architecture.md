@@ -1,3 +1,11 @@
+## Documentation
+* [Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+* [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
+* [Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+
+[进入简体中文版](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
+
+
 # Architecture Overview
 
 Nunu adopts the classic layered architecture. At the same time, in order to better achieve modularity and decoupling, it uses the dependency injection framework `Wire`.

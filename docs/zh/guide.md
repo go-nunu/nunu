@@ -1,3 +1,11 @@
+## 文档
+* [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
+* [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
+* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+
+
+[进入英文版](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+
 # Nunu 使用指南
 
 Nunu 是一个基于 Golang 的应用脚手架，它可以帮助您快速构建高效、可靠的应用程序。本指南将介绍如何使用 Nunu 创建、开发您的应用程序。
@@ -60,13 +68,14 @@ nunu create dao user
 nunu create handler internale/handler/user/center
 nunu create service internale/service/user/center
 nunu create dao internale/dao/user/center
+nunu create model internale/model/user/center
 ```
 
 
-你还可以使用以下命令一次性创建 handler、service 和 dao 等组件：
+你还可以使用以下命令一次性创建 handler、service、dao 和 model 等组件：
 
 ```bash
-nunu create hsd user
+nunu create all user
 ```
 
 ## 启动项目
