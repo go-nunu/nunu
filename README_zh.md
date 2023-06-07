@@ -27,6 +27,11 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 * **模块化和可扩展**：Nunu旨在具有模块化和可扩展性。您可以通过使用第三方库或编写自己的模块轻松添加新功能和功能。
 * **文档完善和测试完备**：Nunu文档完善，测试完备。它提供了全面的文档和示例，帮助您快速入门。它还包括一套测试套件，确保您的应用程序按预期工作。
 
+## 简洁分层架构
+Nunu采用了经典的分层架构。同时，为了更好地实现模块化和解耦，采用了依赖注入框架`Wire`。
+
+![Nunu Layout](https://github.com/go-nunu/nunu/blob/main/.github/assets/layout.jpg)
+
 ## Nunu CLI
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/screenshot.jpg)

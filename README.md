@@ -34,6 +34,13 @@ Nunu is an application scaffold based on Golang, named after a game character in
 * **Modular and extensible**: Nunu is designed to be modular and extensible. You can easily add new features and functionality by using third-party libraries or writing your own modules.
 * **Complete documentation and testing**: Nunu has complete documentation and testing. It provides comprehensive documentation and examples to help you get started quickly. It also includes a set of test suites to ensure that your application works as expected.
 
+# Architecture
+
+Nunu adopts the classic layered architecture. At the same time, in order to better achieve modularity and decoupling, it uses the dependency injection framework `Wire`.
+
+![Nunu Layout](https://github.com/go-nunu/nunu/blob/main/.github/assets/layout.jpg)
+
+
 ## Nunu CLI
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/screenshot.jpg)
