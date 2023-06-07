@@ -74,7 +74,7 @@ var RunCmd = &cobra.Command{
 			}
 		}
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
+		fmt.Printf("\033[35mNunu run %s.\033[0m\n", dir)
 		watch(dir, programArgs)
 
 	},
@@ -98,11 +98,15 @@ func watch(dir string, programArgs []string) {
 		if err != nil {
 			return err
 		}
-		if !info.IsDir() && filepath.Ext(info.Name()) != ".log" && info.Name() != ".git" {
-			err = watcher.Add(path)
-			if err != nil {
-				fmt.Println("Error:", err)
+		if !info.IsDir() {
+			ext := filepath.Ext(info.Name())
+			if ext == ".go" || ext == ".yml" || ext == ".yaml" || ext == ".html" {
+				err = watcher.Add(path)
+				if err != nil {
+					fmt.Println("Error:", err)
+				}
 			}
+
 		}
 		return nil
 	})
@@ -120,22 +124,19 @@ func watch(dir string, programArgs []string) {
 			err = killProcess(cmd)
 
 			if err != nil {
-				log.Println("server exiting...", err)
+				fmt.Printf("\033[31mserver exiting...\033[0m\n")
 				return
 			}
-			log.Println("server exiting...")
+			fmt.Printf("\033[31mserver exiting...\033[0m\n")
 			os.Exit(0)
 
 		case event := <-watcher.Events:
 			// The file has been modified or created
-			if event.Op&fsnotify.Write == fsnotify.Write || event.Op&fsnotify.Create == fsnotify.Create {
-				fmt.Println("File modified:", event.Name)
-				err = killProcess(cmd)
-				if err != nil {
-					fmt.Println("Stopping program failed：", err)
-					return
-				}
-				fmt.Println("Program restart in progress...")
+			if event.Op&fsnotify.Create == fsnotify.Create ||
+				event.Op&fsnotify.Write == fsnotify.Write ||
+				event.Op&fsnotify.Remove == fsnotify.Remove {
+				fmt.Printf("\033[36mfile modified: %s\033[0m\n", event.Name)
+				killProcess(cmd)
 
 				cmd = start(dir, programArgs)
 			}
@@ -168,9 +169,10 @@ func start(dir string, programArgs []string) *exec.Cmd {
 
 	err := cmd.Start()
 	if err != nil {
-		fmt.Println("cmd run failed")
+		log.Fatalf("\033[33;1mcmd run failed\u001B[0m")
 	}
-	fmt.Println("Program started")
+	time.Sleep(time.Second)
+	fmt.Printf("\033[32;1mrunning...\033[0m\n")
 	return cmd
 }
 
