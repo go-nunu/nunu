@@ -50,8 +50,9 @@ func run(cmd *cobra.Command, args []string) {
 			fmt.Println(err.Error())
 			return
 		}
+	} else {
+		p.ProjectName = args[0]
 	}
-	p.ProjectName = args[0]
 
 	// clone repo
 	yes, err := p.cloneTemplate()
