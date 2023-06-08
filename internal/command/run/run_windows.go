@@ -28,7 +28,7 @@ type Run struct {
 var RunCmd = &cobra.Command{
 	Use:     "run",
 	Short:   "nunu run [main.go path]",
-	Long:    "nunu wire [wire.go path]",
+	Long:    "nunu run [main.go path]",
 	Example: "nunu run cmd/server",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdArgs, programArgs := helper.SplitArgs(cmd, args)
