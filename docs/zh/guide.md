@@ -18,6 +18,8 @@ Nunu 是一个基于 Golang 的应用脚手架，它可以帮助您快速构建�
 go install github.com/go-nunu/nunu@latest
 ```
 
+> tips: 如果`go install`成功，却提示找不到nunu命令，这是因为环境变量没有配置，可以把 GOBIN 目录配置到环境变量中即可
+
 ## 创建新项目
 
 您可以使用以下命令创建一个新的 Golang 项目：

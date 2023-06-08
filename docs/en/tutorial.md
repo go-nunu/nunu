@@ -24,6 +24,7 @@ Before using Nunu, you need to install it. You can install it using the followin
 ```bash
 go install github.com/go-nunu/nunu@latest
 ```
+>Tips: If 'go install' is successful but prompts that the nunu command cannot be found, this is because the environment variable is not configured. You can configure the GOBIN directory to the environment variable
 
 ## Creating a Project
 

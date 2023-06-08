@@ -130,6 +130,7 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 go install github.com/go-nunu/nunu@latest
 ```
 
+> tips: 如果`go install`成功，却提示找不到nunu命令，这是因为环境变量没有配置，可以把 GOBIN 目录配置到环境变量中即可
 
 ### 创建新项目
 
