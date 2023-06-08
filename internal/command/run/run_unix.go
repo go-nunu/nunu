@@ -14,7 +14,6 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"syscall"
 	"time"
@@ -150,11 +149,7 @@ func watch(dir string, programArgs []string) {
 func start(dir string, programArgs []string) *exec.Cmd {
 	cmd := exec.Command("go", append([]string{"run", dir}, programArgs...)...)
 	// Set a new process group to kill all child processes when the program exits
-	if runtime.GOOS == "windows" {
-		cmd.SysProcAttr = &syscall.SysProcAttr{}
-	} else {
-		cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
-	}
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
