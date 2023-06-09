@@ -18,7 +18,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 - **Go-redis**: https://github.com/go-redis/redis
 - **Testify**: https://github.com/stretchr/testify
 - **Sonyflake**: https://github.com/sony/sonyflake
-- **robfig-cron**: https://github.com/robfig/cron
+- **gocron**:  https://github.com/go-co-op/gocron
 - More...
 ## 特性
 * **超低学习成本和定制**：Nunu封装了Gopher最熟悉的一些流行库。您可以轻松定制应用程序以满足特定需求。

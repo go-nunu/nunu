@@ -24,7 +24,7 @@ Nunu is an application scaffold based on Golang, named after a game character in
 - **Go-redis**: https://github.com/go-redis/redis
 - **Testify**: https://github.com/stretchr/testify
 - **Sonyflake**: https://github.com/sony/sonyflake
-- **robfig-cron**: https://github.com/robfig/cron
+- **gocron**:  https://github.com/go-co-op/gocron
 - More...
 
 ## Features
