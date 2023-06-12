@@ -17,6 +17,6 @@ func New{{ .FileName }}Service(service *Service, {{ .FileNameTitleLower }}Dao *d
 	}
 }
 
-func ({{ .FileNameFirstChar }} *{{ .FileName }}Service) Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error) {
-	return {{ .FileNameFirstChar }}.{{ .FileNameTitleLower }}Dao.FirstById(id)
+func (s *{{ .FileName }}Service) Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error) {
+	return s.{{ .FileNameTitleLower }}Dao.FirstById(id)
 }

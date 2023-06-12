@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 )
 
 func GetProjectName(dir string) string {
@@ -30,4 +33,42 @@ func SplitArgs(cmd *cobra.Command, args []string) (cmdArgs, programArgs []string
 		return args[:dashAt], args[dashAt:]
 	}
 	return args, []string{}
+}
+func FindMain(base string) (map[string]string, error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+	if !strings.HasSuffix(wd, "/") {
+		wd += "/"
+	}
+	cmdPath := make(map[string]string)
+	err = filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && filepath.Ext(path) == ".go" {
+			content, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			if !strings.Contains(string(content), "package main") {
+				return nil
+			}
+			re := regexp.MustCompile(`func\s+main\s*\(`)
+			if re.Match(content) {
+				absPath, err := filepath.Abs(path)
+				if err != nil {
+					return err
+				}
+				cmdPath[strings.TrimPrefix(absPath, wd)] = absPath
+
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return cmdPath, nil
 }

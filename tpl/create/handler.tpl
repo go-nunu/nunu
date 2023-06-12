@@ -20,7 +20,7 @@ func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Servic
 	}
 }
 
-func ({{ .FileNameFirstChar }} *{{ .FileName }}Handler) Get{{ .FileName }}ById(ctx *gin.Context) {
+func (h *{{ .FileName }}Handler) Get{{ .FileName }}ById(ctx *gin.Context) {
 
 	var params struct {
 		Id int64 `form:"id" binding:"required"`
@@ -30,8 +30,8 @@ func ({{ .FileNameFirstChar }} *{{ .FileName }}Handler) Get{{ .FileName }}ById(c
 		return
 	}
 
-	{{ .FileNameTitleLower }}, err := {{ .FileNameFirstChar }}.{{ .FileNameTitleLower }}Service.Get{{ .FileName }}ById(params.Id)
-	{{ .FileNameFirstChar }}.logger.Info("Get{{ .FileName }}ByID", zap.Any("{{ .FileNameTitleLower }}", {{ .FileNameTitleLower }}))
+	{{ .FileNameTitleLower }}, err := h.{{ .FileNameTitleLower }}Service.Get{{ .FileName }}ById(params.Id)
+	h.logger.Info("Get{{ .FileName }}ByID", zap.Any("{{ .FileNameTitleLower }}", {{ .FileNameTitleLower }}))
 	if err != nil {
 		resp.HandleError(ctx, http.StatusInternalServerError, 1, err.Error(), nil)
 		return

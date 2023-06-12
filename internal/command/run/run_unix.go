@@ -14,7 +14,6 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"strings"
 	"syscall"
 	"time"
 )
@@ -41,8 +40,7 @@ var RunCmd = &cobra.Command{
 			return
 		}
 		if dir == "" {
-			// find the directory containing the cmd/*
-			cmdPath, err := findCMD(base)
+			cmdPath, err := helper.FindMain(base)
 
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
@@ -161,54 +159,4 @@ func start(dir string, programArgs []string) *exec.Cmd {
 	time.Sleep(time.Second)
 	fmt.Printf("\033[32;1mrunning...\033[0m\n")
 	return cmd
-}
-
-func findCMD(base string) (map[string]string, error) {
-	wd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-	if !strings.HasSuffix(wd, "/") {
-		wd += "/"
-	}
-	var root bool
-	next := func(dir string) (map[string]string, error) {
-		cmdPath := make(map[string]string)
-		err = filepath.Walk(dir, func(walkPath string, info os.FileInfo, err error) error {
-			// multi level directory is not allowed under the cmdPath directory, so it is judged that the path ends with cmdPath.
-			if strings.HasSuffix(walkPath, "cmd") {
-				paths, err := os.ReadDir(walkPath)
-				if err != nil {
-					return err
-				}
-				for _, fileInfo := range paths {
-					if fileInfo.IsDir() {
-						abs := filepath.Join(walkPath, fileInfo.Name())
-						cmdPath[strings.TrimPrefix(abs, wd)] = abs
-					}
-				}
-				return nil
-			}
-			if info.Name() == "go.mod" {
-				root = true
-			}
-			return nil
-		})
-		return cmdPath, err
-	}
-	for i := 0; i < 5; i++ {
-		tmp := base
-		cmd, err := next(tmp)
-		if err != nil {
-			return nil, err
-		}
-		if len(cmd) > 0 {
-			return cmd, nil
-		}
-		if root {
-			break
-		}
-		_ = filepath.Join(base, "..")
-	}
-	return map[string]string{"": base}, nil
 }
