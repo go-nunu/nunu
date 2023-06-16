@@ -28,7 +28,7 @@ func NewCreate() *Create {
 
 var CreateCmd = &cobra.Command{
 	Use:     "create [type] [handler-name]",
-	Short:   "Create a new handler/service/dao/model",
+	Short:   "Create a new handler/service/repository/model",
 	Example: "nunu create handler user",
 	Args:    cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -49,10 +49,10 @@ var CreateServiceCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
 }
-var CreateDaoCmd = &cobra.Command{
-	Use:     "dao",
-	Short:   "Create a new dao",
-	Example: "nunu create dao user",
+var CreateRepositoryCmd = &cobra.Command{
+	Use:     "repository",
+	Short:   "Create a new repository",
+	Example: "nunu create repository user",
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
 }
@@ -65,7 +65,7 @@ var CreateModelCmd = &cobra.Command{
 }
 var CreateAllCmd = &cobra.Command{
 	Use:     "all",
-	Short:   "Create a new handler & service & dao & model",
+	Short:   "Create a new handler & service & repository & model",
 	Example: "nunu create all user",
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
@@ -81,7 +81,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 	c.FileNameFirstChar = string(c.FileNameTitleLower[0])
 
 	switch c.CreateType {
-	case "handler", "service", "dao", "model":
+	case "handler", "service", "repository", "model":
 		c.genFile()
 	case "all":
 
@@ -91,7 +91,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 		c.CreateType = "service"
 		c.genFile()
 
-		c.CreateType = "dao"
+		c.CreateType = "repository"
 		c.genFile()
 
 		c.CreateType = "model"

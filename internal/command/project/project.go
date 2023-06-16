@@ -111,14 +111,14 @@ func (p *Project) cloneTemplate() (bool, error) {
 		prompt := &survey.Select{
 			Message: "Please select a layout:",
 			Options: []string{
-				"Basic",
 				"Advanced",
+				"Basic",
 			},
 			Description: func(value string, index int) string {
-				if index == 0 {
+				if index == 1 {
 					return "A basic project structure"
 				}
-				return "It has rich functions such as db, jwt, cron, migration, etc"
+				return "It has rich functions such as db, jwt, cron, migration, test, etc"
 			},
 		}
 		err := survey.AskOne(prompt, &layout)

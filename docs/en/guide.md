@@ -1,13 +1,14 @@
 ## Documentation
-* [Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+* [User Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
 * [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
-* [Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+* [Getting Started](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 
-[进入简体中文版](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
+
+[Switch to Chinese version](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
 
 # Nunu User Guide
 
-Nunu is a Golang-based application scaffold that helps you quickly build efficient and reliable applications. This guide will show you how to use Nunu to create and develop your applications.
+Nunu is an application scaffolding based on Golang that helps you quickly build efficient and reliable applications. This guide will show you how to use Nunu to create and develop your applications.
 
 ## Installation
 
@@ -16,7 +17,8 @@ You can install Nunu using the following command:
 ```bash
 go install github.com/go-nunu/nunu@latest
 ```
->Tips: If 'go install' is successful but prompts that the nunu command cannot be found, this is because the environment variable is not configured. You can configure the GOBIN directory to the environment variable
+
+> Tip: If `go install` is successful but the `nunu` command is not found, it is because the environment variable is not configured. You can configure the `GOBIN` directory in the environment variable.
 
 ## Creating a New Project
 
@@ -28,40 +30,50 @@ nunu new projectName
 
 This command will create a directory named `projectName` and generate an elegant Golang project structure within it.
 
-> Nunu comes with two types of layouts:
+**Accelerated Source in China:**
+
+By default, `nunu new` fetches from the GitHub source. However, you can also use an accelerated repository in China:
+```
+// Using the basic template
+nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
+// Using the advanced template (recommended)
+nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
+```
+
+> Nunu provides two types of layouts:
 
 * **Basic Layout**
 
-The Basic Layout contains a very minimal architecture directory structure, suitable for developers who are very familiar with Nunu projects.
+The Basic Layout contains a minimalistic directory structure and is suitable for developers who are already familiar with Nunu projects.
 
 * **Advanced Layout**
 
-**Recommendation: We recommend that beginners choose the Advanced Layout first.**
+**Recommendation: We recommend beginners to choose the Advanced Layout first.**
 
-The Advanced Layout contains many examples of Nunu's usage (db, redis, jwt, cron, migration, etc.), which is suitable for developers to quickly learn and understand Nunu's architectural ideas.
+The Advanced Layout includes many examples of using Nunu (e.g., db, redis, jwt, cron, migration, etc.), which is suitable for developers to quickly learn and understand the architectural ideas of Nunu.
 
 ## Creating Components
 
-You can use the following commands to create handler, service, and dao components for your project:
+You can use the following commands to create components such as handler, service, repository, and model for your project:
 
 ```bash
 nunu create handler user
 nunu create service user
-nunu create dao user
+nunu create repository user
+nunu create model user
 ```
 
-These commands will create components named `UserHandler`, `UserService`, and `UserDao`, respectively, and place them in the correct directory.
+These commands will create components named `UserHandler`, `UserService`, `UserRepository`, and `UserModel`, and place them in the correct directories.
 
-If you want to create the corresponding components in a custom directory, you can do so like this:
-
+If you want to create the corresponding components in a custom directory, you can do so as follows:
 ```bash
 nunu create handler internale/handler/user/center
 nunu create service internale/service/user/center
-nunu create dao internale/dao/user/center
+nunu create repository internale/repository/user/center
 nunu create model internale/model/user/center
 ```
 
-You can also use the following command to create handler, service, dao and model components at once:
+You can also use the following command to create all components (handler, service, repository, and model) at once:
 
 ```bash
 nunu create all user
@@ -69,46 +81,42 @@ nunu create all user
 
 ## Starting the Project
 
-You can use the following command to quickly start your project:
+You can quickly start the project using the following command:
 
 ```bash
-// equivalent to go run cmd/server/main.go
+// Equivalent to go run ./cmd/server
 
 nunu run
 ```
 
-This command will start your Golang project and support file update hot restart.
+This command will start your Golang project and support hot-reload when files are updated.
 
 ## Compiling wire.go
 
-You can use the following command to quickly compile `wire.go`:
+You can quickly compile `wire.go` using the following command:
 
 ```bash
-// equivalent to cd cmd/server/wire && wire
+// Equivalent to cd cmd/server && wire
 nunu wire
 ```
 
-This command will automatically find the `wire.go` file in your project and quickly compile the required dependencies.
+This command will automatically search for the `wire.go` file in your project and compile the required dependencies.
 
 ## Configuration File
 
-### Starting with a Specified Configuration File
-
+### Starting with a Specific Configuration File
 Nunu uses the Viper library to manage configuration files.
 
-By default, `config/local.yml` will be loaded, and you can use environment variables or parameters to specify the configuration file path.
+By default, it loads `config/local.yml`, but you can specify the configuration file path using environment variables or parameters.
 
 ```
 // Linux or MacOS
 APP_CONF=config/prod.yml nunu run
 
 // Windows
-
 set APP_CONF=config\prod.yml && nunu run
-
 ```
-
-Or use the parameter method: `go run cmd/server/main.go -conf=config/prod.yml`
+Alternatively, you can use the parameter approach: `go run ./cmd/server -conf=config/prod.yml`
 
 ### Reading Configuration Items
 
@@ -129,7 +137,7 @@ data:
 You can use dependency injection `conf *viper.Viper` to read the configuration information in your code:
 
 ```go
-package dao
+package repository
 
 import (
 	"context"
@@ -142,14 +150,14 @@ import (
 	"time"
 )
 
-type Dao struct {
+type Repository struct {
 	db     *gorm.DB
 	rdb    *redis.Client
 	logger *log.Logger
 }
 
-func NewDao(db *gorm.DB, rdb *redis.Client, logger *log.Logger) *Dao {
-	return &Dao{
+func NewRepository(db *gorm.DB, rdb *redis.Client, logger *log.Logger) *Repository {
+	return &Repository{
 		db:     db,
 		rdb:    rdb,
 		logger: logger,
@@ -181,49 +189,47 @@ func NewRedis(conf *viper.Viper) *redis.Client {
 	return rdb
 }
 
+
 ```
-Tips: After dependency injection through parameters, don't forget to execute the `nunu wire` command to generate the dependency file.
+Tip: After performing dependency injection through parameters, don't forget to execute the `nunu wire` command to generate the dependency file.
 
 ## Logging
 
-Nunu uses the Zap library to manage logging. You can configure logging in the `config` directory. For example:
+Nunu uses the Zap library to manage logs. You can configure the log in the `config` directory. For example:
 
 ```yaml
 log:
   log_level: info
   encoding: json           # json or console
   log_file_name: "./storage/logs/server.log"
-  max_backups: 30              # maximum number of backup log files to keep
-  max_age: 7                   # maximum number of days to keep a log file
-  max_size: 1024               # maximum size in megabytes of each log file
-  compress: true               # whether to compress log files
+  max_backups: 30              # Maximum number of log file backups
+  max_age: 7                   # Maximum number of days to keep files
+  max_size: 1024               # Maximum size of each log file in MB
+  compress: true               # Whether to compress the log files
 ```
 
-You can use the following method in your code to record logs:
+You can use the following method to record logs in your code:
 
 ```go
+package handler
+
 import (
-    "go.uber.org/zap"
-    "go.uber.org/zap/zapcore"
+	"github.com/gin-gonic/gin"
+	"github.com/go-nunu/nunu-layout-basic/internal/service"
+	"github.com/go-nunu/nunu-layout-basic/pkg/helper/resp"
+	"go.uber.org/zap"
+	"net/http"
 )
 
-func main() {
-    logger, err := zap.Config{
-        Encoding:         viper.GetString("logger.encoding"),
-        Level:            zap.NewAtomicLevelAt(zapcore.Level(viper.GetInt("logger.level"))),
-        OutputPaths:      []string{viper.GetString("logger.outputPaths.0"), viper.GetString("logger.outputPaths.1")},
-        ErrorOutputPaths: []string{viper.GetString("logger.errorOutputPaths.0"), viper.GetString("logger.errorOutputPaths.1")},
-        InitialFields: map[string]interface{}{
-            "app":     viper.GetString("logger.initialFields.app"),
-            "version": viper.GetString("logger.initialFields.version"),
-        },
-    }.Build()
-    if err != nil {
-        panic(err)
-    }
+// ...
 
-    logger.Info("Hello, Nunu!")
+func (h *userHandler) GetUserById(ctx *gin.Context) {
+	h.logger.Info("GetUserByID", zap.Any("user", user))
+	// ...
 }
+
+// ...
+
 ```
 
 ## Database
@@ -242,26 +248,30 @@ data:
     write_timeout: 0.2s
 ```
 
-You can use the following method in your code to connect to the database:
+You can connect to the database using the following code:
 
 ```go
-package dao
+package repository
 
 import (
 	"github.com/go-nunu/nunu-layout-advanced/internal/model"
 )
 
-type UserDao struct {
-	*Dao
+
+type UserRepository interface {
+	FirstById(id int64) (*model.User, error)
+}
+type userRepository struct {
+	*Repository
 }
 
-func NewUserDao(dao *Dao) *UserDao {
-	return &UserDao{
-		Dao: dao,
+func NewUserRepository(repository *Repository) *UserRepository {
+	return &UserRepository{
+		Repository: repository,
 	}
 }
 
-func (r *UserDao) FirstById(id int64) (*model.User, error) {
+func (r *UserRepository) FirstById(id int64) (*model.User, error) {
 	var user model.User
 	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, err
@@ -271,40 +281,39 @@ func (r *UserDao) FirstById(id int64) (*model.User, error) {
 
 ```
 
+It is important to note that `xxxRepository`, `xxxService`, `xxxHandler`, etc. in Nunu are implemented based on interfaces. This is known as **interface-oriented programming**, which can improve code flexibility, scalability, testability, and maintainability. It is a programming style highly recommended in the Go language.
+
+In the above code, we wrote:
+```
+type UserRepository interface {
+	FirstById(id int64) (*model.User, error)
+}
+type userRepository struct {
+	*Repository
+}
+```
+instead of directly writing:
+```
+type UserRepository struct {
+	*Repository
+}
+```
+> Tip: The unit tests in the Nunu advanced layout are based on the characteristics of `interface` for mock operations.
 
 ## Testing
 
-Nunu uses the Testify library to write tests. You can create a file named `main_test.go` in the `test` directory to write tests. For example:
+Nunu uses libraries such as testify, redismock, gomock, and go-sqlmock to write tests.
 
-```go
-import (
-    "net/http"
-    "net/http/httptest"
-    "testing"
-
-    "github.com/go-nunu/nunu/pkg/handler"
-    "github.com/stretchr/testify/assert"
-)
-
-func TestUserHandler_GetUser(t *testing.T) {
-    r := httptest.NewRequest(http.MethodGet, "/users/1", nil)
-    w := httptest.NewRecorder()
-
-    h := handler.NewUserHandler()
-    h.GetUser(w, r)
-
-    assert.Equal(t, http.StatusOK, w.Code)
-    assert.Equal(t, "application/json; charset=utf-8", w.Header().Get("Content-Type"))
-    assert.JSONEq(t, `{"id":1,"name":"Alice"}`, w.Body.String())
-}
-```
-
-You can use the following command to run tests:
+You can run the test using the following command:
 
 ```bash
-go test ./test/...
+go test -coverpkg=./internal/handler,./internal/service,./internal/repository -coverprofile=./.nunu/coverage.out ./test/server/...
+go tool cover -html=./.nunu/coverage.out -o coverage.html
+
 ```
+
+The above command will generate an HTML file named `coverage.html`. You can open it directly in a browser to view detailed unit test coverage.
 
 ## Conclusion
 
-Nunu is a very practical Golang application scaffold that helps you quickly build efficient and reliable applications. We hope this guide will help you better use N
+Nunu is a practical Golang application scaffolding that helps you quickly build efficient and reliable applications. We hope this guide can help you make better use of Nunu.

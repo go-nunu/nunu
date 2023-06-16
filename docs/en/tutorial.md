@@ -1,16 +1,16 @@
 ## Documentation
-* [Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+* [User Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
 * [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
-* [Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+* [Getting Started Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 
-[进入简体中文版](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+[Go to Chinese version](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
 
-# Nunu Framework Tutorial
+# Nunu Framework User Guide
 
-Nunu is a web framework based on the Go language. It provides an elegant project structure and command operations, making it easier for developers to develop web applications more efficiently.
+Nunu is a web framework based on the Go programming language. It provides an elegant project structure and command operations that allow developers to efficiently develop web applications.
 
 ## Requirements
-To use Nunu's advanced layout, you need to install the following software on your system:
+To use Nunu with Advanced Layout, you need to have the following software installed on your system:
 
 * Golang 1.16 or higher
 * Git
@@ -19,99 +19,152 @@ To use Nunu's advanced layout, you need to install the following software on you
 
 ## Installation
 
-Before using Nunu, you need to install it. You can install it using the following command:
+Before you can start using Nunu, you need to install it. You can do so by running the following command:
 
 ```bash
 go install github.com/go-nunu/nunu@latest
 ```
->Tips: If 'go install' is successful but prompts that the nunu command cannot be found, this is because the environment variable is not configured. You can configure the GOBIN directory to the environment variable
+
+For users in China, you can use `GOPROXY` to speed up `go install`.
+```
+$ go env -w GO111MODULE=on
+$ go env -w GOPROXY=https://goproxy.cn,direct
+```
+
+> tips: If `go install` is successful but you get an error saying "nunu command not found," it means that the environment variable is not configured. You can add the GOBIN directory to the environment variable.
 
 ## Creating a Project
 
-Creating a new project with Nunu is very simple. Just enter the following command in the command line:
+Creating a new project with Nunu is very simple. Just run the following command in the command line:
 
 ```bash
 nunu new projectName
 ```
 
-Here, `projectName` is the name of the project you want to create. Here we choose the advanced layout.
+Replace `projectName` with the name of your project. Here, we will choose the Advanced Layout.
 
-After executing the above command, Nunu will automatically create a directory structure for the Go project, including some commonly used files and directories, as shown below:
+**Using an Accelerated Repository in China:**
+
+By default, `nunu new` pulls from the GitHub repository, but you can also use an accelerated repository in China.
+
+```
+// Using the advanced template (recommended)
+nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
+
+// Using the basic template
+nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
+```
+
+After running the above command, Nunu will automatically create a well-structured Go project with some commonly used files and directories, as shown below:
 
 ```
 .
 ├── cmd
-│   ├── job
-│   │   ├── wire
-│   │   │   ├── wire.go
-│   │   │   └── wire_gen.go
-│   │   └── main.go
-│   ├── migration
-│   │   ├── wire
-│   │   │   ├── wire.go
-│   │   │   └── wire_gen.go
-│   │   └── main.go
-│   └── server
-│       ├── wire
-│       │   ├── wire.go
-│       │   └── wire_gen.go
-│       └── main.go
+│   ├── job
+│   │   ├── main.go
+│   │   ├── wire.go
+│   │   └── wire_gen.go
+│   ├── migration
+│   │   ├── main.go
+│   │   ├── wire.go
+│   │   └── wire_gen.go
+│   └── server
+│       ├── main.go
+│       ├── wire.go
+│       └── wire_gen.go
 ├── config
-│   ├── local.yml
-│   └── prod.yml
+│   ├── local.yml
+│   └── prod.yml
 ├── deploy
-│   ├── build
-│   │   └── Dockerfile
-│   └── docker-composer
-│       └── docker-composer.yml
+│   ├── build
+│   │   └── Dockerfile
+│   ├── docker-compose
+│   │   └── docker-compose.yml
+│   └── docker-composer
+│       └── conf
+│           ├── mysql
+│           │   └── conf.d
+│           └── redis
+│               └── cache
+│                   └── redis.conf
 ├── internal
-│   ├── dao
-│   │   ├── dao.go
-│   │   └── user.go
-│   ├── handler
-│   │   ├── handler.go
-│   │   └── user.go
-│   ├── job
-│   │   └── job.go
-│   ├── middleware
-│   │   ├── cors.go
-│   │   ├── jwt.go
-│   │   ├── log.go
-│   │   └── sign.go
-│   ├── migration
-│   │   └── migration.go
-│   ├── model
-│   │   └── user.go
-│   ├── provider
-│   │   └── provider.go
-│   ├── server
-│   │   └── http.go
-│   └── service
-│       ├── service.go
-│       └── user.go
+│   ├── handler
+│   │   ├── handler.go
+│   │   └── user.go
+│   ├── job
+│   │   └── job.go
+│   ├── middleware
+│   │   ├── cors.go
+│   │   ├── jwt.go
+│   │   ├── log.go
+│   │   └── sign.go
+│   ├── migration
+│   │   └── migration.go
+│   ├── model
+│   │   └── user.go
+│   ├── repository
+│   │   ├── repository.go
+│   │   └── user.go
+│   ├── server
+│   │   └── http.go
+│   └── service
+│       ├── service.go
+│       └── user.go
+├── mocks
+│   ├── repository
+│   │   └── user.go
+│   └── service
+│       └── user.go
 ├── pkg
-│   ├── config
-│   │   └── config.go
-│   ├── helper
-│   ├── http
-│   │   └── http.go
-│   └── log
-│       └── log.go
-├── script
-│   └── deploy.sh
+│   ├── config
+│   │   └── config.go
+│   ├── helper
+│   │   ├── convert
+│   │   │   └── convert.go
+│   │   ├── md5
+│   │   │   └── md5.go
+│   │   ├── resp
+│   │   │   └── resp.go
+│   │   ├── sid
+│   │   │   └── sid.go
+│   │   └── uuid
+│   │       └── uuid.go
+│   ├── http
+│   │   └── http.go
+│   └── log
+│       └── log.go
+├── scripts
+│   └── deploy.sh
 ├── storage
+│   └── logs
+│       └── server.log
 ├── test
+│   └── server
+│       ├── handler
+│       │   ├── storage
+│       │   │   └── logs
+│       │   │       └── server.log
+│       │   └── user_test.go
+│       ├── repository
+│       │   ├── repository_test.go
+│       │   └── user_test.go
+│       └── service
+│           └── user_test.go
 ├── web
+│   └── index.html
 ├── LICENSE
+├── Makefile
 ├── README.md
 ├── README_zh.md
+├── coverage.html
 ├── go.mod
 └── go.sum
+
 ```
 
 ## Creating Components
 
-In Nunu, you can use the following command to create Handler, Service, Dao, and Model components in batches:
+In Nunu, you can use the following command to create Handler, Service, Repository, and Model components in batches:
 
 ```bash
 nunu create all order
@@ -119,47 +172,49 @@ nunu create all order
 
 Here, `order` is the name of the component you want to create.
 
-After executing the above command, Nunu will automatically create the components in the corresponding directory and write the corresponding structures and some commonly used methods.
-
+After running the above command, Nunu will automatically create the components in the corresponding directories and write the corresponding structures and some commonly used methods.
 ```
 // Log information
 Created new handler: internal/handler/order.go
 Created new service: internal/service/order.go
-Created new dao: internal/dao/order.go
+Created new repository: internal/repository/order.go
 Created new model: internal/model/order.go
 ```
 
 ## Registering Routes
+Edit `internal/server/http.go`.
 
-Edit `internal/server/http.go` and add `*handler.OrderHandler` as a parameter to `NewServerHTTP`, so that the dependency relationship of `OrderHandler` is written.
+Add `*handler.OrderHandler` as a parameter to `NewServerHTTP`, which sets up the dependency for `OrderHandler`.
 
-Then we register a route, `noAuthRouter.GET("/order", orderHandler.GetOrderById)`.
+Next, register a new route: `noAuthRouter.GET("/order", orderHandler.GetOrderById)`.
 ```
 func NewServerHTTP(
 	// ...
-	orderHandler *handler.OrderHandler,
+	orderHandler *handler.OrderHandler,     // new
 ) *gin.Engine {
     // ...
 
-	// 无权限路由
+	// No authentication routes
 	noAuthRouter := r.Group("/").Use(middleware.RequestLogMiddleware(logger))
 	{
-		noAuthRouter.GET("/order", orderHandler.GetOrderById)
+		noAuthRouter.GET("/order", orderHandler.GetOrderById)   // new
 ```
 
-## Writing Wire Provider
-
-Edit `internal/provider/provider.go` and add the factory function generated in the file you just generated to `providerSet`, as shown below:
-
+## Writing Wire Providers
+Edit `cmd/server/wire.go` and add the factory functions generated from the files to `providerSet`, as shown below:
 ```
+//go:build wireinject
+// +build wireinject
 
-var DaoSet = wire.NewSet(
-	dao.NewDB,
-	dao.NewRedis,
-	dao.NewDao,
-	dao.NewUserDao,
+package main
 
-	dao.NewOrderDao, // new
+// ...
+
+var HandlerSet = wire.NewSet(
+	handler.NewHandler,
+	handler.NewUserHandler,
+
+	handler.NewOrderHandler, // new
 )
 
 var ServiceSet = wire.NewSet(
@@ -169,12 +224,26 @@ var ServiceSet = wire.NewSet(
 	service.NewOrderService, // new
 )
 
-var HandlerSet = wire.NewSet(
-	handler.NewHandler,
-	handler.NewUserHandler,
+var RepositorySet = wire.NewSet(
+	repository.NewDB,
+	repository.NewRedis,
+	repository.NewRepository,
+	repository.NewUserRepository,
 
-	handler.NewOrderHandler, // new
+	repository.NewOrderRepository, // new
 )
+
+func newApp(*viper.Viper, *log.Logger) (*gin.Engine, func(), error) {
+	panic(wire.Build(
+		ServerSet,
+		RepositorySet,
+		ServiceSet,
+		HandlerSet,
+		SidSet,
+		JwtSet,
+	))
+}
+
 ```
 ## Compiling Wire
 
@@ -184,30 +253,30 @@ In Nunu, you can use the following command to compile Wire:
 nunu wire
 ```
 
-After executing the above command, we select the `cmd/server/wire/wire.go` file, and the corresponding `wire_gen.go` file is generated.
+After running the above command, you will find that the `wire_gen.go` file is generated from the `cmd/server/wire.go` file.
 
-Open the `cmd/server/wire/wire_gen.go` file, and you can see that the dependency relationship code of `orderDao`, `orderService`, and `orderHandler` is automatically generated.
+Open the `wire_gen.go` file, and you will see that the dependency code for `orderRepository`, `orderService`, and `orderHandler` has been automatically generated.
 
 ```
 func NewApp(viperViper *viper.Viper, logger *log.Logger) (*gin.Engine, func(), error) {
 	jwt := middleware.NewJwt(viperViper)
-	sonyflakeSonyflake := sonyflake.NewSonyflake()
-	handlerHandler := handler.NewHandler(logger, sonyflakeSonyflake)
-	serviceService := service.NewService(logger)
-	db := dao.NewDB(viperViper)
-	client := dao.NewRedis(viperViper)
-	daoDao := dao.NewDao(db, client, logger)
-	userDao := dao.NewUserDao(daoDao)
-	userService := service.NewUserService(serviceService, userDao)
+	handlerHandler := handler.NewHandler(logger)
+	sidSid := sid.NewSid()
+	serviceService := service.NewService(logger, sidSid, jwt)
+	db := repository.NewDB(viperViper)
+	client := repository.NewRedis(viperViper)
+	repositoryRepository := repository.NewRepository(db, client, logger)
+	userRepository := repository.NewUserRepository(repositoryRepository)
+	userService := service.NewUserService(serviceService, userRepository)
 	userHandler := handler.NewUserHandler(handlerHandler, userService)
 	
 	
-	orderDao := dao.NewOrderDao(daoDao)
-	orderService := service.NewOrderService(serviceService, orderDao)
+	orderRepository := repository.NewOrderRepository(repositoryRepository)
+	orderService := service.NewOrderService(serviceService, orderRepository)
 	orderHandler := handler.NewOrderHandler(handlerHandler, orderService)
+	
+	
 	engine := server.NewServerHTTP(logger, jwt, userHandler, orderHandler)
-	
-	
 	return engine, func() {
 	}, nil
 }
@@ -216,24 +285,33 @@ func NewApp(viperViper *viper.Viper, logger *log.Logger) (*gin.Engine, func(), e
 
 At this point, we have completed the core process of the Nunu project.
 
-Next, you need to modify the Mysql and Redis configuration information in `config/local.yml` and write your logic code in the relevant files.
-
+Next, you need to modify the MySQL and Redis configuration information in `config/local.yml` and write your logic code in the relevant files.
 ```
-internal/handler/order.go   // handle request parameters and responses
-internal/service/order.go   // implement business logic
-internal/dao/order.go       // interact with databases and Redis
-internal/model/order.go     // data table entity, GORM model
+internal/handler/order.go            // Handle request parameters and responses
+internal/service/order.go            // Implement business logic
+internal/repository/order.go         // Interact with databases and Redis
+internal/model/order.go              // Database table entity, GORM model
 ```
 
 ## Starting the Project
 Finally, in Nunu, you can use the following command to start the project:
 
 ```bash
+// Please modify the MySQL and Redis configuration information in config/local.yml before starting the server
+
+// Before starting the server for the first time, run the following database migration
+nunu run ./cmd/migration  
+
+// Start the server
+nunu run ./cmd/server    
+
+// Or
+
 nunu run
 ```
 
-After executing the above command, Nunu will automatically start the project and listen for file updates, supporting hot restart.
+After running the above command, Nunu will automatically start the project and monitor file updates, supporting hot-reloading.
 
 ## Conclusion
 
-The Nunu framework provides an elegant project structure and command operations, making it easier for developers to develop web applications more efficiently. Through this tutorial, you have learned how to use Nunu to create projects, create Handlers, create Services, create Dao, compile Wire, and start projects. I hope these contents can help you better use the Nunu framework.
+The Nunu framework provides an elegant project structure and command operations that allow developers to efficiently develop web applications. In this tutorial, you have learned how to create a project, create Handlers, create Services, create Repositories, compile Wire, and start the project using Nunu. We hope that this content will help you make better use of the Nunu framework.

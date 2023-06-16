@@ -8,20 +8,24 @@ import (
 	"net/http"
 )
 
-type {{ .FileName }}Handler struct {
-	*Handler
-	{{ .FileNameTitleLower }}Service *service.{{ .FileName }}Service
+type {{ .FileName }}Handler interface {
+	Get{{ .FileName }}ById(ctx *gin.Context)
+	Update{{ .FileName }}(ctx *gin.Context)
 }
 
-func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Service *service.{{ .FileName }}Service) *{{ .FileName }}Handler {
-	return &{{ .FileName }}Handler{
+type {{ .FileNameTitleLower }}Handler struct {
+	*Handler
+	{{ .FileNameTitleLower }}Service service.{{ .FileName }}Service
+}
+
+func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Service service.{{ .FileName }}Service) {{ .FileName }}Handler {
+	return &{{ .FileNameTitleLower }}Handler{
 		Handler:     handler,
 		{{ .FileNameTitleLower }}Service: {{ .FileNameTitleLower }}Service,
 	}
 }
 
-func (h *{{ .FileName }}Handler) Get{{ .FileName }}ById(ctx *gin.Context) {
-
+func (h *{{ .FileNameTitleLower }}Handler) Get{{ .FileName }}ById(ctx *gin.Context) {
 	var params struct {
 		Id int64 `form:"id" binding:"required"`
 	}
@@ -37,4 +41,8 @@ func (h *{{ .FileName }}Handler) Get{{ .FileName }}ById(ctx *gin.Context) {
 		return
 	}
 	resp.HandleSuccess(ctx, {{ .FileNameTitleLower }})
+}
+
+func (h *{{ .FileNameTitleLower }}Handler) Update{{ .FileName }}(ctx *gin.Context) {
+	resp.HandleSuccess(ctx, nil)
 }

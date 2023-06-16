@@ -26,7 +26,7 @@ func init() {
 	rootCmd.AddCommand(upgrade.UpgradeCmd)
 	create.CreateCmd.AddCommand(create.CreateHandlerCmd)
 	create.CreateCmd.AddCommand(create.CreateServiceCmd)
-	create.CreateCmd.AddCommand(create.CreateDaoCmd)
+	create.CreateCmd.AddCommand(create.CreateRepositoryCmd)
 	create.CreateCmd.AddCommand(create.CreateModelCmd)
 	create.CreateCmd.AddCommand(create.CreateAllCmd)
 }

@@ -61,7 +61,8 @@ func FindMain(base string) (map[string]string, error) {
 				if err != nil {
 					return err
 				}
-				cmdPath[strings.TrimPrefix(absPath, wd)] = absPath
+				d, _ := filepath.Split(absPath)
+				cmdPath[strings.TrimPrefix(absPath, wd)] = d
 
 			}
 		}

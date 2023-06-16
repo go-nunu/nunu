@@ -55,26 +55,27 @@ Basic Layout 包含一个非常精简的架构目录结构，适合非常熟悉N
 Advanced Layout 包含了很多Nunu的用法示例（ db、redis、 jwt、 cron、 migration等），适合开发者快速学习了解Nunu的架构思想。
 ## 创建组件
 
-您可以使用以下命令为项目创建 handler、service 和 dao 等组件：
+您可以使用以下命令为项目创建 handler、service 、 repository和model 等组件：
 
 ```bash
 nunu create handler user
 nunu create service user
-nunu create dao user
+nunu create repository user
+nunu create model user
 ```
 
-这些命令将分别创建一个名为 `UserHandler`、`UserService` 和 `UserDao` 的组件，并将它们放置在正确的目录中。
+这些命令将分别创建一个名为 `UserHandler`、`UserService` 、 `UserRepository` 和 `UserModel` 的组件，并将它们放置在正确的目录中。
 
 如果你想在自定义的目录创建相应组件则可以这么做：
 ```bash
 nunu create handler internale/handler/user/center
 nunu create service internale/service/user/center
-nunu create dao internale/dao/user/center
+nunu create repository internale/repository/user/center
 nunu create model internale/model/user/center
 ```
 
 
-你还可以使用以下命令一次性创建 handler、service、dao 和 model 等组件：
+你还可以使用以下命令一次性创建 handler、service、repository 和 model 等组件：
 
 ```bash
 nunu create all user
@@ -85,7 +86,7 @@ nunu create all user
 您可以使用以下命令快速启动项目：
 
 ```bash
-// 等价于  go run cmd/server/main.go 
+// 等价于  go run ./cmd/server
 
 nunu run
 ```
@@ -97,7 +98,7 @@ nunu run
 您可以使用以下命令快速编译 `wire.go`：
 
 ```bash
-// 等价于 cd cmd/server/wire  && wire
+// 等价于 cd cmd/server  && wire
 nunu wire
 ```
 
@@ -119,7 +120,7 @@ APP_CONF=config/prod.yml nunu run
 set APP_CONF=config\prod.yml && nunu run
 
 ```
-或者使用传参的方式:`go run cmd/server/main.go -conf=config/prod.yml`
+或者使用传参的方式:`go run ./cmd/server -conf=config/prod.yml`
 
 ### 读取配置项
 
@@ -141,7 +142,7 @@ data:
 您可以在代码中使用依赖注入`conf *viper.Viper`来读取配置信息：
 
 ```go
-package dao
+package repository
 
 import (
 	"context"
@@ -154,14 +155,14 @@ import (
 	"time"
 )
 
-type Dao struct {
+type Repository struct {
 	db     *gorm.DB
 	rdb    *redis.Client
 	logger *log.Logger
 }
 
-func NewDao(db *gorm.DB, rdb *redis.Client, logger *log.Logger) *Dao {
-	return &Dao{
+func NewRepository(db *gorm.DB, rdb *redis.Client, logger *log.Logger) *Repository {
+	return &Repository{
 		db:     db,
 		rdb:    rdb,
 		logger: logger,
@@ -193,6 +194,7 @@ func NewRedis(conf *viper.Viper) *redis.Client {
 	return rdb
 }
 
+
 ```
 tips：通过参数进行依赖注入之后，别忘记执行`nunu wire`命令生成依赖文件。
 
@@ -214,28 +216,25 @@ log:
 您可以在代码中使用以下方式来记录日志：
 
 ```go
+package handler
+
 import (
-    "go.uber.org/zap"
-    "go.uber.org/zap/zapcore"
+	"github.com/gin-gonic/gin"
+	"github.com/go-nunu/nunu-layout-basic/internal/service"
+	"github.com/go-nunu/nunu-layout-basic/pkg/helper/resp"
+	"go.uber.org/zap"
+	"net/http"
 )
 
-func main() {
-    logger, err := zap.Config{
-        Encoding:         viper.GetString("logger.encoding"),
-        Level:            zap.NewAtomicLevelAt(zapcore.Level(viper.GetInt("logger.level"))),
-        OutputPaths:      []string{viper.GetString("logger.outputPaths.0"), viper.GetString("logger.outputPaths.1")},
-        ErrorOutputPaths: []string{viper.GetString("logger.errorOutputPaths.0"), viper.GetString("logger.errorOutputPaths.1")},
-        InitialFields: map[string]interface{}{
-            "app":     viper.GetString("logger.initialFields.app"),
-            "version": viper.GetString("logger.initialFields.version"),
-        },
-    }.Build()
-    if err != nil {
-        panic(err)
-    }
+// ...
 
-    logger.Info("Hello, Nunu!")
+func (h *userHandler) GetUserById(ctx *gin.Context) {
+	h.logger.Info("GetUserByID", zap.Any("user", user))
+	// ...
 }
+
+// ...
+
 ```
 
 ## 数据库
@@ -257,23 +256,27 @@ data:
 您可以在代码中使用以下方式来连接数据库：
 
 ```go
-package dao
+package repository
 
 import (
 	"github.com/go-nunu/nunu-layout-advanced/internal/model"
 )
 
-type UserDao struct {
-	*Dao
+
+type UserRepository interface {
+	FirstById(id int64) (*model.User, error)
+}
+type userRepository struct {
+	*Repository
 }
 
-func NewUserDao(dao *Dao) *UserDao {
-	return &UserDao{
-		Dao: dao,
+func NewUserRepository(repository *Repository) *UserRepository {
+	return &UserRepository{
+		Repository: repository,
 	}
 }
 
-func (r *UserDao) FirstById(id int64) (*model.User, error) {
+func (r *UserRepository) FirstById(id int64) (*model.User, error) {
 	var user model.User
 	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, err
@@ -283,39 +286,46 @@ func (r *UserDao) FirstById(id int64) (*model.User, error) {
 
 ```
 
+需要注意的是Nunu中的`xxxRepository`、`xxxService`、`xxxHandler`都是基于`interface`实现，
+
+这就是所谓的**面向接口编程**，它可以提高代码的灵活性、可扩展性、可测试性和可维护性，是Go语言非常推崇的一种编程风格。
+
+
+
+比如上面的代码我们写成了
+```
+type UserRepository interface {
+	FirstById(id int64) (*model.User, error)
+}
+type userRepository struct {
+	*Repository
+}
+
+```
+而不是直接写成
+```
+type UserRepository struct {
+	*Repository
+}
+```
+> tips: Nunu高级Layout中的单元测试就是基于`interface`特性进行mock操作的。
+
 
 ## 测试
 
-Nunu 使用 Testify 库来编写测试。您可以在 `test` 目录下创建一个名为 `main_test.go` 的文件来编写测试。例如：
+Nunu 使用 testify、redismock、gomock、go-sqlmock等 库来编写测试。
 
-```go
-import (
-    "net/http"
-    "net/http/httptest"
-    "testing"
-
-    "github.com/go-nunu/nunu/pkg/handler"
-    "github.com/stretchr/testify/assert"
-)
-
-func TestUserHandler_GetUser(t *testing.T) {
-    r := httptest.NewRequest(http.MethodGet, "/users/1", nil)
-    w := httptest.NewRecorder()
-
-    h := handler.NewUserHandler()
-    h.GetUser(w, r)
-
-    assert.Equal(t, http.StatusOK, w.Code)
-    assert.Equal(t, "application/json; charset=utf-8", w.Header().Get("Content-Type"))
-    assert.JSONEq(t, `{"id":1,"name":"Alice"}`, w.Body.String())
-}
-```
+具体的测试用例可以查看[Nunu advanced layout](https://github.com/go-nunu/nunu-layout-advanced/tree/main/test/server)
 
 您可以使用以下命令运行测试：
 
 ```bash
-go test ./test/...
+go test -coverpkg=./internal/handler,./internal/service,./internal/repository -coverprofile=./.nunu/coverage.out ./test/server/...
+go tool cover -html=./.nunu/coverage.out -o coverage.html
+
 ```
+
+上面的命令将会生成一个html文件`coverage.html`，我们可以直接使用浏览器打开它，然后我们就会看到详细的单元测试覆盖率。
 
 ## 结论
 

@@ -18,7 +18,9 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 - **Go-redis**: https://github.com/go-redis/redis
 - **Testify**: https://github.com/stretchr/testify
 - **Sonyflake**: https://github.com/sony/sonyflake
-- **gocron**:  https://github.com/go-co-op/gocron
+- **Gocron**:  https://github.com/go-co-op/gocron
+- **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
+- **Gomock**:  https://github.com/golang/mock
 - More...
 ## 特性
 * **超低学习成本和定制**：Nunu封装了Gopher最熟悉的一些流行库。您可以轻松定制应用程序以满足特定需求。
@@ -30,7 +32,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 ## 简洁分层架构
 Nunu采用了经典的分层架构。同时，为了更好地实现模块化和解耦，采用了依赖注入框架`Wire`。
 
-![Nunu Layout](https://github.com/go-nunu/nunu/blob/main/.github/assets/layout.jpg)
+![Nunu Layout](https://github.com/go-nunu/nunu/blob/main/.github/assets/layout.png)
 
 ## Nunu CLI
 
@@ -45,72 +47,104 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 ```
 .
 ├── cmd
+│   ├── job
+│   │   ├── main.go
+│   │   ├── wire.go
+│   │   └── wire_gen.go
+│   ├── migration
+│   │   ├── main.go
+│   │   ├── wire.go
+│   │   └── wire_gen.go
 │   └── server
-│       ├── wire
-│       │   ├── wire.go
-│       │   └── wire_gen.go
-│       └── main.go
+│       ├── main.go
+│       ├── wire.go
+│       └── wire_gen.go
 ├── config
 │   ├── local.yml
 │   └── prod.yml
+├── deploy
 ├── internal
-│   ├── dao
-│   │   ├── dao.go
-│   │   └── user.go
 │   ├── handler
 │   │   ├── handler.go
 │   │   └── user.go
+│   ├── job
+│   │   └── job.go
 │   ├── middleware
-│   │   └── cors.go
+│   ├── migration
+│   │   └── migration.go
 │   ├── model
 │   │   └── user.go
-│   ├── provider
-│   │   └── provider.go
+│   ├── repository
+│   │   ├── repository.go
+│   │   └── user.go
 │   ├── server
 │   │   └── http.go
 │   └── service
 │       ├── service.go
 │       └── user.go
+├── mocks
+│   ├── repository
+│   │   └── user.go
+│   └── service
+│       └── user.go
 ├── pkg
-│   ├── config
-│   │   └── config.go
-│   ├── helper
-│   │   ├── md5
-│   │   │   └── md5.go
-│   │   ├── resp
-│   │   │   └── resp.go
-│   │   ├── sonyflake
-│   │   │   └── sonyflake.go
-│   │   └── uuid
-│   │       └── uuid.go
-│   ├── http
-│   │   └── http.go
-│   └── log
-│       └── log.go
+├── scripts
+├── storage
+├── test
+│   └── server
+│       ├── handler
+│       │   └── user_test.go
+│       ├── repository
+│       │   └── user_test.go
+│       └── service
+│           └── user_test.go
+├── web
+│   └── index.html
 ├── LICENSE
+├── Makefile
 ├── README.md
 ├── README_zh.md
+├── coverage.html
 ├── go.mod
 └── go.sum
+
 ```
 
-这是一个经典的Golang 项目的目录结构，包含以下目录：
+该项目的架构采用了典型的分层架构，主要包括以下几个模块：
 
-- `cmd`：存放命令行应用的代码，例如 `main.go`。
-- `config`：存放配置文件，例如 `config.yaml`。
-- `internal`：存放项目内部的代码，不对外暴露。
-    - `dao`：存放数据访问对象（Data Access Object）的代码。
-    - `handler`：存放 HTTP 请求处理器的代码。
-    - `middleware`：存放 HTTP 中间件的代码。
-    - `model`：存放数据模型的代码。
-    - `provider`：存放依赖注入的代码。
-    - `server`：存放 HTTP 服务器的代码。
-    - `service`：存放业务逻辑的代码。
-- `pkg`：存放可重用的代码，对外暴露。
-    - `config`：存放读取配置文件的代码。
-    - `helper`：存放辅助函数的代码。
-    - `http`：存放 HTTP 相关的代码。
-    - `log`：存放日志相关的代码。
+* `cmd`：该模块包含了应用的入口点，根据不同的命令进行不同的操作，例如启动服务器、执行数据库迁移等。每个子模块都有一个`main.go`文件作为入口文件，以及`wire.go`和`wire_gen.go`文件用于依赖注入。
+* `config`：该模块包含了应用的配置文件，根据不同的环境（如开发环境和生产环境）提供不同的配置。
+* `deploy`：该模块用于部署应用，包含了一些部署脚本和配置文件。
+* `internal`：该模块是应用的核心模块，包含了各种业务逻辑的实现。
+
+  - `handler`：该子模块包含了处理HTTP请求的处理器，负责接收请求并调用相应的服务进行处理。
+
+  - `job`：该子模块包含了后台任务的逻辑实现。
+
+  - `middleware`：该子模块包含了中间件的实现，用于处理请求的前置和后置操作。
+
+  - `migration`：该子模块包含了数据库迁移的逻辑实现。
+
+  - `model`：该子模块包含了数据模型的定义。
+
+  - `repository`：该子模块包含了数据访问层的实现，负责与数据库进行交互。
+
+  - `server`：该子模块包含了HTTP服务器的实现。
+
+  - `service`：该子模块包含了业务逻辑的实现，负责处理具体的业务操作。
+
+* `mocks`：该模块包含了各个模块的接口的模拟实现，用于单元测试。
+* `pkg`：该模块包含了一些通用的功能和工具。
+
+* `scripts`：该模块包含了一些脚本文件，用于项目的构建、测试和部署等操作。
+
+* `storage`：该模块用于存储文件或其他静态资源。
+
+* `test`：该模块包含了各个模块的单元测试，按照模块划分子目录。
+
+* `web`：该模块包含了前端相关的文件，如HTML、CSS和JavaScript等。
+
+此外，还包含了一些其他的文件和目录，如授权文件、构建文件、README等。整体上，该项目的架构清晰，各个模块之间的职责明确，便于理解和维护。
 
 ## 要求
 要使用Nunu，您需要在系统上安装以下软件：
@@ -151,19 +185,19 @@ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
 
 ### 创建组件
 
-您可以使用以下命令为项目创建handler、service和dao等组件：
+您可以使用以下命令为项目创建handler、service、repository和model等组件：
 
 ```bash
 nunu create handler user
 nunu create service user
-nunu create dao user
+nunu create repository user
 nunu create model user
 ```
 或
 ```
 nunu create all user
 ```
-这些命令将分别创建一个名为`UserHandler`、`UserService`、`UserDao`和`UserModel`的组件，并将它们放置在正确的目录中。
+这些命令将分别创建一个名为`UserHandler`、`UserService`、`UserRepository`和`UserModel`的组件，并将它们放置在正确的目录中。
 
 ### 启动项目
 

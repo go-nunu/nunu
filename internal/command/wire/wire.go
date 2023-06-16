@@ -91,7 +91,7 @@ func findWire(base string) (map[string]string, error) {
 			// multi level directory is not allowed under the wirePath directory, so it is judged that the path ends with wirePath.
 			if strings.HasSuffix(walkPath, "wire.go") {
 				p, _ := filepath.Split(walkPath)
-				wirePath[walkPath] = p
+				wirePath[strings.TrimPrefix(walkPath, wd)] = p
 				return nil
 			}
 			if info.Name() == "go.mod" {

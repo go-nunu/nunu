@@ -1,22 +1,26 @@
 package service
 
 import (
-	"{{ .ProjectName }}/internal/dao"
 	"{{ .ProjectName }}/internal/model"
+	"{{ .ProjectName }}/internal/repository"
 )
 
-type {{ .FileName }}Service struct {
-	*Service
-	{{ .FileNameTitleLower }}Dao *dao.{{ .FileName }}Dao
+type {{ .FileName }}Service interface {
+	Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error)
 }
 
-func New{{ .FileName }}Service(service *Service, {{ .FileNameTitleLower }}Dao *dao.{{ .FileName }}Dao) *{{ .FileName }}Service {
-	return &{{ .FileName }}Service{
-		Service: service,
-		{{ .FileNameTitleLower }}Dao: {{ .FileNameTitleLower }}Dao,
+type {{ .FileNameTitleLower }}Service struct {
+	*Service
+	{{ .FileNameTitleLower }}Repository repository.{{ .FileName }}Repository
+}
+
+func New{{ .FileName }}Service(service *Service, {{ .FileNameTitleLower }}Repository repository.{{ .FileName }}Repository) {{ .FileName }}Service {
+	return &{{ .FileNameTitleLower }}Service{
+		Service:        service,
+		{{ .FileNameTitleLower }}Repository: {{ .FileNameTitleLower }}Repository,
 	}
 }
 
-func (s *{{ .FileName }}Service) Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error) {
-	return s.{{ .FileNameTitleLower }}Dao.FirstById(id)
+func (s *{{ .FileNameTitleLower }}Service) Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error) {
+	return s.{{ .FileNameTitleLower }}Repository.FirstById(id)
 }
