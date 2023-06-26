@@ -2,6 +2,7 @@
 * [User Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
 * [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
 * [Getting Started Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+* [Unit Testing](https://github.com/go-nunu/nunu/blob/main/docs/en/unit_testing.md)
 
 [Go to Chinese version](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
 

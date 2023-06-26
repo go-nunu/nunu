@@ -2,6 +2,8 @@
 * [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
 * [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
 * [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+* [高效编写单元测试](https://github.com/go-nunu/nunu/blob/main/docs/zh/unit_testing.md)
+
 
 [进入英文版](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 
@@ -206,7 +208,7 @@ func NewServerHTTP(
 ```
 
 ## 编写Wire Provider
-编辑 `cmd/server/wire.go`，将刚刚生成的文件中的工厂函数添加到`providerSet`中，如下所示：
+编辑 `cmd/server/wire.go`，将刚刚生成文件中的工厂函数添加到`providerSet`中，如下所示：
 ```
 //go:build wireinject
 // +build wireinject

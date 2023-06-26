@@ -7,6 +7,11 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/banner.png)
 
+## 文档
+* [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
+* [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
+* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+* [高效编写单元测试](https://github.com/go-nunu/nunu/blob/main/docs/zh/unit_testing.md)
 
 ## 功能
 - **Gin**: https://github.com/gin-gonic/gin
@@ -39,10 +44,7 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/screenshot.jpg)
 
 
-## 文档
-* [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
-* [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
-* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+
 ## 目录结构
 ```
 .

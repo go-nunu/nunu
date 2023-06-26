@@ -6,6 +6,13 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/banner.png)
 
+## Documentation
+* [User Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
+* [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
+* [Getting Started Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
+* [Unit Testing](https://github.com/go-nunu/nunu/blob/main/docs/en/unit_testing.md)
+
+
 ## Features
 - **Gin**: https://github.com/gin-gonic/gin
 - **Gorm**: https://github.com/go-gorm/gorm
@@ -37,10 +44,6 @@ Nunu adopts a classic layered architecture. In order to achieve modularity and d
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/screenshot.jpg)
 
-## Documentation
-* [User Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
-* [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
-* [Getting Started](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 
 ## Directory Structure
 ```
