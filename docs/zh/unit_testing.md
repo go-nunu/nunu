@@ -9,7 +9,7 @@
 
 ## 介绍
 
-在项目中进行单元测试是一种重要的开发实践。然而，当被测代码依赖其他模块或组件时，编写单元测试变得复杂且不稳定。为了解决这个问题，我们可以使用mock来模拟被测代码的依赖。通过使用mock对象，我们可以控制外部模块的行为，使得被测代码在测试过程中不会真正依赖和调用外部模块，从而实现对被测代码的隔离。在Go语言中，使用golang/mock库来生成mock代码，并使用sqlmock和redismock来模拟数据库和缓存的行为。通过使用mock，我们可以提高单元测试的可靠性和效率。本文将介绍如何使用mock来编写简洁高效的单元测试。
+在项目中进行单元测试是一种重要的开发实践。然而，当被测代码依赖其他模块或组件时，编写单元测试变得复杂且不稳定。本文将介绍如何使用mock来编写简洁高效的单元测试。
 
 ## 导读
 
@@ -37,9 +37,9 @@ func newApp(viperViper *viper.Viper, logger *log.Logger) (*gin.Engine, func(), e
 }
 ```
 
-从这段代码我们可以得知`repository`、`service`、`repository`之间的依赖关系，
+从这段代码我们可以得知`handler`、`service`、`repository`之间的依赖关系，
 
-`userHandler`依赖于`userService`，而`userService`又依赖于`userRepository。
+`userHandler`依赖于`userService`，而`userService`又依赖于`userRepository`。
 
 比如`handler/user.go`下面的`GetProfile`代码如下：
 ```
