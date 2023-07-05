@@ -2,11 +2,12 @@ package helper
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 func GetProjectName(dir string) string {

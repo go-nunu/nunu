@@ -5,10 +5,6 @@ package run
 
 import (
 	"fmt"
-	"github.com/AlecAivazis/survey/v2"
-	"github.com/fsnotify/fsnotify"
-	"github.com/go-nunu/nunu/internal/pkg/helper"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"os/exec"
@@ -17,6 +13,11 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/fsnotify/fsnotify"
+	"github.com/go-nunu/nunu/internal/pkg/helper"
+	"github.com/spf13/cobra"
 )
 
 var quit = make(chan os.Signal, 1)

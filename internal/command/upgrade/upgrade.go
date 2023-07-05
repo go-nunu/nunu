@@ -2,11 +2,12 @@ package upgrade
 
 import (
 	"fmt"
-	"github.com/go-nunu/nunu/config"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"os/exec"
+
+	"github.com/go-nunu/nunu/config"
+	"github.com/spf13/cobra"
 )
 
 var UpgradeCmd = &cobra.Command{

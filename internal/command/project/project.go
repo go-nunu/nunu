@@ -3,14 +3,15 @@ package project
 import (
 	"bytes"
 	"fmt"
-	"github.com/AlecAivazis/survey/v2"
-	"github.com/go-nunu/nunu/config"
-	"github.com/go-nunu/nunu/internal/pkg/helper"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/go-nunu/nunu/config"
+	"github.com/go-nunu/nunu/internal/pkg/helper"
+	"github.com/spf13/cobra"
 )
 
 type Project struct {
