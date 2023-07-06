@@ -2,14 +2,15 @@ package create
 
 import (
 	"fmt"
-	"github.com/go-nunu/nunu/internal/pkg/helper"
-	"github.com/go-nunu/nunu/tpl"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/go-nunu/nunu/internal/pkg/helper"
+	"github.com/go-nunu/nunu/tpl"
+	"github.com/spf13/cobra"
 )
 
 type Create struct {

@@ -2,6 +2,7 @@ package nunu
 
 import (
 	"fmt"
+
 	"github.com/go-nunu/nunu/internal/command/create"
 	"github.com/go-nunu/nunu/internal/command/project"
 	"github.com/go-nunu/nunu/internal/command/run"
