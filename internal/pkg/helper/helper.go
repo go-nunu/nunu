@@ -11,8 +11,6 @@ import (
 )
 
 func GetProjectName(dir string) string {
-
-	// 打开 go.mod 文件
 	modFile, err := os.Open(dir + "/go.mod")
 	if err != nil {
 		fmt.Println("go.mod does not exist", err)

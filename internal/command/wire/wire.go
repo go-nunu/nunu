@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var WireCmd = &cobra.Command{
+var CmdWire = &cobra.Command{
 	Use:     "wire",
 	Short:   "nunu wire [wire.go path]",
 	Long:    "nunu wire [wire.go path]",

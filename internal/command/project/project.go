@@ -18,7 +18,7 @@ type Project struct {
 	ProjectName string `survey:"name"`
 }
 
-var NewCmd = &cobra.Command{
+var CmdNew = &cobra.Command{
 	Use:     "new",
 	Example: "nunu new demo-api",
 	Short:   "create a new project.",
@@ -30,7 +30,7 @@ var (
 )
 
 func init() {
-	NewCmd.Flags().StringVarP(&repoURL, "repo-url", "r", repoURL, "layout repo")
+	CmdNew.Flags().StringVarP(&repoURL, "repo-url", "r", repoURL, "layout repo")
 
 }
 func NewProject() *Project {
@@ -178,7 +178,7 @@ func (p *Project) modTidy() error {
 func (p *Project) rmGit() {
 	os.RemoveAll(p.ProjectName + "/.git")
 }
-func (p Project) installWire() {
+func (p *Project) installWire() {
 	fmt.Printf("go install %s\n", config.WireCmd)
 	cmd := exec.Command("go", "install", config.WireCmd)
 	cmd.Stdout = os.Stdout

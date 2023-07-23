@@ -24,7 +24,7 @@ var quit = make(chan os.Signal, 1)
 type Run struct {
 }
 
-var RunCmd = &cobra.Command{
+var CmdRun = &cobra.Command{
 	Use:     "run",
 	Short:   "nunu run [main.go path]",
 	Long:    "nunu run [main.go path]",

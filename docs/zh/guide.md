@@ -19,6 +19,13 @@ Nunu 是一个基于 Golang 的应用脚手架，它可以帮助您快速构建�
 go install github.com/go-nunu/nunu@latest
 ```
 
+国内用户可以使用`GOPROXY`加速`go install`
+
+```
+$ go env -w GO111MODULE=on
+$ go env -w GOPROXY=https://goproxy.cn,direct
+```
+
 > tips: 如果`go install`成功，却提示找不到nunu命令，这是因为环境变量没有配置，可以把 GOBIN 目录配置到环境变量中即可
 
 ## 创建新项目
@@ -27,6 +34,8 @@ go install github.com/go-nunu/nunu@latest
 
 ```bash
 nunu new projectName
+
+// 推荐新用户选择Advanced Layout
 ```
 
 此命令将创建一个名为 `projectName` 的目录，并在其中生成一个优雅的 Golang 项目结构。
@@ -35,10 +44,12 @@ nunu new projectName
 
 `nunu new`默认拉取github源，你也可以使用国内加速仓库
 ```
-// 使用基础模板
-nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 // 使用高级模板(推荐)
 nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
+
+// 使用基础模板
+nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
+
 ```
 
 

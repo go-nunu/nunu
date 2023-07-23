@@ -27,7 +27,7 @@ func NewCreate() *Create {
 	return &Create{}
 }
 
-var CreateCmd = &cobra.Command{
+var CmdCreate = &cobra.Command{
 	Use:     "create [type] [handler-name]",
 	Short:   "Create a new handler/service/repository/model",
 	Example: "nunu create handler user",
@@ -36,35 +36,35 @@ var CreateCmd = &cobra.Command{
 
 	},
 }
-var CreateHandlerCmd = &cobra.Command{
+var CmdCreateHandler = &cobra.Command{
 	Use:     "handler",
 	Short:   "Create a new handler",
 	Example: "nunu create handler user",
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
 }
-var CreateServiceCmd = &cobra.Command{
+var CmdCreateService = &cobra.Command{
 	Use:     "service",
 	Short:   "Create a new service",
 	Example: "nunu create service user",
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
 }
-var CreateRepositoryCmd = &cobra.Command{
+var CmdCreateRepository = &cobra.Command{
 	Use:     "repository",
 	Short:   "Create a new repository",
 	Example: "nunu create repository user",
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
 }
-var CreateModelCmd = &cobra.Command{
+var CmdCreateModel = &cobra.Command{
 	Use:     "model",
 	Short:   "Create a new model",
 	Example: "nunu create model user",
 	Args:    cobra.ExactArgs(1),
 	Run:     runCreate,
 }
-var CreateAllCmd = &cobra.Command{
+var CmdCreateAll = &cobra.Command{
 	Use:     "all",
 	Short:   "Create a new handler & service & repository & model",
 	Example: "nunu create all user",
@@ -127,7 +127,6 @@ func (c *Create) genFile() {
 }
 func createFile(dirPath string, filename string) *os.File {
 	filePath := dirPath + filename
-	// 创建文件夹
 	err := os.MkdirAll(dirPath, os.ModePerm)
 	if err != nil {
 		log.Fatalf("Failed to create dir %s: %v", dirPath, err)
@@ -136,7 +135,6 @@ func createFile(dirPath string, filename string) *os.File {
 	if stat != nil {
 		return nil
 	}
-	// 创建文件
 	file, err := os.Create(filePath)
 	if err != nil {
 		log.Fatalf("Failed to create file %s: %v", filePath, err)

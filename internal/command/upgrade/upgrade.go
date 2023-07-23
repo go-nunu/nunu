@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var UpgradeCmd = &cobra.Command{
+var CmdUpgrade = &cobra.Command{
 	Use:     "upgrade",
 	Short:   "Upgrade the nunu command.",
 	Long:    "Upgrade the nunu command.",
