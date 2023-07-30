@@ -116,7 +116,7 @@ func NewUserRepository(repository *Repository) *UserRepository {
 	}
 }
 
-func (r *UserRepository) FirstById(id int64) (*model.User, error) {
+func (r *userRepository) FirstById(id int64) (*model.User, error) {
 	var user model.User
 	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ type UserRepository interface {
 type userRepository struct {
 	*Repository
 }
-func (r *UserRepository) FirstById(id int64) (*model.User, error) {
+func (r *userRepository) FirstById(id int64) (*model.User, error) {
     // ...
 }
 
