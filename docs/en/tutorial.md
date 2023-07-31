@@ -185,7 +185,7 @@ Created new model: internal/model/order.go
 ## Registering Routes
 Edit `internal/server/http.go`.
 
-Add `*handler.OrderHandler` as a parameter to `NewServerHTTP`, which sets up the dependency for `OrderHandler`.
+Add `handler.OrderHandler` as a parameter to `NewServerHTTP`, which sets up the dependency for `OrderHandler`.
 
 Next, register a new route: `noAuthRouter.GET("/order", orderHandler.GetOrderById)`.
 ```
