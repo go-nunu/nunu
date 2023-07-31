@@ -191,7 +191,7 @@ Created new model: internal/model/order.go
 ## 注册路由
 编辑 `internal/server/http.go`
 
-将` *handler.OrderHandler`添加为`NewServerHTTP`的参数，这样就写好了`OrderHandler`的依赖关系。
+将`handler.OrderHandler`添加为`NewServerHTTP`的参数，这样就写好了`OrderHandler`的依赖关系。
 
 紧接着我们我们再注册一个路由，`noAuthRouter.GET("/order", orderHandler.GetOrderById)`
 ```
