@@ -68,10 +68,10 @@ These commands will create components named `UserHandler`, `UserService`, `UserR
 
 If you want to create the corresponding components in a custom directory, you can do so as follows:
 ```bash
-nunu create handler internale/handler/user/center
-nunu create service internale/service/user/center
-nunu create repository internale/repository/user/center
-nunu create model internale/model/user/center
+nunu create handler internal/handler/user/center
+nunu create service internal/service/user/center
+nunu create repository internal/repository/user/center
+nunu create model internal/model/user/center
 ```
 
 You can also use the following command to create all components (handler, service, repository, and model) at once:
