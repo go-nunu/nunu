@@ -80,10 +80,10 @@ nunu create model user
 
 如果你想在自定义的目录创建相应组件则可以这么做：
 ```bash
-nunu create handler internale/handler/user/center
-nunu create service internale/service/user/center
-nunu create repository internale/repository/user/center
-nunu create model internale/model/user/center
+nunu create handler internal/handler/user/center
+nunu create service internal/service/user/center
+nunu create repository internal/repository/user/center
+nunu create model internal/model/user/center
 ```
 
 
