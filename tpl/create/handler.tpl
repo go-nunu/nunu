@@ -13,16 +13,16 @@ type {{ .FileName }}Handler interface {
 	Update{{ .FileName }}(ctx *gin.Context)
 }
 
-type {{ .FileNameTitleLower }}Handler struct {
-	*Handler
-	{{ .FileNameTitleLower }}Service service.{{ .FileName }}Service
-}
-
 func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Service service.{{ .FileName }}Service) {{ .FileName }}Handler {
 	return &{{ .FileNameTitleLower }}Handler{
 		Handler:     handler,
 		{{ .FileNameTitleLower }}Service: {{ .FileNameTitleLower }}Service,
 	}
+}
+
+type {{ .FileNameTitleLower }}Handler struct {
+	*Handler
+	{{ .FileNameTitleLower }}Service service.{{ .FileName }}Service
 }
 
 func (h *{{ .FileNameTitleLower }}Handler) Get{{ .FileName }}ById(ctx *gin.Context) {

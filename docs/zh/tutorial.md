@@ -73,99 +73,45 @@ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 │   │   └── wire_gen.go
 │   ├── migration
 │   │   ├── main.go
+│   │   ├── migration.go
 │   │   ├── wire.go
 │   │   └── wire_gen.go
 │   └── server
+│       ├── wire
 │       ├── main.go
 │       ├── wire.go
 │       └── wire_gen.go
 ├── config
 │   ├── local.yml
 │   └── prod.yml
-├── deploy
-│   ├── build
-│   │   └── Dockerfile
-│   ├── docker-compose
-│   │   └── docker-compose.yml
-│   └── docker-composer
-│       └── conf
-│           ├── mysql
-│           │   └── conf.d
-│           └── redis
-│               └── cache
-│                   └── redis.conf
 ├── internal
 │   ├── handler
 │   │   ├── handler.go
 │   │   └── user.go
 │   ├── job
 │   │   └── job.go
-│   ├── middleware
-│   │   ├── cors.go
-│   │   ├── jwt.go
-│   │   ├── log.go
-│   │   └── sign.go
-│   ├── migration
-│   │   └── migration.go
 │   ├── model
 │   │   └── user.go
+│   ├── pkg
+│   │   ├── middleware
+│   │   └── request
 │   ├── repository
 │   │   ├── repository.go
 │   │   └── user.go
 │   ├── server
-│   │   └── http.go
+│   │   ├── http.go
+│   │   └── server.go
 │   └── service
 │       ├── service.go
 │       └── user.go
-├── mocks
-│   ├── repository
-│   │   └── user.go
-│   └── service
-│       └── user.go
 ├── pkg
-│   ├── config
-│   │   └── config.go
-│   ├── helper
-│   │   ├── convert
-│   │   │   └── convert.go
-│   │   ├── md5
-│   │   │   └── md5.go
-│   │   ├── resp
-│   │   │   └── resp.go
-│   │   ├── sid
-│   │   │   └── sid.go
-│   │   └── uuid
-│   │       └── uuid.go
-│   ├── http
-│   │   └── http.go
-│   └── log
-│       └── log.go
 ├── scripts
-│   └── deploy.sh
-├── storage
-│   └── logs
-│       └── server.log
 ├── test
-│   └── server
-│       ├── handler
-│       │   ├── storage
-│       │   │   └── logs
-│       │   │       └── server.log
-│       │   └── user_test.go
-│       ├── repository
-│       │   ├── repository_test.go
-│       │   └── user_test.go
-│       └── service
-│           └── user_test.go
 ├── web
-│   └── index.html
-├── LICENSE
 ├── Makefile
-├── README.md
-├── README_zh.md
-├── coverage.html
 ├── go.mod
 └── go.sum
+
 
 ```
 
@@ -257,7 +203,7 @@ func newApp(*viper.Viper, *log.Logger) (*gin.Engine, func(), error) {
 在Nunu中，可以使用以下命令编译Wire：
 
 ```bash
-nunu wire
+nunu wire all
 ```
 
 执行完上述命令后，我们选择`cmd/server/wire.go`文件，生成对应的`wire_gen.go`文件。

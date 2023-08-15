@@ -7,14 +7,15 @@ import (
 type {{ .FileName }}Repository interface {
 	FirstById(id int64) (*model.{{ .FileName }}, error)
 }
-type {{ .FileNameTitleLower }}Repository struct {
-	*Repository
-}
 
 func New{{ .FileName }}Repository(repository *Repository) {{ .FileName }}Repository {
 	return &{{ .FileNameTitleLower }}Repository{
 		Repository: repository,
 	}
+}
+
+type {{ .FileNameTitleLower }}Repository struct {
+	*Repository
 }
 
 func (r *{{ .FileNameTitleLower }}Repository) FirstById(id int64) (*model.{{ .FileName }}, error) {

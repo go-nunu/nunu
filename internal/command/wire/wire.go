@@ -38,7 +38,7 @@ var CmdWire = &cobra.Command{
 			}
 			switch len(wirePath) {
 			case 0:
-				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", "The cmd directory cannot be found in the current directory")
+				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", "The wire.go cannot be found in the current directory")
 				return
 			case 1:
 				for _, v := range wirePath {
@@ -62,6 +62,43 @@ var CmdWire = &cobra.Command{
 			}
 		}
 		wire(dir)
+
+	},
+}
+var CmdWireAll = &cobra.Command{
+	Use:     "all",
+	Short:   "nunu wire all",
+	Long:    "nunu wire all",
+	Example: "nunu wire all",
+	Run: func(cmd *cobra.Command, args []string) {
+		cmdArgs, _ := helper.SplitArgs(cmd, args)
+		var dir string
+		if len(cmdArgs) > 0 {
+			dir = cmdArgs[0]
+		}
+		base, err := os.Getwd()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
+			return
+		}
+		if dir == "" {
+			// find the directory containing the cmd/*
+			wirePath, err := findWire(base)
+
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
+				return
+			}
+			switch len(wirePath) {
+			case 0:
+				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", "The wire.go cannot be found in the current directory")
+				return
+			default:
+				for _, v := range wirePath {
+					wire(v)
+				}
+			}
+		}
 
 	},
 }
