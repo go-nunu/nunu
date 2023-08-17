@@ -38,7 +38,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 
 微信入群，请备注Nunu
 
-![Nunu Layout](https://github.com/go-nunu/nunu/blob/main/.github/assets/qrcode.jpg)
+<p align="left"><img src="https://github.com/go-nunu/nunu/blob/main/.github/assets/qrcode.jpg" width="200"></p>
 
 ## 简洁分层架构
 Nunu采用了经典的分层架构。同时，为了更好地实现模块化和解耦，采用了依赖注入框架`Wire`。
