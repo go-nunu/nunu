@@ -166,7 +166,7 @@ func (p *Project) replacePackageName() error {
 	return nil
 }
 func (p *Project) modTidy() error {
-	fmt.Printf("go mod tidy\n")
+	fmt.Println("go mod tidy")
 	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Dir = p.ProjectName
 	if err := cmd.Run(); err != nil {

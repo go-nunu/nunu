@@ -126,7 +126,7 @@ func (c *Create) genFile() {
 
 }
 func createFile(dirPath string, filename string) *os.File {
-	filePath := dirPath + filename
+	filePath := filepath.Join(dirPath, filename)
 	err := os.MkdirAll(dirPath, os.ModePerm)
 	if err != nil {
 		log.Fatalf("Failed to create dir %s: %v", dirPath, err)
