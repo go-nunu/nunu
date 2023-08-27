@@ -17,67 +17,41 @@ Nunu adopts a classic layered architecture. Additionally, to achieve better modu
 ```
 .
 ├── cmd
-│   ├── job
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   ├── migration
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   └── server
-│       ├── main.go
-│       ├── wire.go
-│       └── wire_gen.go
+│   └── server
+│       ├── wire
+│       │   ├── wire.go
+│       │   └── wire_gen.go
+│       └── main.go
 ├── config
-│   ├── local.yml
-│   └── prod.yml
+│   ├── local.yml
+│   └── prod.yml
 ├── deploy
 ├── internal
-│   ├── handler
-│   │   ├── handler.go
-│   │   └── user.go
-│   ├── job
-│   │   └── job.go
-│   ├── middleware
-│   ├── migration
-│   │   └── migration.go
-│   ├── model
-│   │   └── user.go
-│   ├── repository
-│   │   ├── repository.go
-│   │   └── user.go
-│   ├── server
-│   │   └── http.go
-│   └── service
-│       ├── service.go
-│       └── user.go
-├── mocks
-│   ├── repository
-│   │   └── user.go
-│   └── service
-│       └── user.go
+│   ├── handler
+│   │   ├── handler.go
+│   │   └── user.go
+│   ├── job
+│   │   └── job.go
+│   ├── model
+│   │   └── user.go
+│   ├── pkg
+│   ├── repository
+│   │   ├── repository.go
+│   │   └── user.go
+│   ├── server
+│   │   ├── http.go
+│   │   └── server.go
+│   └── service
+│       ├── service.go
+│       └── user.go
 ├── pkg
 ├── scripts
 ├── storage
 ├── test
-│   └── server
-│       ├── handler
-│       │   └── user_test.go
-│       ├── repository
-│       │   └── user_test.go
-│       └── service
-│           └── user_test.go
 ├── web
-│   └── index.html
-├── LICENSE
 ├── Makefile
-├── README.md
-├── README_zh.md
-├── coverage.html
 ├── go.mod
 └── go.sum
-
 ```
 
 
@@ -85,7 +59,6 @@ Nunu adopts a classic layered architecture. Additionally, to achieve better modu
 - `config`: Configuration files.
 - `deploy`: Files related to deployment, such as Dockerfile and docker-compose.yml.
 - `internal`: Main code of the application, organized according to the layered architecture.
-- `mocks`: Mock code for testing.
 - `pkg`: Common code, including configuration, logging, and HTTP.
 - `scripts`: Script files for deployment and other automation tasks.
 - `storage`: Storage files, such as log files.
@@ -99,7 +72,6 @@ Nunu adopts a classic layered architecture. Additionally, to achieve better modu
 - `internal/service` (or `logic`): Services that implement specific business logic and call the data access layer (repository).
 - `internal/model` (or `entity`): Data models that define the data structures needed by the business logic layer.
 - `internal/repository` (or `dao`): Data access objects that encapsulate database operations and provide CRUD operations on the data.
-- `internal/middleware`: Middleware used for handling requests and responses, such as logging, CORS, and signing.
 
 ## Dependency Injection
 

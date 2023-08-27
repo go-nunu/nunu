@@ -55,18 +55,11 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 ```
 .
 ├── cmd
-│   ├── job
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   ├── migration
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
 │   └── server
-│       ├── main.go
-│       ├── wire.go
-│       └── wire_gen.go
+│       ├── wire
+│       │   ├── wire.go
+│       │   └── wire_gen.go
+│       └── main.go
 ├── config
 │   ├── local.yml
 │   └── prod.yml
@@ -77,42 +70,24 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 │   │   └── user.go
 │   ├── job
 │   │   └── job.go
-│   ├── middleware
-│   ├── migration
-│   │   └── migration.go
 │   ├── model
 │   │   └── user.go
+│   ├── pkg
 │   ├── repository
 │   │   ├── repository.go
 │   │   └── user.go
 │   ├── server
-│   │   └── http.go
+│   │   ├── http.go
+│   │   └── server.go
 │   └── service
 │       ├── service.go
-│       └── user.go
-├── mocks
-│   ├── repository
-│   │   └── user.go
-│   └── service
 │       └── user.go
 ├── pkg
 ├── scripts
 ├── storage
 ├── test
-│   └── server
-│       ├── handler
-│       │   └── user_test.go
-│       ├── repository
-│       │   └── user_test.go
-│       └── service
-│           └── user_test.go
 ├── web
-│   └── index.html
-├── LICENSE
 ├── Makefile
-├── README.md
-├── README_zh.md
-├── coverage.html
 ├── go.mod
 └── go.sum
 
@@ -129,10 +104,6 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 
   - `job`：该子模块包含了后台任务的逻辑实现。
 
-  - `middleware`：该子模块包含了中间件的实现，用于处理请求的前置和后置操作。
-
-  - `migration`：该子模块包含了数据库迁移的逻辑实现。
-
   - `model`：该子模块包含了数据模型的定义。
 
   - `repository`：该子模块包含了数据访问层的实现，负责与数据库进行交互。
@@ -141,7 +112,6 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 
   - `service`：该子模块包含了业务逻辑的实现，负责处理具体的业务操作。
 
-* `mocks`：该模块包含了各个模块的接口的模拟实现，用于单元测试。
 * `pkg`：该模块包含了一些通用的功能和工具。
 
 * `scripts`：该模块包含了一些脚本文件，用于项目的构建、测试和部署等操作。
@@ -159,6 +129,7 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 
 * Golang 1.16或更高版本
 * Git
+* Docker (可选)
 * MySQL5.7或更高版本(可选)
 * Redis（可选）
 

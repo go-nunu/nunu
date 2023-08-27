@@ -56,58 +56,8 @@ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
 nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 ```
 
-After running the above command, Nunu will automatically create a well-structured Go project with some commonly used files and directories, as shown below:
+After running the above command, Nunu will automatically create a well-structured Go project with some commonly used files and directories.
 
-```
-.
-├── cmd
-│   ├── job
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   ├── migration
-│   │   ├── main.go
-│   │   ├── migration.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   └── server
-│       ├── wire
-│       ├── main.go
-│       ├── wire.go
-│       └── wire_gen.go
-├── config
-│   ├── local.yml
-│   └── prod.yml
-├── internal
-│   ├── handler
-│   │   ├── handler.go
-│   │   └── user.go
-│   ├── job
-│   │   └── job.go
-│   ├── model
-│   │   └── user.go
-│   ├── pkg
-│   │   ├── middleware
-│   │   └── request
-│   ├── repository
-│   │   ├── repository.go
-│   │   └── user.go
-│   ├── server
-│   │   ├── http.go
-│   │   └── server.go
-│   └── service
-│       ├── service.go
-│       └── user.go
-├── pkg
-├── scripts
-├── test
-├── web
-├── Makefile
-├── go.mod
-└── go.sum
-
-
-```
 
 ## Creating Components
 

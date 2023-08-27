@@ -49,66 +49,42 @@ Nunu adopts a classic layered architecture. In order to achieve modularity and d
 ```
 .
 ├── cmd
-│   ├── job
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   ├── migration
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   └── server
-│       ├── main.go
-│       ├── wire.go
-│       └── wire_gen.go
+│   └── server
+│       ├── wire
+│       │   ├── wire.go
+│       │   └── wire_gen.go
+│       └── main.go
 ├── config
-│   ├── local.yml
-│   └── prod.yml
+│   ├── local.yml
+│   └── prod.yml
 ├── deploy
 ├── internal
-│   ├── handler
-│   │   ├── handler.go
-│   │   └── user.go
-│   ├── job
-│   │   └── job.go
-│   ├── middleware
-│   ├── migration
-│   │   └── migration.go
-│   ├── model
-│   │   └── user.go
-│   ├── repository
-│   │   ├── repository.go
-│   │   └── user.go
-│   ├── server
-│   │   └── http.go
-│   └── service
-│       ├── service.go
-│       └── user.go
-├── mocks
-│   ├── repository
-│   │   └── user.go
-│   └── service
-│       └── user.go
+│   ├── handler
+│   │   ├── handler.go
+│   │   └── user.go
+│   ├── job
+│   │   └── job.go
+│   ├── model
+│   │   └── user.go
+│   ├── pkg
+│   ├── repository
+│   │   ├── repository.go
+│   │   └── user.go
+│   ├── server
+│   │   ├── http.go
+│   │   └── server.go
+│   └── service
+│       ├── service.go
+│       └── user.go
 ├── pkg
 ├── scripts
 ├── storage
 ├── test
-│   └── server
-│       ├── handler
-│       │   └── user_test.go
-│       ├── repository
-│       │   └── user_test.go
-│       └── service
-│           └── user_test.go
 ├── web
-│   └── index.html
-├── LICENSE
 ├── Makefile
-├── README.md
-├── README_zh.md
-├── coverage.html
 ├── go.mod
 └── go.sum
+
 ```
 
 The project architecture follows a typical layered structure, consisting of the following modules:
@@ -122,10 +98,6 @@ The project architecture follows a typical layered structure, consisting of the 
 
   - `job`: This sub-module contains the logic for background tasks.
 
-  - `middleware`: This sub-module contains the implementation of middleware, which is used for pre- and post-processing of requests.
-
-  - `migration`: This sub-module contains the logic for database migrations.
-
   - `model`: This sub-module contains the definition of data models.
 
   - `repository`: This sub-module contains the implementation of the data access layer, responsible for interacting with the database.
@@ -134,7 +106,6 @@ The project architecture follows a typical layered structure, consisting of the 
 
   - `service`: This sub-module contains the implementation of the business logic, responsible for handling specific business operations.
 
-* `mocks`: This module contains the mock implementations of interfaces from various modules, used for unit testing.
 * `pkg`: This module contains some common utilities and functions.
 
 * `scripts`: This module contains some script files used for project build, test, and deployment operations.
@@ -152,6 +123,7 @@ To use Nunu, you need to have the following software installed on your system:
 
 * Go 1.16 or higher
 * Git
+* Docker (optional)
 * MySQL 5.7 or higher (optional)
 * Redis (optional)
 

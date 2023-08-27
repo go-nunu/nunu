@@ -120,7 +120,7 @@ func watch(dir string, programArgs []string) {
 	for {
 		select {
 		case <-quit:
-			err = syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+			err = syscall.Kill(-cmd.Process.Pid, syscall.SIGINT)
 
 			if err != nil {
 				fmt.Printf("\033[31mserver exiting...\033[0m\n")

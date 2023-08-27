@@ -62,58 +62,7 @@ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 ```
 
 
-执行完上述命令后，Nunu会自动创建一个目录结构优雅的Go项目，包含了一些常用的文件和目录，如下所示：
-
-```
-.
-├── cmd
-│   ├── job
-│   │   ├── main.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   ├── migration
-│   │   ├── main.go
-│   │   ├── migration.go
-│   │   ├── wire.go
-│   │   └── wire_gen.go
-│   └── server
-│       ├── wire
-│       ├── main.go
-│       ├── wire.go
-│       └── wire_gen.go
-├── config
-│   ├── local.yml
-│   └── prod.yml
-├── internal
-│   ├── handler
-│   │   ├── handler.go
-│   │   └── user.go
-│   ├── job
-│   │   └── job.go
-│   ├── model
-│   │   └── user.go
-│   ├── pkg
-│   │   ├── middleware
-│   │   └── request
-│   ├── repository
-│   │   ├── repository.go
-│   │   └── user.go
-│   ├── server
-│   │   ├── http.go
-│   │   └── server.go
-│   └── service
-│       ├── service.go
-│       └── user.go
-├── pkg
-├── scripts
-├── test
-├── web
-├── Makefile
-├── go.mod
-└── go.sum
-
-
-```
+执行完上述命令后，Nunu会自动创建一个目录结构优雅的Go项目，包含了一些常用的文件和目录。
 
 ## 创建组件
 
