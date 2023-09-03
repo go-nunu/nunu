@@ -13,7 +13,7 @@ Nunu is a web framework based on the Go programming language. It provides an ele
 ## Requirements
 To use Nunu with Advanced Layout, you need to have the following software installed on your system:
 
-* Golang 1.16 or higher
+* Golang 1.19 or higher
 * Git
 * MySQL 5.7 or higher
 * Redis
@@ -188,6 +188,44 @@ internal/handler/order.go            // Handle request parameters and responses
 internal/service/order.go            // Implement business logic
 internal/repository/order.go         // Interact with databases and Redis
 internal/model/order.go              // Database table entity, GORM model
+```
+
+## Automatic Generation of Swagger Documentation
+
+First, we need to install the swag command-line tool on our local machine. You can do this by running the following command:
+```
+go install github.com/swaggo/swag/cmd/swag@latest
+```
+
+[swaggo](https://github.com/swaggo/swag) allows us to automatically generate OpenAPI documentation based on our code comments. All we need to do is write the comments before our handler functions. For example:
+```
+// GetProfile godoc
+// @Summary get user info.
+// @Schemes
+// @Description
+// @Tags 用户模块
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response
+// @Router /user [get]
+func (h *userHandler) GetProfile(ctx *gin.Context) {
+    // ...
+}
+```
+
+Run the `swag init` command to generate the documentation files:
+```
+swag init -g cmd/server/main.go -o ./docs --parseDependency
+
+// or
+
+make swag
+```
+
+Open the documentation page in your browser:
+```
+http://127.0.0.1:8000/swagger/index.html
 ```
 
 ## Starting the Project

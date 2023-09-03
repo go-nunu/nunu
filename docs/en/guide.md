@@ -53,6 +53,25 @@ The Basic Layout contains a minimalistic directory structure and is suitable for
 
 The Advanced Layout includes many examples of using Nunu (e.g., db, redis, jwt, cron, migration, etc.), which is suitable for developers to quickly learn and understand the architectural ideas of Nunu.
 
+
+## Quick Start with Docker
+
+If you want to quickly try out the Nunu advanced layout, we recommend using the following commands to start the project quickly:
+
+```
+cd ./deploy/docker-compose && docker compose up -d && cd ../../
+
+go run ./cmd/migration
+
+nunu run ./cmd/server
+```
+
+Alternatively, you can use the `make` command directly:
+
+```
+make bootstrap
+```
+
 ## Creating Components
 
 You can use the following commands to create components such as handler, service, repository, and model for your project:

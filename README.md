@@ -26,6 +26,7 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 - **Gocron**:  https://github.com/go-co-op/gocron
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
+- **Swaggo**:  https://github.com/swaggo/swag
 - More...
 
 ## Key Features
@@ -121,7 +122,7 @@ In addition, there are some other files and directories, such as license files, 
 ## Requirements
 To use Nunu, you need to have the following software installed on your system:
 
-* Go 1.16 or higher
+* Go 1.19 or higher
 * Git
 * Docker (optional)
 * MySQL 5.7 or higher (optional)

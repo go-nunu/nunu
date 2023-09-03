@@ -10,7 +10,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 ## 文档
 * [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
 * [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
-* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+* [详细教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
 * [高效编写单元测试](https://github.com/go-nunu/nunu/blob/main/docs/zh/unit_testing.md)
 
 ## 功能
@@ -26,6 +26,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 - **Gocron**:  https://github.com/go-co-op/gocron
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
+- **Swaggo**:  https://github.com/swaggo/swag
 - More...
 ## 特性
 * **超低学习成本和定制**：Nunu封装了Gopher最熟悉的一些流行库。您可以轻松定制应用程序以满足特定需求。
@@ -127,7 +128,7 @@ Nunu采用了经典的分层架构。同时，为了更好地实现模块化和�
 ## 要求
 要使用Nunu，您需要在系统上安装以下软件：
 
-* Golang 1.16或更高版本
+* Golang 1.19或更高版本
 * Git
 * Docker (可选)
 * MySQL5.7或更高版本(可选)

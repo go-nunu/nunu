@@ -1,7 +1,7 @@
 ## 文档
 * [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
 * [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
-* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+* [详细教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
 * [高效编写单元测试](https://github.com/go-nunu/nunu/blob/main/docs/zh/unit_testing.md)
 
 
@@ -15,7 +15,7 @@ Nunu是一个基于Go语言的Web框架，它提供了一套优雅的项目结�
 ## 要求
 要使用Nunu 高级Layout，您需要在系统上安装以下软件：
 
-* Golang 1.16或更高版本
+* Golang 1.19或更高版本
 * Git
 * MySQL5.7或更高版本
 * Redis
@@ -196,6 +196,46 @@ internal/handler/order.go            // 处理请求参数和响应
 internal/service/order.go            // 实现业务逻辑
 internal/repository/order.go         // 与数据库和Redis等交互
 internal/model/order.go              // 数据表实体，GORM model
+```
+
+## 自动化生成Swagger文档
+
+
+首先我们在本机，安装以下swag命令行工具
+```
+go install github.com/swaggo/swag/cmd/swag@latest
+```
+
+[swaggo](https://github.com/swaggo/swag)能通过注释自动生成OpenAPI文档，我们只需要在handler函数之前编写我们的注释即可，例如：
+```
+// GetProfile godoc
+// @Summary 获取用户信息
+// @Schemes
+// @Description
+// @Tags 用户模块
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response
+// @Router /user [get]
+func (h *userHandler) GetProfile(ctx *gin.Context) {
+    // ...
+}
+```
+执行`swag init`命令生成文档相关文件
+
+```
+swag init  -g cmd/server/main.go -o ./docs --parseDependency
+
+// or
+
+make swag
+
+```
+
+浏览器打开文档页面
+```
+http://127.0.0.1:8000/swagger/index.html
 ```
 
 ## 启动项目

@@ -1,7 +1,7 @@
 ## 文档
 * [使用指南](https://github.com/go-nunu/nunu/blob/main/docs/zh/guide.md)
 * [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
-* [上手教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
+* [详细教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
 * [高效编写单元测试](https://github.com/go-nunu/nunu/blob/main/docs/zh/unit_testing.md)
 
 
@@ -53,6 +53,7 @@ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 ```
 
 
+
 > Nunu内置了两种类型的Layout：
 
 * **基础模板(Basic Layout)**
@@ -65,6 +66,24 @@ Basic Layout 包含一个非常精简的架构目录结构，适合非常熟悉N
 
 
 Advanced Layout 包含了很多Nunu的用法示例（ db、redis、 jwt、 cron、 migration等），适合开发者快速学习了解Nunu的架构思想。
+
+
+
+## 使用docker快速启动项目
+
+如果你想快速尝试nunu高级layout，推荐使用如下命令快速启动
+```
+cd ./deploy/docker-compose && docker compose up -d && cd ../../
+
+go run ./cmd/migration
+
+nunu run ./cmd/server
+```
+或者直接使用make命令
+```
+make bootstrap
+```
+
 ## 创建组件
 
 您可以使用以下命令为项目创建 handler、service 、 repository和model 等组件：
