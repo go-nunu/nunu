@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -36,6 +37,19 @@ var CmdCreate = &cobra.Command{
 
 	},
 }
+var (
+	tplPath string
+)
+
+func init() {
+	CmdCreateHandler.Flags().StringVarP(&tplPath, "tpl-path", "t", tplPath, "template path")
+	CmdCreateService.Flags().StringVarP(&tplPath, "tpl-path", "t", tplPath, "template path")
+	CmdCreateRepository.Flags().StringVarP(&tplPath, "tpl-path", "t", tplPath, "template path")
+	CmdCreateModel.Flags().StringVarP(&tplPath, "tpl-path", "t", tplPath, "template path")
+	CmdCreateAll.Flags().StringVarP(&tplPath, "tpl-path", "t", tplPath, "template path")
+
+}
+
 var CmdCreateHandler = &cobra.Command{
 	Use:     "handler",
 	Short:   "Create a new handler",
@@ -113,8 +127,13 @@ func (c *Create) genFile() {
 		return
 	}
 	defer f.Close()
-
-	t, err := template.ParseFS(tpl.CreateTemplateFS, fmt.Sprintf("create/%s.tpl", c.CreateType))
+	var t *template.Template
+	var err error
+	if tplPath == "" {
+		t, err = template.ParseFS(tpl.CreateTemplateFS, fmt.Sprintf("create/%s.tpl", c.CreateType))
+	} else {
+		t, err = template.ParseFiles(path.Join(tplPath, fmt.Sprintf("%s.tpl", c.CreateType)))
+	}
 	if err != nil {
 		log.Fatalf("create %s error: %s", c.CreateType, err.Error())
 	}
