@@ -33,7 +33,7 @@ func SplitArgs(cmd *cobra.Command, args []string) (cmdArgs, programArgs []string
 	}
 	return args, []string{}
 }
-func FindMain(base string) (map[string]string, error) {
+func FindMain(base, excludeDir string) (map[string]string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -41,10 +41,16 @@ func FindMain(base string) (map[string]string, error) {
 	if !strings.HasSuffix(wd, "/") {
 		wd += "/"
 	}
+	excludeDirArr := strings.Split(excludeDir, ",")
 	cmdPath := make(map[string]string)
 	err = filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
+		}
+		for _, s := range excludeDirArr {
+			if strings.HasPrefix(path, s) {
+				return nil
+			}
 		}
 		if !info.IsDir() && filepath.Ext(path) == ".go" {
 			content, err := os.ReadFile(path)

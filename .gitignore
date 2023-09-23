@@ -20,4 +20,5 @@
 # Go workspace file
 go.work
 .idea
+bin
 *.log
