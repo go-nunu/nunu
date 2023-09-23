@@ -1,14 +1,14 @@
-package project
+package new
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 
-	"github.com/AlecAivazis/survey/v2"
 	"github.com/go-nunu/nunu/config"
 	"github.com/go-nunu/nunu/internal/pkg/helper"
 	"github.com/spf13/cobra"
@@ -37,8 +37,6 @@ func NewProject() *Project {
 	return &Project{}
 }
 
-// the questions to ask
-
 func run(cmd *cobra.Command, args []string) {
 	p := NewProject()
 	if len(args) == 0 {
@@ -48,7 +46,6 @@ func run(cmd *cobra.Command, args []string) {
 			Suggest: nil,
 		}, &p.ProjectName, survey.WithValidator(survey.Required))
 		if err != nil {
-			fmt.Println(err.Error())
 			return
 		}
 	} else {

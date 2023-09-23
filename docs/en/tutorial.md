@@ -190,6 +190,31 @@ internal/repository/order.go         // Interact with databases and Redis
 internal/model/order.go              // Database table entity, GORM model
 ```
 
+## Starting the Project
+Finally, in Nunu, you can use the following command to start the project:
+
+```bash
+// Please modify the MySQL and Redis configuration information in config/local.yml before starting the server
+
+// Before starting the server for the first time, run the following database migration
+nunu run ./cmd/migration  
+
+// Start the server
+nunu run ./cmd/server    
+
+// Or
+
+nunu run
+
+// Or
+
+nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor" --includeExt="go,yml,vue"  -- --conf=./config/local.yml
+```
+
+After running the above command, Nunu will automatically start the project and monitor file updates, supporting hot-reloading.
+
+
+
 ## Automatic Generation of Swagger Documentation
 
 First, we need to install the swag command-line tool on our local machine. You can do this by running the following command:
@@ -228,24 +253,6 @@ Open the documentation page in your browser:
 http://127.0.0.1:8000/swagger/index.html
 ```
 
-## Starting the Project
-Finally, in Nunu, you can use the following command to start the project:
-
-```bash
-// Please modify the MySQL and Redis configuration information in config/local.yml before starting the server
-
-// Before starting the server for the first time, run the following database migration
-nunu run ./cmd/migration  
-
-// Start the server
-nunu run ./cmd/server    
-
-// Or
-
-nunu run
-```
-
-After running the above command, Nunu will automatically start the project and monitor file updates, supporting hot-reloading.
 
 ## Conclusion
 

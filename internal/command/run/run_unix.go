@@ -5,11 +5,13 @@ package run
 
 import (
 	"fmt"
+	"github.com/go-nunu/nunu/config"
 	"log"
 	"os"
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -22,6 +24,20 @@ import (
 var quit = make(chan os.Signal, 1)
 
 type Run struct {
+}
+
+var excludeDir string
+var includeExt string
+
+func init() {
+	CmdRun.Flags().StringVarP(&excludeDir, "excludeDir", "", excludeDir, `eg: nunu run --excludeDir="tmp,vendor,.git,.idea"`)
+	CmdRun.Flags().StringVarP(&includeExt, "includeExt", "", includeExt, `eg: nunu run --includeExt="go,tpl,tmpl,html,yaml,yml,toml,ini,json"`)
+	if excludeDir == "" {
+		excludeDir = config.RunExcludeDir
+	}
+	if includeExt == "" {
+		includeExt = config.RunIncludeExt
+	}
 }
 
 var CmdRun = &cobra.Command{
@@ -41,7 +57,7 @@ var CmdRun = &cobra.Command{
 			return
 		}
 		if dir == "" {
-			cmdPath, err := helper.FindMain(base)
+			cmdPath, err := helper.FindMain(base, excludeDir)
 
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
@@ -74,6 +90,8 @@ var CmdRun = &cobra.Command{
 		}
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		fmt.Printf("\033[35mNunu run %s.\033[0m\n", dir)
+		fmt.Printf("\033[35mWatch excludeDir %s\033[0m\n", excludeDir)
+		fmt.Printf("\033[35mWatch includeExt %s\033[0m\n", includeExt)
 		watch(dir, programArgs)
 
 	},
@@ -92,20 +110,33 @@ func watch(dir string, programArgs []string) {
 	}
 	defer watcher.Close()
 
+	excludeDirArr := strings.Split(excludeDir, ",")
+	includeExtArr := strings.Split(includeExt, ",")
+	includeExtMap := make(map[string]struct{})
+	for _, s := range includeExtArr {
+		includeExtMap[s] = struct{}{}
+	}
 	// Add files to watcher
 	err = filepath.Walk(watchPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
+		for _, s := range excludeDirArr {
+			if s == "" {
+				continue
+			}
+			if strings.HasPrefix(path, s) {
+				return nil
+			}
+		}
 		if !info.IsDir() {
 			ext := filepath.Ext(info.Name())
-			if ext == ".go" || ext == ".yml" || ext == ".yaml" || ext == ".html" {
+			if _, ok := includeExtMap[strings.TrimPrefix(ext, ".")]; ok {
 				err = watcher.Add(path)
 				if err != nil {
 					fmt.Println("Error:", err)
 				}
 			}
-
 		}
 		return nil
 	})

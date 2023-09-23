@@ -6,7 +6,7 @@ import (
 	"github.com/go-nunu/nunu/internal/command/wire"
 
 	"github.com/go-nunu/nunu/internal/command/create"
-	"github.com/go-nunu/nunu/internal/command/project"
+	"github.com/go-nunu/nunu/internal/command/new"
 	"github.com/go-nunu/nunu/internal/command/run"
 	"github.com/go-nunu/nunu/internal/command/upgrade"
 	"github.com/spf13/cobra"
@@ -20,7 +20,7 @@ var CmdRoot = &cobra.Command{
 }
 
 func init() {
-	CmdRoot.AddCommand(project.CmdNew)
+	CmdRoot.AddCommand(new.CmdNew)
 	CmdRoot.AddCommand(create.CmdCreate)
 	CmdRoot.AddCommand(run.CmdRun)
 

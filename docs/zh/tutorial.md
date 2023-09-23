@@ -198,6 +198,30 @@ internal/repository/order.go         // 与数据库和Redis等交互
 internal/model/order.go              // 数据表实体，GORM model
 ```
 
+## 启动项目
+最后，在Nunu中，可以使用以下命令启动项目：
+
+```bash
+// 请先修改config/local.yml中的 MySQL 和 Redis 配置信息
+
+// 初次启动server之前，请先执行以下数据库迁移
+nunu run ./cmd/migration  
+
+ // 启动server
+nunu run ./cmd/server    
+
+// 或
+
+nunu run
+
+// 或
+
+ nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor" --includeExt="go,yml,vue"  -- --conf=./config/local.yml
+```
+
+执行完上述命令后，Nunu会自动启动项目，并监听文件更新，支持热重启。
+
+
 ## 自动化生成Swagger文档
 
 
@@ -237,25 +261,6 @@ make swag
 ```
 http://127.0.0.1:8000/swagger/index.html
 ```
-
-## 启动项目
-最后，在Nunu中，可以使用以下命令启动项目：
-
-```bash
-// 请先修改config/local.yml中的 MySQL 和 Redis 配置信息
-
-// 初次启动server之前，请先执行以下数据库迁移
-nunu run ./cmd/migration  
-
- // 启动server
-nunu run ./cmd/server    
-
-// 或
-
-nunu run
-```
-
-执行完上述命令后，Nunu会自动启动项目，并监听文件更新，支持热重启。
 
 ## 总结
 
