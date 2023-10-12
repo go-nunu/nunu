@@ -49,38 +49,31 @@ Nunu adopts a classic layered architecture. In order to achieve modularity and d
 ## Directory Structure
 ```
 .
+├── api
+│   └── v1
 ├── cmd
-│   └── server
-│       ├── wire
-│       │   ├── wire.go
-│       │   └── wire_gen.go
-│       └── main.go
+│   ├── migration
+│   ├── server
+│   │   ├── wire
+│   │   │   ├── wire.go
+│   │   │   └── wire_gen.go
+│   │   └── main.go
+│   └── task
 ├── config
-│   ├── local.yml
-│   └── prod.yml
 ├── deploy
+├── docs
 ├── internal
 │   ├── handler
-│   │   ├── handler.go
-│   │   └── user.go
-│   ├── job
-│   │   └── job.go
+│   ├── middleware
 │   ├── model
-│   │   └── user.go
-│   ├── pkg
 │   ├── repository
-│   │   ├── repository.go
-│   │   └── user.go
 │   ├── server
-│   │   ├── http.go
-│   │   └── server.go
 │   └── service
-│       ├── service.go
-│       └── user.go
 ├── pkg
 ├── scripts
-├── storage
 ├── test
+│   ├── mocks
+│   └── server
 ├── web
 ├── Makefile
 ├── go.mod

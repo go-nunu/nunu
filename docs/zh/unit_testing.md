@@ -46,17 +46,17 @@ func newApp(viperViper *viper.Viper, logger *log.Logger) (*gin.Engine, func(), e
 func (h *userHandler) GetProfile(ctx *gin.Context) {
 	userId := GetUserIdFromCtx(ctx)
 	if userId == "" {
-		resp.HandleError(ctx, http.StatusUnauthorized, 1, "unauthorized", nil)
+		v1.HandleError(ctx, http.StatusUnauthorized, 1, "unauthorized", nil)
 		return
 	}
 
 	user, err := h.userService.GetProfile(ctx, userId)
 	if err != nil {
-		resp.HandleError(ctx, http.StatusBadRequest, 1, err.Error(), nil)
+		v1.HandleError(ctx, http.StatusBadRequest, 1, err.Error(), nil)
 		return
 	}
 
-	resp.HandleSuccess(ctx, user)
+	v1.HandleSuccess(ctx, user)
 }
 ```
 我们会发现在它的内部调用了`userService.GetProfile`。

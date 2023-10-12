@@ -46,13 +46,13 @@ For example, the code for `GetProfile` in `handler/user.go` is as follows:
 func (h *userHandler) GetProfile(ctx *gin.Context) {
 	userId := GetUserIdFromCtx(ctx)
 	if userId == "" {
-		resp.HandleError(ctx, http.StatusUnauthorized, 1, "unauthorized", nil)
+		v1.HandleError(ctx, http.StatusUnauthorized, 1, "unauthorized", nil)
 		return
 	}
 
 	user, err := h.userService.GetProfile(ctx, userId)
 	if err != nil {
-		resp.HandleError(ctx, http.StatusBadRequest, 1, err.Error(), nil)
+		v1.HandleError(ctx, http.StatusBadRequest, 1, err.Error(), nil)
 		return
 	}
 
