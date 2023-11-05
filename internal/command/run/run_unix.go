@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"sort"
 	"strings"
 	"syscall"
 	"time"
@@ -76,6 +77,8 @@ var CmdRun = &cobra.Command{
 				for k := range cmdPath {
 					cmdPaths = append(cmdPaths, k)
 				}
+				sort.Strings(cmdPaths)
+
 				prompt := &survey.Select{
 					Message:  "Which directory do you want to run?",
 					Options:  cmdPaths,

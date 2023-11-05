@@ -5,22 +5,18 @@ import (
 	"{{ .ProjectName }}/internal/service"
 )
 
-type {{ .FileName }}Handler interface {
-	Get{{ .FileName }}(ctx *gin.Context)
+type {{ .FileName }}Handler struct {
+	*Handler
+	{{ .FileNameTitleLower }}Service service.{{ .FileName }}Service
 }
 
-func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Service service.{{ .FileName }}Service) {{ .FileName }}Handler {
-	return &{{ .FileNameTitleLower }}Handler{
+func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Service service.{{ .FileName }}Service) *{{ .FileName }}Handler {
+	return &{{ .FileName }}Handler{
 		Handler:      handler,
 		{{ .FileNameTitleLower }}Service: {{ .FileNameTitleLower }}Service,
 	}
 }
 
-type {{ .FileNameTitleLower }}Handler struct {
-	*Handler
-	{{ .FileNameTitleLower }}Service service.{{ .FileName }}Service
-}
-
-func (h *{{ .FileNameTitleLower }}Handler) Get{{ .FileName }}(ctx *gin.Context) {
+func (h *{{ .FileName }}Handler) Get{{ .FileName }}(ctx *gin.Context) {
 
 }

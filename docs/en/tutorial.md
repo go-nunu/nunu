@@ -87,7 +87,7 @@ Next, register a new route: `noAuthRouter.GET("/order", orderHandler.GetOrderByI
 ```
 func NewServerHTTP(
 	// ...
-	orderHandler handler.OrderHandler,     // new
+	orderHandler *handler.OrderHandler,     // new
 ) *gin.Engine {
     // ...
 

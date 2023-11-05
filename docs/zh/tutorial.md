@@ -92,7 +92,7 @@ Created new model: internal/model/order.go
 ```
 func NewServerHTTP(
 	// ...
-	orderHandler handler.OrderHandler,     // new
+	orderHandler *handler.OrderHandler,     // new
 ) *gin.Engine {
     // ...
 

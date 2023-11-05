@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -49,6 +50,7 @@ var CmdWire = &cobra.Command{
 				for k := range wirePath {
 					wirePaths = append(wirePaths, k)
 				}
+				sort.Strings(wirePaths)
 				prompt := &survey.Select{
 					Message:  "Which directory do you want to run?",
 					Options:  wirePaths,

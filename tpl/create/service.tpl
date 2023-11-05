@@ -6,7 +6,7 @@ import (
 )
 
 type {{ .FileName }}Service interface {
-	Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error)
+	Get{{ .FileName }}(id int64) (*model.{{ .FileName }}, error)
 }
 
 func New{{ .FileName }}Service(service *Service, {{ .FileNameTitleLower }}Repository repository.{{ .FileName }}Repository) {{ .FileName }}Service {
@@ -21,6 +21,6 @@ type {{ .FileNameTitleLower }}Service struct {
 	{{ .FileNameTitleLower }}Repository repository.{{ .FileName }}Repository
 }
 
-func (s *{{ .FileNameTitleLower }}Service) Get{{ .FileName }}ById(id int64) (*model.{{ .FileName }}, error) {
+func (s *{{ .FileNameTitleLower }}Service) Get{{ .FileName }}(id int64) (*model.{{ .FileName }}, error) {
 	return s.{{ .FileNameTitleLower }}Repository.FirstById(id)
 }
