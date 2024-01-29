@@ -2,6 +2,8 @@
 
 Nunu is a scaffolding tool for building Go applications. Its name comes from a game character in League of Legends, a little boy riding on the shoulders of a Yeti. Just like Nunu, this project stands on the shoulders of giants, as it is built upon a combination of popular libraries from the Go ecosystem. This combination allows you to quickly build efficient and reliable applications.
 
+🚀Tips: This project is very complete, so updates will not be very frequent, welcome to use.
+
 [简体中文介绍](https://github.com/go-nunu/nunu/blob/main/README_zh.md)
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/banner.png)
