@@ -5,7 +5,8 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 
 🚀Tips：这个项目非常完善，所以更新不会很频繁，欢迎大家使用。
 
-[英文介绍](https://github.com/go-nunu/nunu/blob/main/README.md)
+- [英文介绍](https://github.com/go-nunu/nunu/blob/main/README.md)
+- [Português](https://github.com/go-nunu/nunu/blob/main/README_pt.md)
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/banner.png)
 
