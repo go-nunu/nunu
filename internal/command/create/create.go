@@ -98,7 +98,6 @@ func runCreate(cmd *cobra.Command, args []string) {
 	c.StructNameLowerFirst = strutil.LowerFirst(c.StructName)
 	c.StructNameFirstChar = string(c.StructNameLowerFirst[0])
 	c.StructNameSnakeCase = strutil.SnakeCase(c.StructName)
-	fmt.Println(c)
 
 	switch c.CreateType {
 	case "handler", "service", "repository", "model":
