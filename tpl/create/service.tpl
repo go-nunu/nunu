@@ -5,22 +5,22 @@ import (
 	"{{ .ProjectName }}/internal/repository"
 )
 
-type {{ .FileName }}Service interface {
-	Get{{ .FileName }}(id int64) (*model.{{ .FileName }}, error)
+type {{ .StructName }}Service interface {
+	Get{{ .StructName }}(id int64) (*model.{{ .StructName }}, error)
 }
 
-func New{{ .FileName }}Service(service *Service, {{ .FileNameTitleLower }}Repository repository.{{ .FileName }}Repository) {{ .FileName }}Service {
-	return &{{ .FileNameTitleLower }}Service{
+func New{{ .StructName }}Service(service *Service, {{ .StructNameLowerFirst }}Repository repository.{{ .StructName }}Repository) {{ .StructName }}Service {
+	return &{{ .StructNameLowerFirst }}Service{
 		Service:        service,
-		{{ .FileNameTitleLower }}Repository: {{ .FileNameTitleLower }}Repository,
+		{{ .StructNameLowerFirst }}Repository: {{ .StructNameLowerFirst }}Repository,
 	}
 }
 
-type {{ .FileNameTitleLower }}Service struct {
+type {{ .StructNameLowerFirst }}Service struct {
 	*Service
-	{{ .FileNameTitleLower }}Repository repository.{{ .FileName }}Repository
+	{{ .StructNameLowerFirst }}Repository repository.{{ .StructName }}Repository
 }
 
-func (s *{{ .FileNameTitleLower }}Service) Get{{ .FileName }}(id int64) (*model.{{ .FileName }}, error) {
-	return s.{{ .FileNameTitleLower }}Repository.FirstById(id)
+func (s *{{ .StructNameLowerFirst }}Service) Get{{ .StructName }}(id int64) (*model.{{ .StructName }}, error) {
+	return s.{{ .StructNameLowerFirst }}Repository.FirstById(id)
 }

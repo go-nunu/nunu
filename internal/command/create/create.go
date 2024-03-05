@@ -2,26 +2,28 @@ package create
 
 import (
 	"fmt"
+	"github.com/duke-git/lancet/v2/strutil"
+	"github.com/go-nunu/nunu/internal/pkg/helper"
+	"github.com/go-nunu/nunu/tpl"
+	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 	"text/template"
-
-	"github.com/go-nunu/nunu/internal/pkg/helper"
-	"github.com/go-nunu/nunu/tpl"
-	"github.com/spf13/cobra"
 )
 
 type Create struct {
-	ProjectName        string
-	CreateType         string
-	FilePath           string
-	FileName           string
-	FileNameTitleLower string
-	FileNameFirstChar  string
-	IsFull             bool
+	ProjectName          string
+	CreateType           string
+	FilePath             string
+	FileName             string
+	StructName           string
+	StructNameLowerFirst string
+	StructNameFirstChar  string
+	StructNameSnakeCase  string
+	IsFull               bool
 }
 
 func NewCreate() *Create {
@@ -90,10 +92,13 @@ func runCreate(cmd *cobra.Command, args []string) {
 	c := NewCreate()
 	c.ProjectName = helper.GetProjectName(".")
 	c.CreateType = cmd.Use
-	c.FilePath, c.FileName = filepath.Split(args[0])
-	c.FileName = strings.ReplaceAll(strings.ToUpper(string(c.FileName[0]))+c.FileName[1:], ".go", "")
-	c.FileNameTitleLower = strings.ToLower(string(c.FileName[0])) + c.FileName[1:]
-	c.FileNameFirstChar = string(c.FileNameTitleLower[0])
+	c.FilePath, c.StructName = filepath.Split(args[0])
+	c.FileName = strings.ReplaceAll(c.StructName, ".go", "")
+	c.StructName = strutil.UpperFirst(strutil.CamelCase(c.FileName))
+	c.StructNameLowerFirst = strutil.LowerFirst(c.StructName)
+	c.StructNameFirstChar = string(c.StructNameLowerFirst[0])
+	c.StructNameSnakeCase = strutil.SnakeCase(c.StructName)
+	fmt.Println(c)
 
 	switch c.CreateType {
 	case "handler", "service", "repository", "model":

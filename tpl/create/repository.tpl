@@ -4,22 +4,22 @@ import (
 	"{{ .ProjectName }}/internal/model"
 )
 
-type {{ .FileName }}Repository interface {
-	FirstById(id int64) (*model.{{ .FileName }}, error)
+type {{ .StructName }}Repository interface {
+	FirstById(id int64) (*model.{{ .StructName }}, error)
 }
 
-func New{{ .FileName }}Repository(repository *Repository) {{ .FileName }}Repository {
-	return &{{ .FileNameTitleLower }}Repository{
+func New{{ .StructName }}Repository(repository *Repository) {{ .StructName }}Repository {
+	return &{{ .StructNameLowerFirst }}Repository{
 		Repository: repository,
 	}
 }
 
-type {{ .FileNameTitleLower }}Repository struct {
+type {{ .StructNameLowerFirst }}Repository struct {
 	*Repository
 }
 
-func (r *{{ .FileNameTitleLower }}Repository) FirstById(id int64) (*model.{{ .FileName }}, error) {
-	var {{ .FileNameTitleLower }} model.{{ .FileName }}
+func (r *{{ .StructNameLowerFirst }}Repository) FirstById(id int64) (*model.{{ .StructName }}, error) {
+	var {{ .StructNameLowerFirst }} model.{{ .StructName }}
 	// TODO: query db
-	return &{{ .FileNameTitleLower }}, nil
+	return &{{ .StructNameLowerFirst }}, nil
 }

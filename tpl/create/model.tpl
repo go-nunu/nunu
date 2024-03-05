@@ -2,10 +2,10 @@ package model
 
 import "gorm.io/gorm"
 
-type {{ .FileName }} struct {
+type {{ .StructName }} struct {
 	gorm.Model
 }
 
-func (m *{{ .FileName }}) TableName() string {
-    return "{{ .FileNameTitleLower }}"
+func (m *{{ .StructName }}) TableName() string {
+    return "{{ .StructNameSnakeCase }}"
 }

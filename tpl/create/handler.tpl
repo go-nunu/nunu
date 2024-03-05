@@ -5,18 +5,18 @@ import (
 	"{{ .ProjectName }}/internal/service"
 )
 
-type {{ .FileName }}Handler struct {
+type {{ .StructName }}Handler struct {
 	*Handler
-	{{ .FileNameTitleLower }}Service service.{{ .FileName }}Service
+	{{ .StructNameLowerFirst }}Service service.{{ .StructName }}Service
 }
 
-func New{{ .FileName }}Handler(handler *Handler, {{ .FileNameTitleLower }}Service service.{{ .FileName }}Service) *{{ .FileName }}Handler {
-	return &{{ .FileName }}Handler{
+func New{{ .StructName }}Handler(handler *Handler, {{ .StructNameLowerFirst }}Service service.{{ .StructName }}Service) *{{ .StructName }}Handler {
+	return &{{ .StructName }}Handler{
 		Handler:      handler,
-		{{ .FileNameTitleLower }}Service: {{ .FileNameTitleLower }}Service,
+		{{ .StructNameLowerFirst }}Service: {{ .StructNameLowerFirst }}Service,
 	}
 }
 
-func (h *{{ .FileName }}Handler) Get{{ .FileName }}(ctx *gin.Context) {
+func (h *{{ .StructName }}Handler) Get{{ .StructName }}(ctx *gin.Context) {
 
 }
