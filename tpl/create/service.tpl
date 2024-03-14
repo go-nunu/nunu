@@ -1,12 +1,13 @@
 package service
 
 import (
+    "context"
 	"{{ .ProjectName }}/internal/model"
 	"{{ .ProjectName }}/internal/repository"
 )
 
 type {{ .StructName }}Service interface {
-	Get{{ .StructName }}(id int64) (*model.{{ .StructName }}, error)
+	Get{{ .StructName }}(ctx context.Context, id int64) (*model.{{ .StructName }}, error)
 }
 
 func New{{ .StructName }}Service(service *Service, {{ .StructNameLowerFirst }}Repository repository.{{ .StructName }}Repository) {{ .StructName }}Service {
@@ -21,6 +22,6 @@ type {{ .StructNameLowerFirst }}Service struct {
 	{{ .StructNameLowerFirst }}Repository repository.{{ .StructName }}Repository
 }
 
-func (s *{{ .StructNameLowerFirst }}Service) Get{{ .StructName }}(id int64) (*model.{{ .StructName }}, error) {
-	return s.{{ .StructNameLowerFirst }}Repository.FirstById(id)
+func (s *{{ .StructNameLowerFirst }}Service) Get{{ .StructName }}(ctx context.Context, id int64) (*model.{{ .StructName }}, error) {
+	return s.{{ .StructNameLowerFirst }}Repository.FirstById(ctx, id)
 }
