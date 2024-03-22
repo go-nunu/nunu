@@ -6,6 +6,6 @@ type {{ .StructName }} struct {
 	gorm.Model
 }
 
-func (m *{{ .StructName }}) TableName() string {
+func ({{ .StructNameFirstChar }} *{{ .StructName }}) TableName() string {
     return "{{ .StructNameSnakeCase }}"
 }
