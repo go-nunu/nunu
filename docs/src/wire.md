@@ -142,7 +142,7 @@ appApp := newApp(httpServer, job)
 我们需要做的仅仅是需要声明我们的依赖关系，执行`wire`命令后，就会自动帮我们生成代码。
 
 **声明依赖关系的代码非常简单，代码大概像下面这样**
-```
+```go 
 var handlerSet = wire.NewSet(
 	handler.NewHandler,
 	handler.NewUserHandler,

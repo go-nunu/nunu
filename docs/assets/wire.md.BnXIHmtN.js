@@ -1,4 +1,4 @@
-import{_ as s,c as i,o as a,a4 as n}from"./chunks/framework.DZjeu1b3.js";const o=JSON.parse('{"title":"依赖注入","description":"","frontmatter":{},"headers":[],"relativePath":"wire.md","filePath":"wire.md","lastUpdated":1711880770000}'),p={name:"wire.md"},e=n(`<h1 id="依赖注入" tabindex="-1">依赖注入 <a class="header-anchor" href="#依赖注入" aria-label="Permalink to &quot;依赖注入&quot;">​</a></h1><h2 id="why-do-we-need-dependency-injection" tabindex="-1">为什么需要依赖注入？ <a class="header-anchor" href="#why-do-we-need-dependency-injection" aria-label="Permalink to &quot;为什么需要依赖注入？{#why-do-we-need-dependency-injection}&quot;">​</a></h2><p>依赖注入是一种编程模式，用于管理代码中各个组件之间的依赖关系。在没有依赖注入的情况下，通常会使用全局变量或硬编码的方式来获取所需的依赖，这种方式会带来一些问题。</p><h2 id="global-variable-issues" tabindex="-1">全局变量 <a class="header-anchor" href="#global-variable-issues" aria-label="Permalink to &quot;全局变量{#global-variable-issues}&quot;">​</a></h2><p>让我们通过一个简单的 Go 语言示例来说明：</p><p>假设我们有一个简单的服务，它需要一个数据库连接。在没有依赖注入的情况下，我们可能会这样实现：</p><div class="language-go vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">go</span><pre class="shiki shiki-themes github-light github-dark vp-code"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">package</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> main</span></span>
+import{_ as s,c as i,o as a,a4 as n}from"./chunks/framework.DZjeu1b3.js";const o=JSON.parse('{"title":"依赖注入","description":"","frontmatter":{},"headers":[],"relativePath":"wire.md","filePath":"wire.md","lastUpdated":1711880770000}'),p={name:"wire.md"},h=n(`<h1 id="依赖注入" tabindex="-1">依赖注入 <a class="header-anchor" href="#依赖注入" aria-label="Permalink to &quot;依赖注入&quot;">​</a></h1><h2 id="why-do-we-need-dependency-injection" tabindex="-1">为什么需要依赖注入？ <a class="header-anchor" href="#why-do-we-need-dependency-injection" aria-label="Permalink to &quot;为什么需要依赖注入？{#why-do-we-need-dependency-injection}&quot;">​</a></h2><p>依赖注入是一种编程模式，用于管理代码中各个组件之间的依赖关系。在没有依赖注入的情况下，通常会使用全局变量或硬编码的方式来获取所需的依赖，这种方式会带来一些问题。</p><h2 id="global-variable-issues" tabindex="-1">全局变量 <a class="header-anchor" href="#global-variable-issues" aria-label="Permalink to &quot;全局变量{#global-variable-issues}&quot;">​</a></h2><p>让我们通过一个简单的 Go 语言示例来说明：</p><p>假设我们有一个简单的服务，它需要一个数据库连接。在没有依赖注入的情况下，我们可能会这样实现：</p><div class="language-go vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">go</span><pre class="shiki shiki-themes github-light github-dark vp-code"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">package</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> main</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (</span></span>
 <span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">	&quot;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">database/sql</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;</span></span>
@@ -86,48 +86,48 @@ import{_ as s,c as i,o as a,a4 as n}from"./chunks/framework.DZjeu1b3.js";const o
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">authHandler </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> handler.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewAuthHandler</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(handlerHandler, userService, captchaService)</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">httpServer </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> server.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewHTTPServer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(logger, viperViper, jwtJWT, userHandler, categoryHandler, uploadHandler, promptHandler, wechatHandler, walletHandler, translateHandler, authHandler)</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">job </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> server.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewJob</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(logger)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">appApp </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:=</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> newApp</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(httpServer, job)</span></span></code></pre></div><p>看到这样的代码，相信你一定会感觉依赖注入使我们代码使变得复杂，但其实这段代码并不是人工手写的，而是通过<code>wire</code>自动生成的。</p><p>我们需要做的仅仅是需要声明我们的依赖关系，执行<code>wire</code>命令后，就会自动帮我们生成代码。</p><p><strong>声明依赖关系的代码非常简单，代码大概像下面这样</strong></p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code"><code><span class="line"><span>var handlerSet = wire.NewSet(</span></span>
-<span class="line"><span>	handler.NewHandler,</span></span>
-<span class="line"><span>	handler.NewUserHandler,</span></span>
-<span class="line"><span>	handler.NewCategoryHandler,</span></span>
-<span class="line"><span>)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>var serviceSet = wire.NewSet(</span></span>
-<span class="line"><span>	service.NewService,</span></span>
-<span class="line"><span>	service.NewUserService,</span></span>
-<span class="line"><span>)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>var repositorySet = wire.NewSet(</span></span>
-<span class="line"><span>	repository.NewDB,</span></span>
-<span class="line"><span>	repository.NewRedis,</span></span>
-<span class="line"><span>	repository.NewWechatOfficial,</span></span>
-<span class="line"><span>	repository.NewWechatPay,</span></span>
-<span class="line"><span>	repository.NewRepository,</span></span>
-<span class="line"><span>	repository.NewUserRepository,</span></span>
-<span class="line"><span>)</span></span>
-<span class="line"><span>var serverSet = wire.NewSet(</span></span>
-<span class="line"><span>	server.NewHTTPServer,</span></span>
-<span class="line"><span>	server.NewJob,</span></span>
-<span class="line"><span>	server.NewTask,</span></span>
-<span class="line"><span>)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>// build App</span></span>
-<span class="line"><span>func newApp(httpServer *http.Server, job *server.Job) *app.App {</span></span>
-<span class="line"><span>	return app.NewApp(</span></span>
-<span class="line"><span>		app.WithServer(httpServer, job),</span></span>
-<span class="line"><span>		app.WithName(&quot;demo-server&quot;),</span></span>
-<span class="line"><span>	)</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>func NewWire(*viper.Viper, *log.Logger) (*app.App, func(), error) {</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>	panic(wire.Build(</span></span>
-<span class="line"><span>		repositorySet,</span></span>
-<span class="line"><span>		serviceSet,</span></span>
-<span class="line"><span>		handlerSet,</span></span>
-<span class="line"><span>		serverSet,</span></span>
-<span class="line"><span>		sid.NewSid,</span></span>
-<span class="line"><span>		jwt.NewJwt,</span></span>
-<span class="line"><span>		newApp,</span></span>
-<span class="line"><span>	))</span></span>
-<span class="line"><span>}</span></span></code></pre></div><div class="tip custom-block" style="padding-top:8px;"><p>想学习更多关于Wire知识？前往到<a href="https://github.com/google/wire/blob/main/docs/guide.md" target="_blank" rel="noreferrer">Wire官方文档</a>。</p></div>`,29),l=[e];function h(t,k,r,E,d,y){return a(),i("div",null,l)}const c=s(p,[["render",h]]);export{o as __pageData,c as default};
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">appApp </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:=</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> newApp</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(httpServer, job)</span></span></code></pre></div><p>看到这样的代码，相信你一定会感觉依赖注入使我们代码使变得复杂，但其实这段代码并不是人工手写的，而是通过<code>wire</code>自动生成的。</p><p>我们需要做的仅仅是需要声明我们的依赖关系，执行<code>wire</code>命令后，就会自动帮我们生成代码。</p><p><strong>声明依赖关系的代码非常简单，代码大概像下面这样</strong></p><div class="language-go vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">go</span><pre class="shiki shiki-themes github-light github-dark vp-code"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">var</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> handlerSet </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> wire.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewSet</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	handler.NewHandler,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	handler.NewUserHandler,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	handler.NewCategoryHandler,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">var</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> serviceSet </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> wire.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewSet</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	service.NewService,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	service.NewUserService,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">var</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> repositorySet </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> wire.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewSet</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	repository.NewDB,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	repository.NewRedis,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	repository.NewWechatOfficial,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	repository.NewWechatPay,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	repository.NewRepository,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	repository.NewUserRepository,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">var</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> serverSet </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> wire.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewSet</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	server.NewHTTPServer,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	server.NewJob,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	server.NewTask,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// build App</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">func</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> newApp</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">httpServer</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> *</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">http</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Server</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">job</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> *</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">server</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Job</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">*</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">app</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">App</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">	return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> app.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NewApp</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		app.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">WithServer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(httpServer, job),</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		app.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">WithName</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;demo-server&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">),</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">func</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> NewWire</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">*</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">viper</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Viper</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">*</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">log</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Logger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) (</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">*</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">app</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">App</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">func</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(), </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">error</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">	panic</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(wire.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Build</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		repositorySet,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		serviceSet,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		handlerSet,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		serverSet,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		sid.NewSid,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		jwt.NewJwt,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">		newApp,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">	))</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><div class="tip custom-block" style="padding-top:8px;"><p>想学习更多关于Wire知识？前往到<a href="https://github.com/google/wire/blob/main/docs/guide.md" target="_blank" rel="noreferrer">Wire官方文档</a>。</p></div>`,29),l=[h];function k(e,t,E,r,d,y){return a(),i("div",null,l)}const c=s(p,[["render",k]]);export{o as __pageData,c as default};
