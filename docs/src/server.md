@@ -10,40 +10,47 @@ type Server interface {
 
 每个`Server`都必须实现`Server`接口中的方法，也就是`Start(ctx)`和`Stop(ctx)`
 
-## HTTP
-**用途**：处理基于HTTP协议的请求和响应。
 
-**工作原理**：监听指定的HTTP端口，并根据接收到的请求执行相应的操作，然后返回相应的HTTP响应。
 
-**示例应用场景**：Web应用程序、API服务等。
 
-## Task
-**用途**：处理定时任务，类似于crontab的功能。
+## 服务依赖注册
 
-**工作原理**：定期执行预定义的任务或作业，通常用于周期性地执行一些重复性的任务。
+在Nunu中，如果你想给你的某个服务进程注册相应的启动服务，
 
-**示例应用场景**：定时数据备份、定时数据清理、定时报表生成等。
-:::tip
-定时任务建议独立于`HTTP server`运行，避免影响主应用程序的运行。但同时nunu支持`Task`和`HTTP server`同时运行，请参考`Job`的实现。
-:::
-## Job
-**用途**：处理异步任务，通常用于处理消息队列（MQ）中的消息。
+你只需要关心`cmd/[服务器名称]/wire/wire.go`文件即可。
 
-**工作原理**：从消息队列中获取任务并执行，可以是一些需要异步处理的任务，如邮件发送、文件处理等。
+```go
+var serverSet = wire.NewSet(
+	server.NewHTTPServer,
+	server.NewJob,
+	// 你想注册的其它服务
+)
 
-**示例应用场景**：异步任务队列、消息驱动的系统等。
-:::tip
-nunu支持`Job`和`HTTP server`同时运行，也同样支持独立于`HTTP server`运行，请参考`Task`或是`Migration`的实现。
-:::
-## Migration
-**用途**：处理数据库迁移和数据迁移任务。
+// build App
+func newApp(
+	httpServer *http.Server, 
+	job *server.Job,
+    // 你想注册的其它服务,需要从参数传入
+	) *app.App {
+	return app.NewApp(
+		app.WithServer(httpServer, job),
+		app.WithName("demo-server"),
+	)
+}
 
-**工作原理**：Migration服务负责管理数据库结构的变化和数据的迁移，例如在软件升级过程中，需要更新数据库模式或迁移现有数据以适应新的模式。
+func NewWire(*viper.Viper, *log.Logger) (*app.App, func(), error) {
 
-**示例应用场景**：迁移数据库表结构，例如添加新的列、删除旧的列、修改列的数据类型等。
-迁移数据，例如将旧数据格式转换为新的格式、合并数据、拆分数据等。
-管理数据库版本，确保数据库结构与应用程序代码的版本兼容性。
-:::tip
-Migration须谨慎用于生成环境，以免导致数据丢失或破坏。
-:::
+	panic(wire.Build(
+		repositorySet,
+		serviceSet,
+		handlerSet,
+		serverSet,  // 集中注册服务
+		sid.NewSid,
+		jwt.NewJwt,
+		newApp,
+	))
+}
+
+
+```
 

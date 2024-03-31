@@ -17,7 +17,7 @@ export const zh = defineConfig({
         },
 
         editLink: {
-            pattern: 'https://github.com/go-nunu/nunu/edit/feature/docs/:path',
+            pattern: 'https://github.com/go-nunu/nunu/edit/feature/docs/docs/src/:path',
             text: '在 GitHub 上编辑此页面'
         },
 
@@ -104,7 +104,16 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
             collapsed: false,
             items: [
                 {
-                    text: 'Server', link: 'server',
+                    text: 'Server',
+                    link: 'server',
+                    items: [
+                        {text: 'HTTP路由', link: 'http'},
+                        {text: 'Task定时任务', link: 'task'},
+                        {text: 'Job异步事件流', link: 'job'},
+                        {text: 'Migration数据迁移', link: 'migration'},
+                        {text: 'GRPC', link: 'grpc'},
+                        {text: 'Websocket', link: 'websocket'},
+                    ]
                 },
                 {text: 'Handler', link: 'handler'},
                 {
