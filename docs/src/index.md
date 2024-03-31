@@ -6,7 +6,7 @@ titleTemplate: 一个很棒的Go应用脚手架工具
 
 hero:
   name: Nunu
-  text: 在线文档
+  text: 在线文档(更新完善中)
   tagline: 一个很棒的Go应用脚手架工具
   actions:
     - theme: brand

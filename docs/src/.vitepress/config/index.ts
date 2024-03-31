@@ -7,6 +7,8 @@ export default defineConfig({
     ...shared,
     base: '/nunu/',
     appearance: "dark",
+    // appearance: true,
+    // head: [['script', {}, `document.documentElement.classList.add('dark')`]],
     locales: {
         root: {label: '简体中文', ...zh},
         en: {label: 'English', ...en},
