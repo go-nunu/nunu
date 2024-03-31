@@ -1,0 +1,14 @@
+{
+  "name": "module",
+  "type": "module",
+  "version": "1.0.14",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "markdown-it-mathjax3": "^4.3.2",
+    "vitepress": "^1.0.1"
+  }
+}

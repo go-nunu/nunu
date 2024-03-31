@@ -22,3 +22,6 @@ go.work
 .idea
 bin
 *.log
+node_modules
+cache
+yarn.lock
