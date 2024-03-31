@@ -1,1 +1,0 @@
-import{_ as t,c as e,o as a,a4 as s}from"./chunks/framework.DZjeu1b3.js";const m=JSON.parse('{"title":"Task","description":"","frontmatter":{},"headers":[],"relativePath":"task.md","filePath":"task.md","lastUpdated":null}'),o={name:"task.md"},c=s("",5),r=[c];function n(d,_,p,i,l,k){return a(),e("div",null,r)}const u=t(o,[["render",n]]);export{m as __pageData,u as default};

@@ -104,6 +104,9 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
             collapsed: false,
             items: [
                 {
+                    text: '配置', link: 'config',
+                },
+                {
                     text: 'Server',
                     link: 'server',
                     items: [
