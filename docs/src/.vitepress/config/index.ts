@@ -6,6 +6,7 @@ import {zh} from './zh'
 export default defineConfig({
     ...shared,
     base: '/nunu/',
+    appearance: "dark",
     locales: {
         root: {label: '简体中文', ...zh},
         en: {label: 'English', ...en},

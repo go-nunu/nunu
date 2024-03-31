@@ -7,7 +7,6 @@ const pkg = require('../../package.json')
 export const zh = defineConfig({
     lang: 'zh-Hans',
     description: 'A CLI tool for building Go applications.',
-
     themeConfig: {
         nav: nav(),
         logo: '',
