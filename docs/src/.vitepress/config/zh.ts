@@ -85,7 +85,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
                 {text: '引言', link: 'guide',},
                 {text: '快速开始', link: 'getting-started',},
                 {
-                    text: 'Nunu命令行工具', link: 'cli',
+                    text: 'Nunu命令行', link: 'cli',
                 },
             ]
         },
