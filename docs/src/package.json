@@ -4,7 +4,7 @@
   "version": "1.0.14",
   "scripts": {
     "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
+    "docs:build": "vitepress build && rm -rf ../assets/ ../*.html &&  cp -r .vitepress/dist/* ../",
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
