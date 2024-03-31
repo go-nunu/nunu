@@ -25,3 +25,6 @@ bin
 node_modules
 cache
 yarn.lock
+dist
+docs/src/.vitepress/cache
+docs/src/.vitepress/dist
