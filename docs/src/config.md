@@ -2,10 +2,13 @@
 
 
 
-## 指定配置文件启动
-Nunu 使用 Viper 库来管理配置文件。
 
-默认会加载`config/local.yml`，你可以使用环境变量或参数来指定配置文件路径
+## 指定配置文件启动
+Nunu 使用 [Viper](https://github.com/spf13/viper) 库来管理配置文件。
+
+预设了两套配置文件，分别是`local.yml`和`prod.yml`，分别用于本地开发环境与生产环境，默认会加载`config/local.yml`。
+
+你可以使用环境变量或参数来指定配置文件路径
 
 ::: code-group
 ```bash [Linux/MacOS]
@@ -16,7 +19,7 @@ set APP_CONF=config\prod.yml && nunu run
 ```
 :::
 
-或者使用传参的方式:`go run ./cmd/server -conf=config/prod.yml`
+或者使用传参的方式:`go run ./cmd/server -conf=config/prod.yml`  
 
 ## 读取配置
 
