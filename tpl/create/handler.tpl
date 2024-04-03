@@ -10,7 +10,10 @@ type {{ .StructName }}Handler struct {
 	{{ .StructNameLowerFirst }}Service service.{{ .StructName }}Service
 }
 
-func New{{ .StructName }}Handler(handler *Handler, {{ .StructNameLowerFirst }}Service service.{{ .StructName }}Service) *{{ .StructName }}Handler {
+func New{{ .StructName }}Handler(
+    handler *Handler,
+    {{ .StructNameLowerFirst }}Service service.{{ .StructName }}Service,
+) *{{ .StructName }}Handler {
 	return &{{ .StructName }}Handler{
 		Handler:      handler,
 		{{ .StructNameLowerFirst }}Service: {{ .StructNameLowerFirst }}Service,

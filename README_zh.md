@@ -228,3 +228,8 @@ nunu wire
 ## 许可证
 
 Nunu是根据MIT许可证发布的。有关更多信息，请参见[LICENSE](LICENSE)文件。
+
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=go-nunu/nunu&type=Date)](https://star-history.com/#go-nunu/nunu&Date)

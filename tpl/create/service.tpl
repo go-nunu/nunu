@@ -23,5 +23,5 @@ type {{ .StructNameLowerFirst }}Service struct {
 }
 
 func (s *{{ .StructNameLowerFirst }}Service) Get{{ .StructName }}(ctx context.Context, id int64) (*model.{{ .StructName }}, error) {
-	return s.{{ .StructNameLowerFirst }}Repository.FirstById(ctx, id)
+	return s.{{ .StructNameLowerFirst }}Repository.Get{{ .StructName }}(ctx, id)
 }
