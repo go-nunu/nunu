@@ -3,7 +3,7 @@ import { search as zhSearch } from './zh'
 import { search as enSearch } from './en'
 
 export const shared = defineConfig({
-  title: 'Nunu文档',
+  title: 'Nunu',
 
   lastUpdated: true,
   cleanUrls: true,

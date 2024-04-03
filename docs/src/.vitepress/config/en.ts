@@ -30,11 +30,11 @@ export const en = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: '首页',
+      text: 'Home',
       link: '/en/'
     },
     {
-      text: '文档',
+      text: 'Doc',
       link: '/en/getting-started',
       activeMatch: '/en/getting-started'
     },
