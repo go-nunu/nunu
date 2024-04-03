@@ -197,3 +197,7 @@ If you find any issues or have any improvement suggestions, please feel free to 
 ## License
 
 Nunu is released under the MIT License. For more information, see the [LICENSE](LICENSE) file.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=go-nunu/nunu&type=Date)](https://star-history.com/#go-nunu/nunu&Date)
