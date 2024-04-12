@@ -1,7 +1,7 @@
 package config
 
 var (
-	Version       = "1.0.15"
+	Version       = "1.0.16"
 	WireCmd       = "github.com/google/wire/cmd/wire@latest"
 	NunuCmd       = "github.com/go-nunu/nunu@latest"
 	RepoBase      = "https://github.com/go-nunu/nunu-layout-base.git"
