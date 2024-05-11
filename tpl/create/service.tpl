@@ -9,8 +9,10 @@ import (
 type {{ .StructName }}Service interface {
 	Get{{ .StructName }}(ctx context.Context, id int64) (*model.{{ .StructName }}, error)
 }
-
-func New{{ .StructName }}Service(service *Service, {{ .StructNameLowerFirst }}Repository repository.{{ .StructName }}Repository) {{ .StructName }}Service {
+func New{{ .StructName }}Service(
+    service *Service,
+    {{ .StructNameLowerFirst }}Repository repository.{{ .StructName }}Repository,
+) {{ .StructName }}Service {
 	return &{{ .StructNameLowerFirst }}Service{
 		Service:        service,
 		{{ .StructNameLowerFirst }}Repository: {{ .StructNameLowerFirst }}Repository,

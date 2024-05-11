@@ -31,17 +31,8 @@ nunu new projectName
 
 This command will create a directory named `projectName` and generate an elegant Golang project structure within it.
 
-**Accelerated Source in China:**
 
-By default, `nunu new` fetches from the GitHub source. However, you can also use an accelerated repository in China:
-```
-// Using the basic template
-nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
-// Using the advanced template (recommended)
-nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
-```
-
-> Nunu provides two types of layouts:
+> Nunu provides 3 types of layouts:
 
 * **Basic Layout**
 
@@ -53,6 +44,9 @@ The Basic Layout contains a minimalistic directory structure and is suitable for
 
 The Advanced Layout includes many examples of using Nunu (e.g., db, redis, jwt, cron, migration, etc.), which is suitable for developers to quickly learn and understand the architectural ideas of Nunu.
 
+* **Chat Layout**
+
+Chat Layout is a Nunu based long link project template suitable for scenarios such as instant messaging and game development.
 
 ## Quick Start with Docker
 

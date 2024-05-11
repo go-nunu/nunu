@@ -30,6 +30,7 @@ Nunu é uma ferramenta de geração de estrutura (scaffolding) para construir ap
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
+- **Pitaya**:  https://github.com/topfreegames/pitaya
 - Mais...
 
 ## Funcionalidades Principais

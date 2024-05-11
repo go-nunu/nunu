@@ -50,11 +50,14 @@ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
 // 使用基础模板
 nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 
+// 使用ws/tcp模板(适合即时通信、游戏开发等场景)
+nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-chat.git
+
 ```
 
 
 
-> Nunu内置了两种类型的Layout：
+> Nunu内置了三种类型的Layout：
 
 * **基础模板(Basic Layout)**
 
@@ -67,6 +70,9 @@ Basic Layout 包含一个非常精简的架构目录结构，适合非常熟悉N
 
 Advanced Layout 包含了很多Nunu的用法示例（ db、redis、 jwt、 cron、 migration等），适合开发者快速学习了解Nunu的架构思想。
 
+* **即时通信模板(Chat Layout)**
+
+Chat Layout 是一个基于Nunu的长链接项目模板，适合适合即时通信、游戏开发等场景。
 
 
 ## 使用docker快速启动项目

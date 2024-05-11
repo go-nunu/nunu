@@ -111,10 +111,14 @@ func (p *Project) cloneTemplate() (bool, error) {
 			Options: []string{
 				"Advanced",
 				"Basic",
+				"Chat",
 			},
 			Description: func(value string, index int) string {
 				if index == 1 {
 					return "A basic project structure"
+				}
+				if index == 2 {
+					return "A simple chat room containing websocket/tcp"
 				}
 				return "It has rich functions such as db, jwt, cron, migration, test, etc"
 			},
@@ -123,8 +127,10 @@ func (p *Project) cloneTemplate() (bool, error) {
 		if err != nil {
 			return false, err
 		}
-		if layout != "Basic" {
+		if layout == "Advanced" {
 			repo = config.RepoAdvanced
+		} else if layout == "Chat" {
+			repo = config.RepoChat
 		}
 		err = os.RemoveAll(p.ProjectName)
 		if err != nil {

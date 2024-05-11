@@ -30,6 +30,7 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
+- **Pitaya**:  https://github.com/topfreegames/pitaya
 - More...
 
 ## Key Features
