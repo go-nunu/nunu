@@ -6,6 +6,7 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 
 - [简体中文介绍](https://github.com/go-nunu/nunu/blob/main/README_zh.md)
 - [Português](https://github.com/go-nunu/nunu/blob/main/README_pt.md)
+- [日本語](https://github.com/go-nunu/nunu/blob/main/README_jp.md)
 
 ![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/banner.png)
 
