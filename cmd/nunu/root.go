@@ -2,6 +2,7 @@ package nunu
 
 import (
 	"fmt"
+
 	"github.com/go-nunu/nunu/config"
 	"github.com/go-nunu/nunu/internal/command/wire"
 
