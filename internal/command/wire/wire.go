@@ -2,13 +2,14 @@ package wire
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"github.com/AlecAivazis/survey/v2"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/go-nunu/nunu/internal/pkg/helper"
 	"github.com/spf13/cobra"
 )
@@ -51,22 +52,21 @@ var CmdWire = &cobra.Command{
 					wirePaths = append(wirePaths, k)
 				}
 				sort.Strings(wirePaths)
-				prompt := &survey.Select{
-					Message:  "Which directory do you want to run?",
-					Options:  wirePaths,
-					PageSize: 10,
+				model := newChoiceModel(wirePaths, "Which directory do you want to run?")
+				program := tea.NewProgram(model)
+				if _, err := program.Run(); err != nil {
+					log.Fatalf("Error starting bubbletea program: %v", err)
 				}
-				e := survey.AskOne(prompt, &dir)
-				if e != nil || dir == "" {
+				if model.choice == "" {
 					return
 				}
-				dir = wirePath[dir]
+				dir = wirePath[model.choice]
 			}
 		}
 		wire(dir)
-
 	},
 }
+
 var CmdWireAll = &cobra.Command{
 	Use:     "all",
 	Short:   "nunu wire all",

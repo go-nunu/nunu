@@ -5,7 +5,6 @@ package run
 
 import (
 	"fmt"
-	"github.com/go-nunu/nunu/config"
 	"log"
 	"os"
 	"os/exec"
@@ -17,8 +16,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/AlecAivazis/survey/v2"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fsnotify/fsnotify"
+	"github.com/go-nunu/nunu/config"
 	"github.com/go-nunu/nunu/internal/pkg/helper"
 	"github.com/spf13/cobra"
 )
@@ -79,16 +79,16 @@ var CmdRun = &cobra.Command{
 					cmdPaths = append(cmdPaths, k)
 				}
 				sort.Strings(cmdPaths)
-				prompt := &survey.Select{
-					Message:  "Which directory do you want to run?",
-					Options:  cmdPaths,
-					PageSize: 10,
+
+				model := newChoiceModel(cmdPaths, "Which directory do you want to run?")
+				program := tea.NewProgram(model)
+				if _, err := program.Run(); err != nil {
+					log.Fatalf("Error starting bubbletea program: %v", err)
 				}
-				e := survey.AskOne(prompt, &dir)
-				if e != nil || dir == "" {
+				if model.choice == "" {
 					return
 				}
-				dir = cmdPath[dir]
+				dir = cmdPath[model.choice]
 			}
 		}
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
