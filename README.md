@@ -1,3 +1,6 @@
+<a href="https://trendshift.io/repositories/9047" target="_blank"><img src="https://trendshift.io/api/badge/repositories/9047" alt="go-nunu%2Fnunu | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+
+
 # Nunu — A CLI tool for building Go applications.
 
 Nunu is a scaffolding tool for building Go applications. Its name comes from a game character in League of Legends, a little boy riding on the shoulders of a Yeti. Just like Nunu, this project stands on the shoulders of giants, as it is built upon a combination of popular libraries from the Go ecosystem. This combination allows you to quickly build efficient and reliable applications.
