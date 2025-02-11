@@ -125,7 +125,8 @@ func (c *Create) genFile() {
 	if filePath == "" {
 		filePath = fmt.Sprintf("internal/%s/", c.CreateType)
 	}
-	f := createFile(filePath, strings.ToLower(c.FileName)+".go")
+	filename := fmt.Sprintf("%s_%s.go", c.CreateType[:1], strings.ToLower(c.FileName))
+	f := createFile(filePath, filename)
 	if f == nil {
 		log.Printf("warn: file %s%s %s", filePath, strings.ToLower(c.FileName)+".go", "already exists.")
 		return
@@ -145,7 +146,7 @@ func (c *Create) genFile() {
 	if err != nil {
 		log.Fatalf("create %s error: %s", c.CreateType, err.Error())
 	}
-	log.Printf("Created new %s: %s", c.CreateType, filePath+strings.ToLower(c.FileName)+".go")
+	log.Printf("Created new %s: %s", c.CreateType, filePath+filename)
 
 }
 func createFile(dirPath string, filename string) *os.File {
