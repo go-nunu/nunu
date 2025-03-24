@@ -31,6 +31,8 @@ Nunuは、Goアプリケーションを構築するためのスキャフォー�
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
 - **Pitaya**:  https://github.com/topfreegames/pitaya
+- **Casbin**:  https://github.com/casbin/casbin
+
 - その他多数...
 
 ## 主な特徴

@@ -31,6 +31,7 @@ Nunu é uma ferramenta de geração de estrutura (scaffolding) para construir ap
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
 - **Pitaya**:  https://github.com/topfreegames/pitaya
+- **Casbin**:  https://github.com/casbin/casbin
 - Mais...
 
 ## Funcionalidades Principais

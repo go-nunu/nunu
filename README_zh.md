@@ -31,6 +31,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
 - **Pitaya**:  https://github.com/topfreegames/pitaya
+- **Casbin**:  https://github.com/casbin/casbin
 - More...
 ## 特性
 * **超低学习成本和定制**：Nunu封装了Gopher最熟悉的一些流行库。您可以轻松定制应用程序以满足特定需求。

@@ -110,15 +110,19 @@ func (p *Project) cloneTemplate() (bool, error) {
 			Message: "Please select a layout:",
 			Options: []string{
 				"Advanced",
+				"Admin",
 				"Basic",
 				"Chat",
 			},
 			Description: func(value string, index int) string {
 				if index == 1 {
-					return "A basic project structure"
+					return "A admin template for quick backend setup."
 				}
 				if index == 2 {
-					return "A simple chat room containing websocket/tcp"
+					return "A basic project structure."
+				}
+				if index == 3 {
+					return "A simple chat room containing websocket/tcp."
 				}
 				return "It has rich functions such as db, jwt, cron, migration, test, etc"
 			},
@@ -131,6 +135,8 @@ func (p *Project) cloneTemplate() (bool, error) {
 			repo = config.RepoAdvanced
 		} else if layout == "Chat" {
 			repo = config.RepoChat
+		} else if layout == "Admin" {
+			repo = config.RepoAdmin
 		}
 		err = os.RemoveAll(p.ProjectName)
 		if err != nil {
