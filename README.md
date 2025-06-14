@@ -18,6 +18,7 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 * [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
 * [Getting Started Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 * [Unit Testing](https://github.com/go-nunu/nunu/blob/main/docs/en/unit_testing.md)
+* [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
 
 
 ## Features
@@ -34,8 +35,9 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
-- **Pitaya**:  https://github.com/topfreegames/pitaya
 - **Casbin**:  https://github.com/casbin/casbin
+- **Pitaya**:  https://github.com/topfreegames/pitaya
+- **MCP-GO**:  https://github.com/mark3labs/mcp-go
 
 - More...
 

@@ -15,6 +15,7 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 * [分层架构](https://github.com/go-nunu/nunu/blob/main/docs/zh/architecture.md)
 * [详细教程](https://github.com/go-nunu/nunu/blob/main/docs/zh/tutorial.md)
 * [高效编写单元测试](https://github.com/go-nunu/nunu/blob/main/docs/zh/unit_testing.md)
+* [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README_zh.md)
 
 ## 功能
 - **Gin**: https://github.com/gin-gonic/gin
@@ -30,8 +31,10 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
-- **Pitaya**:  https://github.com/topfreegames/pitaya
 - **Casbin**:  https://github.com/casbin/casbin
+- **Pitaya**:  https://github.com/topfreegames/pitaya
+- **MCP-GO**:  https://github.com/mark3labs/mcp-go
+
 - More...
 ## 特性
 * **超低学习成本和定制**：Nunu封装了Gopher最熟悉的一些流行库。您可以轻松定制应用程序以满足特定需求。

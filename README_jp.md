@@ -15,6 +15,7 @@ Nunuは、Goアプリケーションを構築するためのスキャフォー�
 * [アーキテクチャ](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
 * [入門チュートリアル](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 * [ユニットテスト](https://github.com/go-nunu/nunu/blob/main/docs/en/unit_testing.md)
+* [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
 
 ## 特徴
 - **Gin**: https://github.com/gin-gonic/gin
@@ -30,8 +31,10 @@ Nunuは、Goアプリケーションを構築するためのスキャフォー�
 - **Go-sqlmock**:  https://github.com/DATA-DOG/go-sqlmock
 - **Gomock**:  https://github.com/golang/mock
 - **Swaggo**:  https://github.com/swaggo/swag
-- **Pitaya**:  https://github.com/topfreegames/pitaya
 - **Casbin**:  https://github.com/casbin/casbin
+- **Pitaya**:  https://github.com/topfreegames/pitaya
+- **MCP-GO**:  https://github.com/mark3labs/mcp-go
+
 
 - その他多数...
 
