@@ -126,7 +126,7 @@ func (p *Project) cloneTemplate() (bool, error) {
 					return "Quickly build a High-Performance Go MCP Server."
 				}
 				if index == 4 {
-					return "It has rich functions such as db, jwt, cron, migration, test, etc"
+					return "It includes a simple chat room server that supports both WS and TCP."
 				}
 
 				return "It has rich functions such as db, jwt, cron, migration, test, etc"
