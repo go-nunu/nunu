@@ -5,7 +5,6 @@ package run
 
 import (
 	"fmt"
-	"github.com/go-nunu/nunu/config"
 	"log"
 	"os"
 	"os/exec"
@@ -16,6 +15,8 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/go-nunu/nunu/config"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/fsnotify/fsnotify"
@@ -30,10 +31,12 @@ type Run struct {
 
 var excludeDir string
 var includeExt string
+var buildFlags string
 
 func init() {
 	CmdRun.Flags().StringVarP(&excludeDir, "excludeDir", "", excludeDir, `eg: nunu run --excludeDir="tmp,vendor,.git,.idea"`)
 	CmdRun.Flags().StringVarP(&includeExt, "includeExt", "", includeExt, `eg: nunu run --includeExt="go,tpl,tmpl,html,yaml,yml,toml,ini,json"`)
+	CmdRun.Flags().StringVarP(&buildFlags, "buildFlags", "", buildFlags, `eg: nunu run --buildFlags="-tags cse"`)
 	if excludeDir == "" {
 		excludeDir = config.RunExcludeDir
 	}
@@ -95,6 +98,7 @@ var CmdRun = &cobra.Command{
 		fmt.Printf("\033[35mNunu run %s.\033[0m\n", dir)
 		fmt.Printf("\033[35mWatch excludeDir %s\033[0m\n", excludeDir)
 		fmt.Printf("\033[35mWatch includeExt %s\033[0m\n", includeExt)
+		fmt.Printf("\033[35mWatch buildFlags %s\033[0m\n", buildFlags)
 		watch(dir, programArgs)
 
 	},
@@ -115,6 +119,10 @@ func watch(dir string, programArgs []string) {
 
 	excludeDirArr := strings.Split(excludeDir, ",")
 	includeExtArr := strings.Split(includeExt, ",")
+	buildFlagsArr := make([]string, 0)
+	if buildFlags = strings.TrimSpace(buildFlags); buildFlags != "" {
+		buildFlagsArr = strings.Split(buildFlags, " ")
+	}
 	includeExtMap := make(map[string]struct{})
 	for _, s := range includeExtArr {
 		includeExtMap[s] = struct{}{}
@@ -149,7 +157,7 @@ func watch(dir string, programArgs []string) {
 		return
 	}
 
-	cmd := start(dir, programArgs)
+	cmd := start(dir, buildFlagsArr, programArgs)
 
 	// Loop listening file modification
 	for {
@@ -172,7 +180,7 @@ func watch(dir string, programArgs []string) {
 				fmt.Printf("\033[36mfile modified: %s\033[0m\n", event.Name)
 				killProcess(cmd)
 
-				cmd = start(dir, programArgs)
+				cmd = start(dir, buildFlagsArr, programArgs)
 			}
 		case err := <-watcher.Errors:
 			fmt.Println("Error:", err)
@@ -194,8 +202,11 @@ func killProcess(cmd *exec.Cmd) error {
 	}
 	return nil
 }
-func start(dir string, programArgs []string) *exec.Cmd {
-	cmd := exec.Command("go", append([]string{"run", dir}, programArgs...)...)
+func start(dir string, buildFlagsArgs []string, programArgs []string) *exec.Cmd {
+	run := []string{"run"}
+	run = append(run, buildFlagsArgs...)
+	run = append(run, dir)
+	cmd := exec.Command("go", append(run, programArgs...)...)
 	// Set a new process group to kill all child processes when the program exits
 
 	cmd.Stdout = os.Stdout
