@@ -35,7 +35,7 @@ var buildFlags string
 func init() {
 	CmdRun.Flags().StringVarP(&excludeDir, "excludeDir", "", excludeDir, `eg: nunu run --excludeDir="tmp,vendor,.git,.idea"`)
 	CmdRun.Flags().StringVarP(&includeExt, "includeExt", "", includeExt, `eg: nunu run --includeExt="go,tpl,tmpl,html,yaml,yml,toml,ini,json"`)
-	CmdRun.Flags().StringVarP(&buildFlags, "buildFlags", "", buildFlags, `eg: nunu run --buildFlags="-tag cse"`)
+	CmdRun.Flags().StringVarP(&buildFlags, "buildFlags", "", buildFlags, `eg: nunu run --buildFlags="-tags cse"`)
 	if excludeDir == "" {
 		excludeDir = config.RunExcludeDir
 	}
