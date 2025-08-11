@@ -120,7 +120,7 @@ func watch(dir string, programArgs []string) {
 	excludeDirArr := strings.Split(excludeDir, ",")
 	includeExtArr := strings.Split(includeExt, ",")
 	buildFlagsArr := make([]string, 0)
-	if strings.TrimSpace(buildFlags) != "" {
+	if buildFlags = strings.TrimSpace(buildFlags); buildFlags != "" {
 		buildFlagsArr = strings.Split(buildFlags, " ")
 	}
 	includeExtMap := make(map[string]struct{})
