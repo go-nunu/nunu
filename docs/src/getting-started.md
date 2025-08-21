@@ -71,7 +71,7 @@ $ nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 nunu run cmd/server/main.go
 ```
 
-随后打开浏览器访问`http://localhost:8080`即可看到欢迎页面。
+随后打开浏览器访问`http://localhost:8000`即可看到欢迎页面。
 
 API文档地址: `http://127.0.0.1:8000/swagger/index.html`
 
