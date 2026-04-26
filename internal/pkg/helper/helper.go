@@ -48,7 +48,18 @@ func FindMain(base, excludeDir string) (map[string]string, error) {
 			return err
 		}
 		for _, s := range excludeDirArr {
-			if strings.HasPrefix(strings.TrimPrefix(path, base), "/"+s) {
+			s = strings.TrimSpace(s)
+			if s == "" {
+				continue
+			}
+			relPath, err := filepath.Rel(base, path)
+			if err != nil {
+				return err
+			}
+			if relPath == s || strings.HasPrefix(relPath, s+string(os.PathSeparator)) {
+				if info.IsDir() {
+					return filepath.SkipDir
+				}
 				return nil
 			}
 		}

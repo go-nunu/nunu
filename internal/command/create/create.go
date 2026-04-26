@@ -57,43 +57,49 @@ var CmdCreateHandler = &cobra.Command{
 	Short:   "Create a new handler",
 	Example: "nunu create handler user",
 	Args:    cobra.ExactArgs(1),
-	Run:     runCreate,
+	RunE:    runCreate,
 }
 var CmdCreateService = &cobra.Command{
 	Use:     "service",
 	Short:   "Create a new service",
 	Example: "nunu create service user",
 	Args:    cobra.ExactArgs(1),
-	Run:     runCreate,
+	RunE:    runCreate,
 }
 var CmdCreateRepository = &cobra.Command{
 	Use:     "repository",
 	Short:   "Create a new repository",
 	Example: "nunu create repository user",
 	Args:    cobra.ExactArgs(1),
-	Run:     runCreate,
+	RunE:    runCreate,
 }
 var CmdCreateModel = &cobra.Command{
 	Use:     "model",
 	Short:   "Create a new model",
 	Example: "nunu create model user",
 	Args:    cobra.ExactArgs(1),
-	Run:     runCreate,
+	RunE:    runCreate,
 }
 var CmdCreateAll = &cobra.Command{
 	Use:     "all",
 	Short:   "Create a new handler & service & repository & model",
 	Example: "nunu create all user",
 	Args:    cobra.ExactArgs(1),
-	Run:     runCreate,
+	RunE:    runCreate,
 }
 
-func runCreate(cmd *cobra.Command, args []string) {
+func runCreate(cmd *cobra.Command, args []string) error {
 	c := NewCreate()
 	c.ProjectName = helper.GetProjectName(".")
+	if c.ProjectName == "" {
+		return fmt.Errorf("read module name from go.mod")
+	}
 	c.CreateType = cmd.Use
 	c.FilePath, c.StructName = filepath.Split(args[0])
 	c.FileName = strings.ReplaceAll(c.StructName, ".go", "")
+	if c.FileName == "" {
+		return fmt.Errorf("component name cannot be empty")
+	}
 	c.StructName = strutil.UpperFirst(strutil.CamelCase(c.FileName))
 	c.StructNameLowerFirst = strutil.LowerFirst(c.StructName)
 	c.StructNameFirstChar = string(c.StructNameLowerFirst[0])
@@ -101,67 +107,76 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	switch c.CreateType {
 	case "handler", "service", "repository", "model":
-		c.genFile()
+		return c.genFile()
 	case "all":
-
 		c.CreateType = "handler"
-		c.genFile()
+		if err := c.genFile(); err != nil {
+			return err
+		}
 
 		c.CreateType = "service"
-		c.genFile()
+		if err := c.genFile(); err != nil {
+			return err
+		}
 
 		c.CreateType = "repository"
-		c.genFile()
+		if err := c.genFile(); err != nil {
+			return err
+		}
 
 		c.CreateType = "model"
-		c.genFile()
+		return c.genFile()
 	default:
-		log.Fatalf("Invalid handler type: %s", c.CreateType)
+		return fmt.Errorf("invalid handler type: %s", c.CreateType)
 	}
-
 }
-func (c *Create) genFile() {
+func (c *Create) genFile() error {
 	filePath := c.FilePath
 	if filePath == "" {
 		filePath = fmt.Sprintf("internal/%s/", c.CreateType)
 	}
-	f := createFile(filePath, strings.ToLower(c.FileName)+".go")
+	f, err := createFile(filePath, strings.ToLower(c.FileName)+".go")
+	if err != nil {
+		return err
+	}
 	if f == nil {
 		log.Printf("warn: file %s%s %s", filePath, strings.ToLower(c.FileName)+".go", "already exists.")
-		return
+		return nil
 	}
 	defer f.Close()
 	var t *template.Template
-	var err error
 	if tplPath == "" {
 		t, err = template.ParseFS(tpl.CreateTemplateFS, fmt.Sprintf("create/%s.tpl", c.CreateType))
 	} else {
 		t, err = template.ParseFiles(path.Join(tplPath, fmt.Sprintf("%s.tpl", c.CreateType)))
 	}
 	if err != nil {
-		log.Fatalf("create %s error: %s", c.CreateType, err.Error())
+		return fmt.Errorf("create %s: %w", c.CreateType, err)
 	}
 	err = t.Execute(f, c)
 	if err != nil {
-		log.Fatalf("create %s error: %s", c.CreateType, err.Error())
+		return fmt.Errorf("create %s: %w", c.CreateType, err)
 	}
 	log.Printf("Created new %s: %s", c.CreateType, filePath+strings.ToLower(c.FileName)+".go")
-
+	return nil
 }
-func createFile(dirPath string, filename string) *os.File {
+func createFile(dirPath string, filename string) (*os.File, error) {
 	filePath := filepath.Join(dirPath, filename)
 	err := os.MkdirAll(dirPath, os.ModePerm)
 	if err != nil {
-		log.Fatalf("Failed to create dir %s: %v", dirPath, err)
+		return nil, fmt.Errorf("create dir %s: %w", dirPath, err)
 	}
-	stat, _ := os.Stat(filePath)
-	if stat != nil {
-		return nil
+	_, err = os.Stat(filePath)
+	if err == nil {
+		return nil, nil
+	}
+	if !os.IsNotExist(err) {
+		return nil, fmt.Errorf("stat file %s: %w", filePath, err)
 	}
 	file, err := os.Create(filePath)
 	if err != nil {
-		log.Fatalf("Failed to create file %s: %v", filePath, err)
+		return nil, fmt.Errorf("create file %s: %w", filePath, err)
 	}
 
-	return file
+	return file, nil
 }

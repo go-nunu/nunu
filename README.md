@@ -19,6 +19,7 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 * [Getting Started Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
 * [Unit Testing](https://github.com/go-nunu/nunu/blob/main/docs/en/unit_testing.md)
 * [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
+* [Monorepo Layout](https://github.com/go-nunu/nunu-layout-monorepo)
 
 
 ## Features
@@ -158,6 +159,8 @@ By default, it pulls from the GitHub source, but you can also use an accelerated
 nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-basic.git
 // Use the advanced template
 nunu new projectName -r https://gitee.com/go-nunu/nunu-layout-advanced.git
+// Use the monorepo template
+nunu new projectName -r https://github.com/go-nunu/nunu-layout-monorepo.git
 ```
 
 This command will create a directory named `projectName` and generate an elegant Go project structure within it.

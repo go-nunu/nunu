@@ -15,6 +15,7 @@ Nunu é uma ferramenta de geração de estrutura (scaffolding) para construir ap
 * [Tutorial de Início Rápido](https://github.com/go-nunu/nunu/blob/main/docs/pt/tutorial.md)
 * [Teste de Unidade](https://github.com/go-nunu/nunu/blob/main/docs/pt/unit_testing.md)
 * [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
+* [Monorepo Layout](https://github.com/go-nunu/nunu-layout-monorepo)
 
 
 
@@ -158,6 +159,8 @@ Por padrão, ele busca no repositório do GitHub, mas você também pode usar um
 nunu new nomeDoProjeto -r https://gitee.com/go-nunu/nunu-layout-basic.git
 # Usar o modelo avançado
 nunu new nomeDoProjeto -r https://gitee.com/go-nunu/nunu-layout-advanced.git
+# Usar o modelo monorepo
+nunu new nomeDoProjeto -r https://github.com/go-nunu/nunu-layout-monorepo.git
 ```
 
 Este comando criará um diretório chamado `nomeDoProjeto` e gerará uma estrutura de projeto elegante em Go dentro dele.

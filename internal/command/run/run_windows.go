@@ -4,8 +4,8 @@
 package run
 
 import (
+	"errors"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -23,8 +23,6 @@ import (
 	"github.com/go-nunu/nunu/internal/pkg/helper"
 	"github.com/spf13/cobra"
 )
-
-var quit = make(chan os.Signal, 1)
 
 type Run struct {
 }
@@ -50,7 +48,7 @@ var CmdRun = &cobra.Command{
 	Short:   "nunu run [main.go path]",
 	Long:    "nunu run [main.go path]",
 	Example: "nunu run cmd/server",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdArgs, programArgs := helper.SplitArgs(cmd, args)
 		var dir string
 		if len(cmdArgs) > 0 {
@@ -58,20 +56,17 @@ var CmdRun = &cobra.Command{
 		}
 		base, err := os.Getwd()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
-			return
+			return err
 		}
 		if dir == "" {
 			cmdPath, err := helper.FindMain(base, excludeDir)
 
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
-				return
+				return err
 			}
 			switch len(cmdPath) {
 			case 0:
-				fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", "The cmd directory cannot be found in the current directory")
-				return
+				return errors.New("the cmd directory cannot be found in the current directory")
 			case 1:
 				for _, v := range cmdPath {
 					dir = v
@@ -88,23 +83,28 @@ var CmdRun = &cobra.Command{
 					PageSize: 10,
 				}
 				e := survey.AskOne(prompt, &dir)
-				if e != nil || dir == "" {
-					return
+				if e != nil {
+					return e
+				}
+				if dir == "" {
+					return errors.New("no directory selected")
 				}
 				dir = cmdPath[dir]
 			}
 		}
+		quit := make(chan os.Signal, 1)
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+		defer signal.Stop(quit)
 		fmt.Printf("\033[35mNunu run %s.\033[0m\n", dir)
 		fmt.Printf("\033[35mWatch excludeDir %s\033[0m\n", excludeDir)
 		fmt.Printf("\033[35mWatch includeExt %s\033[0m\n", includeExt)
 		fmt.Printf("\033[35mWatch buildFlags %s\033[0m\n", buildFlags)
-		watch(dir, programArgs)
+		return watch(dir, programArgs, quit)
 
 	},
 }
 
-func watch(dir string, programArgs []string) {
+func watch(dir string, programArgs []string, quit <-chan os.Signal) error {
 
 	// Listening file path
 	watchPath := "./"
@@ -112,65 +112,56 @@ func watch(dir string, programArgs []string) {
 	// Create a new file watcher
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		fmt.Println("Error:", err)
-		return
+		return err
 	}
 	defer watcher.Close()
 
-	excludeDirArr := strings.Split(excludeDir, ",")
-	includeExtArr := strings.Split(includeExt, ",")
+	excludeDirArr := splitCSV(excludeDir)
 	buildFlagsArr := make([]string, 0)
 	if buildFlags = strings.TrimSpace(buildFlags); buildFlags != "" {
-		buildFlagsArr = strings.Split(buildFlags, " ")
+		buildFlagsArr = strings.Fields(buildFlags)
 	}
-	includeExtMap := make(map[string]struct{})
-	for _, s := range includeExtArr {
-		includeExtMap[s] = struct{}{}
-	}
+	includeExtMap := includeExtSet(includeExt)
 	// Add files to watcher
 	err = filepath.Walk(watchPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		for _, s := range excludeDirArr {
-			if s == "" {
-				continue
+		if isExcludedPath(path, excludeDirArr) {
+			if info.IsDir() {
+				return filepath.SkipDir
 			}
-			if strings.HasPrefix(path, s) {
-				return nil
-			}
+			return nil
 		}
 		if !info.IsDir() {
 			ext := filepath.Ext(info.Name())
 			if _, ok := includeExtMap[strings.TrimPrefix(ext, ".")]; ok {
-				err = watcher.Add(path)
-				if err != nil {
-					fmt.Println("Error:", err)
+				if err := watcher.Add(path); err != nil {
+					return err
 				}
 			}
-
 		}
 		return nil
 	})
 	if err != nil {
-		fmt.Println("Error:", err)
-		return
+		return err
 	}
 
-	cmd := start(dir, buildFlagsArr, programArgs)
+	cmd, err := start(dir, buildFlagsArr, programArgs)
+	if err != nil {
+		return err
+	}
 
 	// Loop listening file modification
 	for {
 		select {
 		case <-quit:
-			err = killProcess(cmd)
-
-			if err != nil {
+			if err := killProcess(cmd); err != nil {
 				fmt.Printf("\033[31mserver exiting...\033[0m\n")
-				return
+				return err
 			}
 			fmt.Printf("\033[31mserver exiting...\033[0m\n")
-			os.Exit(0)
+			return nil
 
 		case event := <-watcher.Events:
 			// The file has been modified or created
@@ -178,18 +169,22 @@ func watch(dir string, programArgs []string) {
 				event.Op&fsnotify.Write == fsnotify.Write ||
 				event.Op&fsnotify.Remove == fsnotify.Remove {
 				fmt.Printf("\033[36mfile modified: %s\033[0m\n", event.Name)
-				killProcess(cmd)
-
-				cmd = start(dir, buildFlagsArr, programArgs)
+				if err := killProcess(cmd); err != nil {
+					fmt.Println("Error:", err)
+				}
+				cmd, err = start(dir, buildFlagsArr, programArgs)
+				if err != nil {
+					return err
+				}
 			}
 		case err := <-watcher.Errors:
-			fmt.Println("Error:", err)
+			return err
 		}
 	}
 }
 
 func killProcess(cmd *exec.Cmd) error {
-	if cmd.Process == nil {
+	if cmd == nil || cmd.Process == nil {
 		return nil
 	}
 	// 获取进程ID
@@ -202,7 +197,7 @@ func killProcess(cmd *exec.Cmd) error {
 	}
 	return nil
 }
-func start(dir string, buildFlagsArgs []string, programArgs []string) *exec.Cmd {
+func start(dir string, buildFlagsArgs []string, programArgs []string) (*exec.Cmd, error) {
 	run := []string{"run"}
 	run = append(run, buildFlagsArgs...)
 	run = append(run, dir)
@@ -214,9 +209,9 @@ func start(dir string, buildFlagsArgs []string, programArgs []string) *exec.Cmd 
 
 	err := cmd.Start()
 	if err != nil {
-		log.Fatalf("\033[33;1mcmd run failed\u001B[0m")
+		return nil, fmt.Errorf("cmd run failed: %w", err)
 	}
 	time.Sleep(time.Second)
 	fmt.Printf("\033[32;1mrunning...\033[0m\n")
-	return cmd
+	return cmd, nil
 }

@@ -32,7 +32,7 @@ nunu new projectName
 This command will create a directory named `projectName` and generate an elegant Golang project structure within it.
 
 
-> Nunu provides 3 types of layouts:
+> Nunu provides multiple types of layouts:
 
 * **Basic Layout**
 
@@ -47,6 +47,18 @@ The Advanced Layout includes many examples of using Nunu (e.g., db, redis, jwt, 
 * **Chat Layout**
 
 Chat Layout is a Nunu based long link project template suitable for scenarios such as instant messaging and game development.
+
+* **Admin Layout**
+
+Admin Layout provides an admin system with Gin APIs, Vue 3 UI, JWT authentication, and Casbin RBAC.
+
+* **MCP Server Layout**
+
+MCP Server Layout provides a Model Context Protocol server with STDIO, SSE, and Streamable HTTP transports.
+
+* **Monorepo Layout**
+
+Monorepo Layout provides a multi-application workspace with shared packages, an admin backend, embedded UI, and a home app.
 
 ## Quick Start with Docker
 

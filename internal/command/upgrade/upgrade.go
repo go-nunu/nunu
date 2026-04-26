@@ -2,7 +2,6 @@ package upgrade
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 
@@ -15,14 +14,15 @@ var CmdUpgrade = &cobra.Command{
 	Short:   "Upgrade the nunu command.",
 	Long:    "Upgrade the nunu command.",
 	Example: "nunu upgrade",
-	Run: func(_ *cobra.Command, _ []string) {
+	RunE: func(_ *cobra.Command, _ []string) error {
 		fmt.Printf("go install %s\n", config.NunuCmd)
 		cmd := exec.Command("go", "install", config.NunuCmd)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
-			log.Fatalf("go install %s error\n", err)
+			return fmt.Errorf("go install %s: %w", config.NunuCmd, err)
 		}
 		fmt.Printf("\n🎉 Nunu upgrade successfully!\n\n")
+		return nil
 	},
 }
