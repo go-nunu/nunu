@@ -1,8 +1,6 @@
 package run
 
 import (
-	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -25,15 +23,4 @@ func includeExtSet(value string) map[string]struct{} {
 		includeExtMap[strings.TrimPrefix(strings.ToLower(ext), ".")] = struct{}{}
 	}
 	return includeExtMap
-}
-
-func isExcludedPath(path string, excludeDirs []string) bool {
-	cleanPath := filepath.Clean(path)
-	for _, excludeDir := range excludeDirs {
-		excludeDir = filepath.Clean(filepath.FromSlash(excludeDir))
-		if cleanPath == excludeDir || strings.HasPrefix(cleanPath, excludeDir+string(os.PathSeparator)) {
-			return true
-		}
-	}
-	return false
 }

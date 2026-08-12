@@ -17,6 +17,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/go-nunu/nunu/config"
 	"github.com/go-nunu/nunu/internal/pkg/helper"
+	"github.com/go-nunu/nunu/internal/pkg/pathignore"
 	"github.com/kballard/go-shellquote"
 	"github.com/spf13/cobra"
 )
@@ -31,7 +32,7 @@ var includeExt string
 var buildFlags string
 
 func init() {
-	CmdRun.Flags().StringVar(&excludeDir, "excludeDir", config.RunExcludeDir, `eg: nunu run --excludeDir="tmp,vendor,.git,.idea"`)
+	CmdRun.Flags().StringVar(&excludeDir, "excludeDir", config.RunExcludeDir, `comma-separated gitignore patterns; eg: "node_modules,**/.cache,tmp-*"`)
 	CmdRun.Flags().StringVar(&includeExt, "includeExt", config.RunIncludeExt, `eg: nunu run --includeExt="go,tpl,tmpl,html,yaml,yml,toml,ini,json"`)
 	CmdRun.Flags().StringVar(&buildFlags, "buildFlags", "", `eg: nunu run --buildFlags="-tags cse"`)
 }
@@ -119,12 +120,9 @@ type managedProcess struct {
 }
 
 func watch(dir string, buildFlagsArgs, programArgs []string, quit <-chan os.Signal) error {
-	watchRoot, err := filepath.Abs(".")
+	runTarget, watchRoot, err := resolveRunTarget(dir)
 	if err != nil {
-		return fmt.Errorf("resolve watch root: %w", err)
-	}
-	if projectRoot, rootErr := helper.FindProjectRoot(watchRoot); rootErr == nil {
-		watchRoot = projectRoot
+		return err
 	}
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -132,13 +130,16 @@ func watch(dir string, buildFlagsArgs, programArgs []string, quit <-chan os.Sign
 	}
 	defer watcher.Close()
 
-	excludeDirs := splitCSV(excludeDir)
+	excludeMatcher, err := pathignore.CompileCSV(excludeDir)
+	if err != nil {
+		return fmt.Errorf("parse excludeDir: %w", err)
+	}
 	includeExts := includeExtSet(includeExt)
-	if err := addWatchDirs(watcher, watchRoot, watchRoot, excludeDirs); err != nil {
+	if err := addWatchDirs(watcher, watchRoot, watchRoot, excludeMatcher); err != nil {
 		return err
 	}
 
-	process, err := startProcess(dir, buildFlagsArgs, programArgs)
+	process, err := startProcess(watchRoot, runTarget, buildFlagsArgs, programArgs)
 	if err != nil {
 		return err
 	}
@@ -189,7 +190,7 @@ func watch(dir string, buildFlagsArgs, programArgs []string, quit <-chan os.Sign
 			if !ok {
 				return errors.New("file watcher event channel closed")
 			}
-			relevant, err := handleWatchEvent(watcher, watchRoot, event, excludeDirs, includeExts)
+			relevant, err := handleWatchEvent(watcher, watchRoot, event, excludeMatcher, includeExts)
 			if err != nil {
 				return err
 			}
@@ -209,7 +210,7 @@ func watch(dir string, buildFlagsArgs, programArgs []string, quit <-chan os.Sign
 			if err := stopProcess(process, shutdownTimeout); err != nil {
 				return fmt.Errorf("restart application: %w", err)
 			}
-			process, err = startProcess(dir, buildFlagsArgs, programArgs)
+			process, err = startProcess(watchRoot, runTarget, buildFlagsArgs, programArgs)
 			if err != nil {
 				return err
 			}
@@ -230,7 +231,32 @@ func splitBuildFlags(value string) ([]string, error) {
 	return args, nil
 }
 
-func addWatchDirs(watcher *fsnotify.Watcher, root, start string, excludeDirs []string) error {
+func resolveRunTarget(target string) (string, string, error) {
+	absTarget, err := filepath.Abs(target)
+	if err != nil {
+		return "", "", fmt.Errorf("resolve run target %q: %w", target, err)
+	}
+	resolvedTarget, err := filepath.EvalSymlinks(absTarget)
+	if err != nil {
+		return "", "", fmt.Errorf("resolve run target symlinks %s: %w", absTarget, err)
+	}
+	absTarget = resolvedTarget
+	info, err := os.Stat(absTarget)
+	if err != nil {
+		return "", "", fmt.Errorf("stat resolved run target %s: %w", absTarget, err)
+	}
+	rootStart := absTarget
+	if !info.IsDir() {
+		rootStart = filepath.Dir(absTarget)
+	}
+	watchRoot, err := helper.FindProjectRoot(rootStart)
+	if err != nil {
+		return "", "", fmt.Errorf("determine project root for %s: %w", absTarget, err)
+	}
+	return absTarget, watchRoot, nil
+}
+
+func addWatchDirs(watcher *fsnotify.Watcher, root, start string, excludeMatcher *pathignore.Matcher) error {
 	err := filepath.WalkDir(start, func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
@@ -238,7 +264,7 @@ func addWatchDirs(watcher *fsnotify.Watcher, root, start string, excludeDirs []s
 		if !entry.IsDir() {
 			return nil
 		}
-		if isExcludedFromRoot(root, path, excludeDirs) {
+		if isExcludedFromRoot(root, path, true, excludeMatcher) {
 			return filepath.SkipDir
 		}
 		if err := watcher.Add(path); err != nil {
@@ -252,18 +278,21 @@ func addWatchDirs(watcher *fsnotify.Watcher, root, start string, excludeDirs []s
 	return nil
 }
 
-func handleWatchEvent(watcher *fsnotify.Watcher, root string, event fsnotify.Event, excludeDirs []string, includeExts map[string]struct{}) (bool, error) {
+func handleWatchEvent(watcher *fsnotify.Watcher, root string, event fsnotify.Event, excludeMatcher *pathignore.Matcher, includeExts map[string]struct{}) (bool, error) {
 	if event.Op&(fsnotify.Create|fsnotify.Write|fsnotify.Remove|fsnotify.Rename) == 0 {
 		return false, nil
 	}
-	if isExcludedFromRoot(root, event.Name, excludeDirs) {
+	if isExcludedFromRoot(root, event.Name, false, excludeMatcher) {
 		return false, nil
 	}
 
 	if event.Op&fsnotify.Create != 0 {
 		info, err := os.Stat(event.Name)
 		if err == nil && info.IsDir() {
-			if err := addWatchDirs(watcher, root, event.Name, excludeDirs); err != nil {
+			if isExcludedFromRoot(root, event.Name, true, excludeMatcher) {
+				return false, nil
+			}
+			if err := addWatchDirs(watcher, root, event.Name, excludeMatcher); err != nil {
 				return false, err
 			}
 			return true, nil
@@ -281,12 +310,12 @@ func handleWatchEvent(watcher *fsnotify.Watcher, root string, event fsnotify.Eve
 	return ext == "" && event.Op&(fsnotify.Remove|fsnotify.Rename) != 0, nil
 }
 
-func isExcludedFromRoot(root, path string, excludeDirs []string) bool {
+func isExcludedFromRoot(root, path string, isDir bool, excludeMatcher *pathignore.Matcher) bool {
 	rel, err := filepath.Rel(root, path)
 	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(os.PathSeparator)) {
 		return true
 	}
-	return isExcludedPath(rel, excludeDirs)
+	return excludeMatcher.Match(filepath.ToSlash(rel), isDir)
 }
 
 func displayPath(root, path string) string {
@@ -297,12 +326,13 @@ func displayPath(root, path string) string {
 	return filepath.ToSlash(rel)
 }
 
-func startProcess(dir string, buildFlagsArgs, programArgs []string) (*managedProcess, error) {
+func startProcess(projectRoot, dir string, buildFlagsArgs, programArgs []string) (*managedProcess, error) {
 	args := []string{"run"}
 	args = append(args, buildFlagsArgs...)
 	args = append(args, dir)
 	args = append(args, programArgs...)
 	cmd := exec.Command("go", args...)
+	cmd.Dir = projectRoot
 	configureProcess(cmd)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

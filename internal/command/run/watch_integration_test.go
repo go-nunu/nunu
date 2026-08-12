@@ -34,9 +34,11 @@ func main() {
 }
 `)
 	t.Chdir(root)
+	excludedFile := filepath.Join(root, "app", "web", "node_modules", "pkg", "ignored.go")
+	writeWatchTestFile(t, excludedFile, "package pkg\n")
 
 	oldExcludeDir, oldIncludeExt := excludeDir, includeExt
-	excludeDir, includeExt = ".git,vendor", "go,yaml"
+	excludeDir, includeExt = ".git,vendor,node_modules", "go,yaml"
 	t.Cleanup(func() {
 		excludeDir, includeExt = oldExcludeDir, oldIncludeExt
 	})
@@ -60,6 +62,14 @@ func main() {
 
 	startsLog := filepath.Join(root, "starts.log")
 	waitForStartCount(t, startsLog, 1)
+
+	// Exclusions match directory names at any depth. A frontend dependency
+	// tree inside a monorepo must not be traversed or trigger reloads.
+	writeWatchTestFile(t, excludedFile, "package pkg\n\nconst ignored = true\n")
+	time.Sleep(2 * reloadDebounce)
+	if got := startCount(startsLog); got != 1 {
+		t.Fatalf("nested excluded directory triggered a restart: got %d starts", got)
+	}
 
 	// Creating a new source file must be observed because directories, not only
 	// files that existed at startup, are watched.

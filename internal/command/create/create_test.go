@@ -49,3 +49,30 @@ func TestCreateCommandRejectsUnknownPositionalArguments(t *testing.T) {
 		t.Fatal("create command accepted positional arguments instead of a subcommand")
 	}
 }
+
+func TestRunCreateDoesNotLeaveFileWhenTemplateIsInvalid(t *testing.T) {
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "go.mod"), []byte("module example.com/project\n\ngo 1.25\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	templateDir := filepath.Join(root, "templates")
+	if err := os.MkdirAll(templateDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(templateDir, "model.tpl"), []byte("{{"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(root)
+
+	oldTemplatePath := tplPath
+	tplPath = templateDir
+	t.Cleanup(func() { tplPath = oldTemplatePath })
+
+	if err := runCreate(CmdCreateModel, []string{"broken"}); err == nil {
+		t.Fatal("runCreate() returned nil error for an invalid template")
+	}
+	target := filepath.Join(root, "internal", "model", "broken.go")
+	if _, err := os.Stat(target); !os.IsNotExist(err) {
+		t.Fatalf("invalid template left target file %s: %v", target, err)
+	}
+}

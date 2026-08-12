@@ -27,6 +27,7 @@ var CmdNew = &cobra.Command{
 }
 var (
 	repoURL string
+	askOne  = survey.AskOne
 )
 
 type layoutOption struct {
@@ -96,7 +97,7 @@ func NewProject() *Project {
 func run(cmd *cobra.Command, args []string) error {
 	p := NewProject()
 	if len(args) == 0 {
-		err := survey.AskOne(&survey.Input{
+		err := askOne(&survey.Input{
 			Message: "What is your project name?",
 			Help:    "project name.",
 			Suggest: nil,
@@ -137,24 +138,19 @@ func run(cmd *cobra.Command, args []string) error {
 }
 
 func (p *Project) cloneTemplate() (bool, error) {
+	overwrite := false
 	_, err := os.Stat(p.ProjectName)
 	if err == nil {
-		var overwrite = false
-
 		prompt := &survey.Confirm{
 			Message: fmt.Sprintf("Folder %s already exists, do you want to overwrite it?", p.ProjectName),
 			Help:    "Remove old project and create new project.",
 		}
-		err := survey.AskOne(prompt, &overwrite)
+		err := askOne(prompt, &overwrite)
 		if err != nil {
 			return false, err
 		}
 		if !overwrite {
 			return false, nil
-		}
-		err = os.RemoveAll(p.ProjectName)
-		if err != nil {
-			return false, fmt.Errorf("remove old project: %w", err)
 		}
 	} else if !os.IsNotExist(err) {
 		return false, fmt.Errorf("stat project directory: %w", err)
@@ -174,19 +170,20 @@ func (p *Project) cloneTemplate() (bool, error) {
 				return option.Description
 			},
 		}
-		err := survey.AskOne(prompt, &layout)
+		err := askOne(prompt, &layout)
 		if err != nil {
 			return false, err
 		}
 		if option, ok := findLayoutOption(layout); ok {
 			repo = option.Repo
 		}
-		err = os.RemoveAll(p.ProjectName)
-		if err != nil {
-			return false, fmt.Errorf("remove old project: %w", err)
-		}
 	} else {
 		repo = repoURL
+	}
+	if overwrite {
+		if err := os.RemoveAll(p.ProjectName); err != nil {
+			return false, fmt.Errorf("remove old project: %w", err)
+		}
 	}
 
 	fmt.Printf("git clone %s\n", repo)

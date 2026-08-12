@@ -1,6 +1,7 @@
 package create
 
 import (
+	"bytes"
 	"fmt"
 	"go/token"
 	"log"
@@ -149,16 +150,8 @@ func (c *Create) genFile() error {
 	}
 	filename := strings.ToLower(c.FileName) + ".go"
 	targetPath := filepath.Join(filePath, filename)
-	f, err := createFile(filePath, filename)
-	if err != nil {
-		return err
-	}
-	if f == nil {
-		log.Printf("warn: file %s already exists.", targetPath)
-		return nil
-	}
-	defer f.Close()
 	var t *template.Template
+	var err error
 	if tplPath == "" {
 		t, err = template.ParseFS(tpl.CreateTemplateFS, fmt.Sprintf("create/%s.tpl", c.CreateType))
 	} else {
@@ -167,10 +160,33 @@ func (c *Create) genFile() error {
 	if err != nil {
 		return fmt.Errorf("create %s: %w", c.CreateType, err)
 	}
-	err = t.Execute(f, c)
-	if err != nil {
+	var rendered bytes.Buffer
+	if err := t.Execute(&rendered, c); err != nil {
 		return fmt.Errorf("create %s: %w", c.CreateType, err)
 	}
+
+	f, err := createFile(filePath, filename)
+	if err != nil {
+		return err
+	}
+	if f == nil {
+		log.Printf("warn: file %s already exists.", targetPath)
+		return nil
+	}
+	writeSucceeded := false
+	defer func() {
+		_ = f.Close()
+		if !writeSucceeded {
+			_ = os.Remove(targetPath)
+		}
+	}()
+	if _, err := f.Write(rendered.Bytes()); err != nil {
+		return fmt.Errorf("write %s: %w", targetPath, err)
+	}
+	if err := f.Close(); err != nil {
+		return fmt.Errorf("close %s: %w", targetPath, err)
+	}
+	writeSucceeded = true
 	log.Printf("Created new %s: %s", c.CreateType, targetPath)
 	return nil
 }
@@ -180,14 +196,10 @@ func createFile(dirPath string, filename string) (*os.File, error) {
 	if err != nil {
 		return nil, fmt.Errorf("create dir %s: %w", dirPath, err)
 	}
-	_, err = os.Stat(filePath)
-	if err == nil {
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+	if os.IsExist(err) {
 		return nil, nil
 	}
-	if !os.IsNotExist(err) {
-		return nil, fmt.Errorf("stat file %s: %w", filePath, err)
-	}
-	file, err := os.Create(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("create file %s: %w", filePath, err)
 	}

@@ -70,9 +70,11 @@ func TestFindMainUsesGoSyntaxAndExcludesDirectories(t *testing.T) {
 	writeTestFile(t, filepath.Join(root, "cmd", "fake", "fake.go"), "package fake\n// package main; func main() {}\n")
 	writeTestFile(t, filepath.Join(root, "cmd", "broken", "broken.go"), "package main\nfunc broken(\n")
 	writeTestFile(t, filepath.Join(root, "vendor", "tool", "main.go"), "package main\nfunc main() {}\n")
+	writeTestFile(t, filepath.Join(root, "app", "vendor", "nested-tool", "main.go"), "package main\nfunc main() {}\n")
+	writeTestFile(t, filepath.Join(root, "generated", "debug", "main.go"), "package main\nfunc main() {}\n")
 	writeTestFile(t, filepath.Join(root, "cmd", "testonly", "main_test.go"), "package main\nfunc main() {}\n")
 
-	got, err := FindMain(root, "vendor")
+	got, err := FindMain(root, "vendor,generated/**")
 	if err != nil {
 		t.Fatalf("FindMain() error = %v", err)
 	}
