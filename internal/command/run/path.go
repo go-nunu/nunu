@@ -22,7 +22,7 @@ func includeExtSet(value string) map[string]struct{} {
 	exts := splitCSV(value)
 	includeExtMap := make(map[string]struct{}, len(exts))
 	for _, ext := range exts {
-		includeExtMap[strings.TrimPrefix(ext, ".")] = struct{}{}
+		includeExtMap[strings.TrimPrefix(strings.ToLower(ext), ".")] = struct{}{}
 	}
 	return includeExtMap
 }
@@ -30,7 +30,7 @@ func includeExtSet(value string) map[string]struct{} {
 func isExcludedPath(path string, excludeDirs []string) bool {
 	cleanPath := filepath.Clean(path)
 	for _, excludeDir := range excludeDirs {
-		excludeDir = filepath.Clean(excludeDir)
+		excludeDir = filepath.Clean(filepath.FromSlash(excludeDir))
 		if cleanPath == excludeDir || strings.HasPrefix(cleanPath, excludeDir+string(os.PathSeparator)) {
 			return true
 		}

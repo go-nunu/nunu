@@ -10,7 +10,7 @@ import (
 func main() {
 	err := nunu.Execute()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "execute error:", err.Error())
+		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
 }

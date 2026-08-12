@@ -128,7 +128,7 @@ In addition, there are some other files and directories, such as license files, 
 ## Requirements
 To use Nunu, you need to have the following software installed on your system:
 
-* Go 1.19 or higher
+* Go 1.25 or higher
 * Git
 * Docker (optional)
 * MySQL 5.7 or higher (optional)

@@ -14,6 +14,7 @@ var CmdUpgrade = &cobra.Command{
 	Short:   "Upgrade the nunu command.",
 	Long:    "Upgrade the nunu command.",
 	Example: "nunu upgrade",
+	Args:    cobra.NoArgs,
 	RunE: func(_ *cobra.Command, _ []string) error {
 		fmt.Printf("go install %s\n", config.NunuCmd)
 		cmd := exec.Command("go", "install", config.NunuCmd)
