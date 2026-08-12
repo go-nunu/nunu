@@ -18,6 +18,18 @@ Nunuは、Goアプリケーションを構築するためのスキャフォー�
 * [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
 * [Monorepo Layout](https://github.com/go-nunu/nunu-layout-monorepo)
 
+## AI支援開発
+
+[Nunu Skills](https://github.com/go-nunu/nunu-skills) は、`build-with-nunu` というAgent Skillを提供します。CodexやClaude CodeなどのコーディングエージェントがNunuのプロジェクト構成を理解し、ハンドラー、サービス、リポジトリ、ルーター、Wireによる依存性注入、ジョブ、タスク、MCP Serverにわたる、テスト済みの完全な機能を実装できるよう支援します。
+
+プロジェクトで次のコマンドを実行してインストールできます：
+
+```bash
+npx skills add go-nunu/nunu-skills --skill build-with-nunu
+```
+
+対応するプロジェクト構成、エージェント別のインストール方法、プロンプト例については、[Nunu Skillsリポジトリ](https://github.com/go-nunu/nunu-skills)を参照してください。
+
 ## 特徴
 - **Gin**: https://github.com/gin-gonic/gin
 - **Gorm**: https://github.com/go-gorm/gorm

@@ -17,6 +17,18 @@ Nunu é uma ferramenta de geração de estrutura (scaffolding) para construir ap
 * [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
 * [Monorepo Layout](https://github.com/go-nunu/nunu-layout-monorepo)
 
+## Desenvolvimento assistido por IA
+
+O [Nunu Skills](https://github.com/go-nunu/nunu-skills) oferece o `build-with-nunu`, uma Agent Skill que ajuda agentes de programação como Codex e Claude Code a entender as estruturas de projetos Nunu e implementar funcionalidades completas e testadas envolvendo handlers, serviços, repositórios, roteadores, injeção de dependência com Wire, jobs, tarefas e servidores MCP.
+
+Instale-o em seu projeto com:
+
+```bash
+npx skills add go-nunu/nunu-skills --skill build-with-nunu
+```
+
+Consulte o [repositório Nunu Skills](https://github.com/go-nunu/nunu-skills) para conhecer as estruturas compatíveis, as opções de instalação específicas para cada agente e exemplos de prompts.
+
 
 
 ## Funcionalidades
