@@ -15,7 +15,7 @@ Nunu是一个基于Go语言的Web框架，它提供了一套优雅的项目结�
 ## 要求
 要使用Nunu 高级Layout，您需要在系统上安装以下软件：
 
-* Golang 1.19或更高版本
+* Golang 1.25或更高版本
 * Git
 * MySQL5.7或更高版本
 * Redis
@@ -216,7 +216,7 @@ nunu run
 
 // 或
 
- nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor" --includeExt="go,yml,vue"  -- --conf=./config/local.yml
+ nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor,node_modules" --includeExt="go,yml,vue"  -- --conf=./config/local.yml
 ```
 
 执行完上述命令后，Nunu会自动启动项目，并监听文件更新，支持热重启。

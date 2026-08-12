@@ -2,19 +2,22 @@ package create
 
 import (
 	"fmt"
-	"github.com/duke-git/lancet/v2/strutil"
-	"github.com/go-nunu/nunu/internal/pkg/helper"
-	"github.com/go-nunu/nunu/tpl"
-	"github.com/spf13/cobra"
+	"go/token"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/duke-git/lancet/v2/strutil"
+	"github.com/go-nunu/nunu/internal/pkg/helper"
+	"github.com/go-nunu/nunu/tpl"
+	"github.com/spf13/cobra"
 )
 
 type Create struct {
+	ProjectRoot          string
 	ProjectName          string
 	CreateType           string
 	FilePath             string
@@ -31,12 +34,12 @@ func NewCreate() *Create {
 }
 
 var CmdCreate = &cobra.Command{
-	Use:     "create [type] [handler-name]",
+	Use:     "create",
 	Short:   "Create a new handler/service/repository/model",
 	Example: "nunu create handler user",
-	Args:    cobra.ExactArgs(2),
-	Run: func(cmd *cobra.Command, args []string) {
-
+	Args:    cobra.NoArgs,
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		return cmd.Help()
 	},
 }
 var (
@@ -53,35 +56,35 @@ func init() {
 }
 
 var CmdCreateHandler = &cobra.Command{
-	Use:     "handler",
+	Use:     "handler <name>",
 	Short:   "Create a new handler",
 	Example: "nunu create handler user",
 	Args:    cobra.ExactArgs(1),
 	RunE:    runCreate,
 }
 var CmdCreateService = &cobra.Command{
-	Use:     "service",
+	Use:     "service <name>",
 	Short:   "Create a new service",
 	Example: "nunu create service user",
 	Args:    cobra.ExactArgs(1),
 	RunE:    runCreate,
 }
 var CmdCreateRepository = &cobra.Command{
-	Use:     "repository",
+	Use:     "repository <name>",
 	Short:   "Create a new repository",
 	Example: "nunu create repository user",
 	Args:    cobra.ExactArgs(1),
 	RunE:    runCreate,
 }
 var CmdCreateModel = &cobra.Command{
-	Use:     "model",
+	Use:     "model <name>",
 	Short:   "Create a new model",
 	Example: "nunu create model user",
 	Args:    cobra.ExactArgs(1),
 	RunE:    runCreate,
 }
 var CmdCreateAll = &cobra.Command{
-	Use:     "all",
+	Use:     "all <name>",
 	Short:   "Create a new handler & service & repository & model",
 	Example: "nunu create all user",
 	Args:    cobra.ExactArgs(1),
@@ -90,17 +93,26 @@ var CmdCreateAll = &cobra.Command{
 
 func runCreate(cmd *cobra.Command, args []string) error {
 	c := NewCreate()
-	c.ProjectName = helper.GetProjectName(".")
-	if c.ProjectName == "" {
-		return fmt.Errorf("read module name from go.mod")
+	projectRoot, err := helper.FindProjectRoot(".")
+	if err != nil {
+		return fmt.Errorf("determine project root: %w", err)
 	}
-	c.CreateType = cmd.Use
+	projectName, err := helper.ReadModulePath(projectRoot)
+	if err != nil {
+		return fmt.Errorf("determine project module: %w", err)
+	}
+	c.ProjectRoot = projectRoot
+	c.ProjectName = projectName
+	c.CreateType = cmd.Name()
 	c.FilePath, c.StructName = filepath.Split(args[0])
-	c.FileName = strings.ReplaceAll(c.StructName, ".go", "")
+	c.FileName = strings.TrimSuffix(c.StructName, ".go")
 	if c.FileName == "" {
 		return fmt.Errorf("component name cannot be empty")
 	}
 	c.StructName = strutil.UpperFirst(strutil.CamelCase(c.FileName))
+	if c.StructName == "" || !token.IsIdentifier(c.StructName) {
+		return fmt.Errorf("component name %q does not contain a valid identifier", c.FileName)
+	}
 	c.StructNameLowerFirst = strutil.LowerFirst(c.StructName)
 	c.StructNameFirstChar = string(c.StructNameLowerFirst[0])
 	c.StructNameSnakeCase = strutil.SnakeCase(c.StructName)
@@ -133,14 +145,16 @@ func runCreate(cmd *cobra.Command, args []string) error {
 func (c *Create) genFile() error {
 	filePath := c.FilePath
 	if filePath == "" {
-		filePath = fmt.Sprintf("internal/%s/", c.CreateType)
+		filePath = filepath.Join(c.ProjectRoot, "internal", c.CreateType)
 	}
-	f, err := createFile(filePath, strings.ToLower(c.FileName)+".go")
+	filename := strings.ToLower(c.FileName) + ".go"
+	targetPath := filepath.Join(filePath, filename)
+	f, err := createFile(filePath, filename)
 	if err != nil {
 		return err
 	}
 	if f == nil {
-		log.Printf("warn: file %s%s %s", filePath, strings.ToLower(c.FileName)+".go", "already exists.")
+		log.Printf("warn: file %s already exists.", targetPath)
 		return nil
 	}
 	defer f.Close()
@@ -157,7 +171,7 @@ func (c *Create) genFile() error {
 	if err != nil {
 		return fmt.Errorf("create %s: %w", c.CreateType, err)
 	}
-	log.Printf("Created new %s: %s", c.CreateType, filePath+strings.ToLower(c.FileName)+".go")
+	log.Printf("Created new %s: %s", c.CreateType, targetPath)
 	return nil
 }
 func createFile(dirPath string, filename string) (*os.File, error) {

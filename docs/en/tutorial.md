@@ -13,7 +13,7 @@ Nunu is a web framework based on the Go programming language. It provides an ele
 ## Requirements
 To use Nunu with Advanced Layout, you need to have the following software installed on your system:
 
-* Golang 1.19 or higher
+* Golang 1.25 or higher
 * Git
 * MySQL 5.7 or higher
 * Redis
@@ -208,7 +208,7 @@ nunu run
 
 // Or
 
-nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor" --includeExt="go,yml,vue"  -- --conf=./config/local.yml
+nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor,node_modules" --includeExt="go,yml,vue"  -- --conf=./config/local.yml
 ```
 
 After running the above command, Nunu will automatically start the project and monitor file updates, supporting hot-reloading.

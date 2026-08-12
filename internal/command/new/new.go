@@ -3,11 +3,11 @@ package new
 import (
 	"bytes"
 	"fmt"
-	"github.com/AlecAivazis/survey/v2"
 	"os"
 	"os/exec"
 	"path/filepath"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/go-nunu/nunu/config"
 	"github.com/go-nunu/nunu/internal/pkg/helper"
 	"github.com/spf13/cobra"
@@ -18,10 +18,11 @@ type Project struct {
 }
 
 var CmdNew = &cobra.Command{
-	Use:     "new",
+	Use:     "new [project-name]",
 	Example: "nunu new demo-api",
 	Short:   "create a new project.",
 	Long:    `create a new project with nunu layout.`,
+	Args:    cobra.MaximumNArgs(1),
 	RunE:    run,
 }
 var (
@@ -121,7 +122,9 @@ func run(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	p.rmGit()
+	if err := p.rmGit(); err != nil {
+		return err
+	}
 	if err := p.installWire(); err != nil {
 		return err
 	}
@@ -188,29 +191,29 @@ func (p *Project) cloneTemplate() (bool, error) {
 
 	fmt.Printf("git clone %s\n", repo)
 	cmd := exec.Command("git", "clone", repo, p.ProjectName)
-	_, err = cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return false, fmt.Errorf("git clone %s: %w", repo, err)
+		return false, fmt.Errorf("git clone %s: %w\n%s", repo, err, out)
 	}
 	return true, nil
 }
 
 func (p *Project) replacePackageName() error {
-	packageName := helper.GetProjectName(p.ProjectName)
-	if packageName == "" {
-		return fmt.Errorf("read module name from %s/go.mod", p.ProjectName)
+	packageName, err := helper.ReadModulePath(p.ProjectName)
+	if err != nil {
+		return fmt.Errorf("read module name from %s/go.mod: %w", p.ProjectName, err)
 	}
 
-	err := p.replaceFiles(packageName)
+	err = p.replaceFiles(packageName)
 	if err != nil {
 		return err
 	}
 
 	cmd := exec.Command("go", "mod", "edit", "-module", p.ProjectName)
 	cmd.Dir = p.ProjectName
-	_, err = cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("go mod edit: %w", err)
+		return fmt.Errorf("go mod edit: %w\n%s", err, out)
 	}
 	return nil
 }
@@ -218,13 +221,18 @@ func (p *Project) modTidy() error {
 	fmt.Println("go mod tidy")
 	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Dir = p.ProjectName
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("go mod tidy: %w", err)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("go mod tidy: %w\n%s", err, out)
 	}
 	return nil
 }
-func (p *Project) rmGit() {
-	os.RemoveAll(p.ProjectName + "/.git")
+func (p *Project) rmGit() error {
+	gitDir := filepath.Join(p.ProjectName, ".git")
+	if err := os.RemoveAll(gitDir); err != nil {
+		return fmt.Errorf("remove template git metadata %s: %w", gitDir, err)
+	}
+	return nil
 }
 func (p *Project) installWire() error {
 	fmt.Printf("go install %s\n", config.WireCmd)
