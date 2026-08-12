@@ -21,6 +21,17 @@ Nunu is a scaffolding tool for building Go applications. Its name comes from a g
 * [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README.md)
 * [Monorepo Layout](https://github.com/go-nunu/nunu-layout-monorepo)
 
+## AI-assisted Development
+
+[Nunu Skills](https://github.com/go-nunu/nunu-skills) provides `build-with-nunu`, an Agent Skill that helps coding agents such as Codex and Claude Code understand Nunu project layouts and implement complete, tested features across handlers, services, repositories, routers, Wire dependency injection, jobs, tasks, and MCP servers.
+
+Install it in your project with:
+
+```bash
+npx skills add go-nunu/nunu-skills --skill build-with-nunu
+```
+
+See the [Nunu Skills repository](https://github.com/go-nunu/nunu-skills) for supported layouts, agent-specific installation options, and example prompts.
 
 ## Features
 - **Gin**: https://github.com/gin-gonic/gin

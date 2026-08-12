@@ -18,6 +18,18 @@ Nunu是一个基于Golang的应用脚手架，它的名字来自于英雄联盟�
 * [MCP Server](https://github.com/go-nunu/nunu-layout-mcp/blob/main/README_zh.md)
 * [Monorepo Layout](https://github.com/go-nunu/nunu-layout-monorepo)
 
+## AI 辅助开发
+
+[Nunu Skills](https://github.com/go-nunu/nunu-skills) 提供了 `build-with-nunu` Agent Skill，可帮助 Codex、Claude Code 等编码代理理解 Nunu 项目布局，并跨处理器、服务、仓储、路由、Wire 依赖注入、作业、任务和 MCP Server 实现经过完整测试的功能。
+
+在项目中运行以下命令即可安装：
+
+```bash
+npx skills add go-nunu/nunu-skills --skill build-with-nunu
+```
+
+有关支持的项目布局、不同编码代理的安装方式和示例提示词，请访问 [Nunu Skills 仓库](https://github.com/go-nunu/nunu-skills)。
+
 ## 功能
 - **Gin**: https://github.com/gin-gonic/gin
 - **Gorm**: https://github.com/go-gorm/gorm
