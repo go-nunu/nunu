@@ -1,9 +1,10 @@
 module github.com/go-nunu/nunu
 
-go 1.25.0
+go 1.25.8
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.7
+	github.com/bmatcuk/doublestar/v4 v4.10.0
 	github.com/duke-git/lancet/v2 v2.3.9
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51

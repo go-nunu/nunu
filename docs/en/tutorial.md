@@ -213,6 +213,8 @@ nunu run ./cmd/server  --excludeDir=".git,.idea,tmp,vendor,node_modules" --inclu
 
 After running the above command, Nunu will automatically start the project and monitor file updates, supporting hot-reloading.
 
+`--excludeDir` accepts comma-separated gitignore-style patterns. A directory name such as `node_modules` matches at any depth; path patterns are relative to the project root. Wildcards including `*`, `?`, and `**` are supported, as are later negation rules such as `generated/**,!generated/keep.go`.
+
 
 
 ## Automatic Generation of Swagger Documentation

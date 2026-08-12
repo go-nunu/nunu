@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/go-nunu/nunu/internal/pkg/pathignore"
 	"github.com/spf13/cobra"
 	"golang.org/x/mod/modfile"
 )
@@ -85,7 +86,10 @@ func FindMain(base, excludeDir string) (map[string]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("resolve search path: %w", err)
 	}
-	excludeDirArr := normalizeExcludedDirs(excludeDir)
+	excludeMatcher, err := pathignore.CompileCSV(excludeDir)
+	if err != nil {
+		return nil, fmt.Errorf("parse excluded directories: %w", err)
+	}
 	cmdPath := make(map[string]string)
 	seenDirs := make(map[string]struct{})
 	err = filepath.WalkDir(base, func(path string, entry fs.DirEntry, err error) error {
@@ -96,7 +100,7 @@ func FindMain(base, excludeDir string) (map[string]string, error) {
 		if err != nil {
 			return err
 		}
-		if isExcludedRelativePath(relPath, excludeDirArr) {
+		if excludeMatcher.Match(filepath.ToSlash(relPath), entry.IsDir()) {
 			if entry.IsDir() {
 				return filepath.SkipDir
 			}
@@ -126,29 +130,6 @@ func FindMain(base, excludeDir string) (map[string]string, error) {
 		return nil, err
 	}
 	return cmdPath, nil
-}
-
-func normalizeExcludedDirs(value string) []string {
-	parts := strings.Split(value, ",")
-	result := make([]string, 0, len(parts))
-	for _, part := range parts {
-		part = strings.TrimSpace(part)
-		if part == "" {
-			continue
-		}
-		result = append(result, filepath.Clean(filepath.FromSlash(part)))
-	}
-	return result
-}
-
-func isExcludedRelativePath(path string, excluded []string) bool {
-	path = filepath.Clean(path)
-	for _, item := range excluded {
-		if path == item || strings.HasPrefix(path, item+string(os.PathSeparator)) {
-			return true
-		}
-	}
-	return false
 }
 
 func isMainFile(path string) (bool, error) {

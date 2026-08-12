@@ -221,6 +221,8 @@ nunu run
 
 执行完上述命令后，Nunu会自动启动项目，并监听文件更新，支持热重启。
 
+`--excludeDir` 接受以逗号分隔、类似 `.gitignore` 的匹配规则。`node_modules` 这样的目录名会匹配任意层级；带路径的规则相对于项目根目录匹配。支持 `*`、`?`、`**` 通配符，也支持使用后续否定规则重新包含文件，例如 `generated/**,!generated/keep.go`。
+
 
 ## 自动化生成Swagger文档
 
