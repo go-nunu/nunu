@@ -224,4 +224,4 @@ O Nunu é lançado sob a Licença MIT. Para mais informações, consulte o arqui
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=go-nunu/nunu&type=Date)](https://star-history.com/#go-nunu/nunu&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=go-nunu/nunu&type=Date)](https://star-history.dera.page/#go-nunu/nunu&Date)

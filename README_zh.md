@@ -257,4 +257,4 @@ Nunu是根据MIT许可证发布的。有关更多信息，请参见[LICENSE](LIC
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=go-nunu/nunu&type=Date)](https://star-history.com/#go-nunu/nunu&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=go-nunu/nunu&type=Date)](https://star-history.dera.page/#go-nunu/nunu&Date)
